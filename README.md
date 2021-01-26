@@ -1,9 +1,22 @@
 # ICOtools
 Contains the ICOtronic tools that can be used on the ICOtronic log files
 
-## Icoplotter
+## Capabilities
+
+### IcoPlotter
 - SNR (mech)
 - ..
 
-## Icotools
+### IcoAnalyzer
 - ..
+
+## Setup Instructions
+..
+
+
+## Data aquisition
+..
+
+
+## Post processing
+..
