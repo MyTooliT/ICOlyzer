@@ -30,6 +30,7 @@ def main(argv):
             sys.exit()
         elif opt in ("-i", "--ifile"):
             log_file = arg
+            log_location = ''
         elif opt in ("-o", "--ofile"):
             outputfile = arg     
     print('Input file is ' + log_file)
