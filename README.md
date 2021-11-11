@@ -61,6 +61,12 @@ With "-i FOLDERPATH" you can change the folder the script sees through. This pat
 
 ![analyzer-i](assets/analyzer-i.png)
 
+##### -d
+
+With "-d" you can activate a more detailed information about the packetloss. Not only will it show the percentage of the files, it will now also show how many packets were lost with each packetloss for each file.
+
+![packetloss_details](assets/packetlossdetails.png)
+
 ##### -m
 
 With "-m VALUE" you can change the minimal value for datapoints to be checked. All values below this parameter will be counted as out of the borders.

@@ -25,6 +25,7 @@ def main(argv):
     dateien = []
     log_location = '.\\'
     check_values = True
+    details_on = False
     #test_value_max = 65536
     #test_value_min = 0
     test_value_max = 35000	#error bounds that cover abitray orientation but no artefacts
@@ -32,7 +33,7 @@ def main(argv):
     
 	
     try:
-        opts, args = getopt.getopt(argv, "hi:v:m:",["ifolder=","value=","min="])
+        opts, args = getopt.getopt(argv, "hi:v:m:d",["ifolder=","value=","min=","details"])
     except getopt.GetoptError:
         print('watch_simple_plot.py -i <inputfolder> -v <max_value> -m <minimum_value>')
         sys.exit(2)
@@ -48,6 +49,8 @@ def main(argv):
         elif opt in ("-m", "--min"):
             test_value_min = int(arg)
             check_values = True
+        elif opt in ("-d", "--details"):
+            details_on = True
     print('Input folder is: ' + log_location)
         
                 
@@ -142,6 +145,12 @@ def main(argv):
                 first_counter = datapoint
             else:
                 lost_packets = datapoint-first_counter - 1
+                ##Next if/else is to see number of lost packets:
+                if details_on == True:
+                    if lost_packets < 0:
+                        print(str(lost_packets+255+1)+" Packets lost")
+                    else:
+                        print(str(lost_packets)+" Packets lost")
                 if lost_packets < 0 :
                     lost_packets = lost_packets + 255
                 first_counter = datapoint
