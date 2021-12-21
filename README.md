@@ -1,6 +1,10 @@
 # ICOtools
 Contains the ICOtronic tools that can be used on the ICOtronic log files for later analyses of the recorded signals from the ICOc scripts.
 
+## Version
+
+This Readme is written for ICOtools v.1.0.0
+
 ## Tools
 
 ### IcoPlotter
