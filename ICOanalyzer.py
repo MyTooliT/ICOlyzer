@@ -179,20 +179,20 @@ def main():
             print("DATAPOINTS:")
             print(str(element.out_of_range) +
                   " Samples were over " + str(test_value_max) +
-                  "g\u2080 or below " + str(test_value_min) +
-                  "g\u2080 ("+str(percent_overflow)+"%)")
+                  "g or below " + str(test_value_min) +
+                  "g ("+str(percent_overflow)+"%)")
         elif y is not None:
             print("DATAPOINTS:")
             print(str(element.out_of_range2) +
                   " Samples were over " + str(test_value_max) +
-                  "g\u2080 or below " + str(test_value_min) +
-                  "g\u2080 ("+str(percent_overflow)+"%)")
+                  "g or below " + str(test_value_min) +
+                  "g ("+str(percent_overflow)+"%)")
         elif z is not None:
             print("DATAPOINTS:")
             print(str(element.out_of_range3) +
                   " Samples were over " + str(test_value_max) +
-                  "g\u2080 or below " + str(test_value_min) +
-                  "g\u2080 ("+str(percent_overflow)+"%)")
+                  "g or below " + str(test_value_min) +
+                  "g ("+str(percent_overflow)+"%)")
     elif nr_of_axis == 2:
         if x is None:
             percent_overflow2 = (element.out_of_range2 /
@@ -204,12 +204,12 @@ def main():
             print("DATAPOINTS:")
             print("Y-AXIS: " + str(element.out_of_range2) +
                   " Samples were over " + str(test_value_max) +
-                  "g\u2080 or below " + str(test_value_min) +
-                  "g\u2080 ("+str(percent_overflow2)+"%)")
+                  "g or below " + str(test_value_min) +
+                  "g ("+str(percent_overflow2)+"%)")
             print("Z-AXIS: " + str(element.out_of_range3) +
                   " Samples were over " + str(test_value_max) +
-                  "g\u2080 or below " + str(test_value_min) +
-                  "g\u2080 ("+str(percent_overflow3)+"%)")
+                  "g or below " + str(test_value_min) +
+                  "g ("+str(percent_overflow3)+"%)")
         elif y is None:
             percent_overflow = (element.out_of_range /
                                 element.datapoints)*100
@@ -220,12 +220,12 @@ def main():
             print("DATAPOINTS:")
             print("X-AXIS: " + str(element.out_of_range) +
                   " Samples were over " + str(test_value_max) +
-                  "g\u2080 or below " + str(test_value_min) +
-                  "g\u2080 ("+str(percent_overflow)+"%)")
+                  "g or below " + str(test_value_min) +
+                  "g ("+str(percent_overflow)+"%)")
             print("Z-AXIS: " + str(element.out_of_range3) +
                   " Samples were over " + str(test_value_max) +
-                  "g\u2080 or below " + str(test_value_min) +
-                  "g\u2080 ("+str(percent_overflow3)+"%)")
+                  "g or below " + str(test_value_min) +
+                  "g ("+str(percent_overflow3)+"%)")
         elif z is None:
             percent_overflow = (element.out_of_range /
                                 element.datapoints)*100
@@ -236,12 +236,12 @@ def main():
             print("DATAPOINTS:")
             print("X-AXIS: " + str(element.out_of_range) +
                   " Samples were over " + str(test_value_max) +
-                  "g\u2080 or below " + str(test_value_min) +
-                  "g\u2080 ("+str(percent_overflow)+"%)")
+                  "g or below " + str(test_value_min) +
+                  "g ("+str(percent_overflow)+"%)")
             print("Y-AXIS: " + str(element.out_of_range2) +
                   " Samples were over " + str(test_value_max) +
-                  "g\u2080 or below " + str(test_value_min) +
-                  "g\u2080 ("+str(percent_overflow2)+"%)")
+                  "g or below " + str(test_value_min) +
+                  "g ("+str(percent_overflow2)+"%)")
     elif nr_of_axis == 3:
         percent_overflow = (element.out_of_range /
                             element.datapoints)*100
@@ -255,16 +255,16 @@ def main():
         print("DATAPOINTS:")
         print("X-AXIS: " + str(element.out_of_range) +
               " Samples were over " + str(test_value_max) +
-              "g\u2080 or below " + str(test_value_min) +
-              "g\u2080 ("+str(percent_overflow)+"%)")
+              "g or below " + str(test_value_min) +
+              "g ("+str(percent_overflow)+"%)")
         print("Y-AXIS: " + str(element.out_of_range2) +
               " Samples were over " + str(test_value_max) +
-              "g\u2080 or below " + str(test_value_min) +
-              "g\u2080 ("+str(percent_overflow2)+"%)")
+              "g or below " + str(test_value_min) +
+              "g ("+str(percent_overflow2)+"%)")
         print("Z-AXIS: " + str(element.out_of_range3) +
               " Samples were over " + str(test_value_max) +
-              "g\u2080 or below " + str(test_value_min) +
-              "g\u2080 ("+str(percent_overflow3)+"%)")
+              "g or below " + str(test_value_min) +
+              "g ("+str(percent_overflow3)+"%)")
 
 
 if __name__ == "__main__":
