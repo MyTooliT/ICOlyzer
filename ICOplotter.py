@@ -63,7 +63,12 @@ def main():
         pass
 
     if(nr_of_axis == 1):
-        std_dev = stats.loc['std', ['x']]
+        if x is not None:
+            std_dev = stats.loc['std', ['x']]
+        elif y is not None:
+            std_dev = stats.loc['std', ['y']]
+        elif z is not None:
+            std_dev = stats.loc['std', ['z']]
         SNR = 20*np.log10(std_dev/(np.power(2, 16)-1))
         print("SNR of this file is : {:.2f} dB and {:.2f} dB @ {:.2f} kHz".format(
             min(SNR), max(SNR), f_sample/1000))
@@ -103,10 +108,21 @@ def main():
 
     if(nr_of_axis == 1):
         f, axs = plt.subplots(2, 1, figsize=(20, 10))
-        plt.subplot(211)
-        plt.plot(timestamps, data["x"])
-        plt.subplot(212)
-        plt.psd(data["x"]-data["x"].mean(), 512, f_sample)
+        if x is not None:
+            plt.subplot(211)
+            plt.plot(timestamps, data["x"])
+            plt.subplot(212)
+            plt.psd(data["x"]-data["x"].mean(), 512, f_sample)
+        elif y is not None:
+            plt.subplot(211)
+            plt.plot(timestamps, data["y"])
+            plt.subplot(212)
+            plt.psd(data["y"]-data["y"].mean(), 512, f_sample)
+        elif z is not None:
+            plt.subplot(211)
+            plt.plot(timestamps, data["z"])
+            plt.subplot(212)
+            plt.psd(data["z"]-data["z"].mean(), 512, f_sample)
         plt.show()
     elif(nr_of_axis == 3):
         f, axs = plt.subplots(2, 1, figsize=(20, 10))
