@@ -29,7 +29,9 @@ def get_arguments(element):
     @return Returns the parameters
     """
     parser = argparse.ArgumentParser(
-        description='This script is used to calculate the occurred packet loss of an ICOc log data. Additionally it can be used to get the percentage of sample points outside of a given range as long as a min or max is defined via additional parameters at the script call.')
+        description='This script is used to calculate the occurred packet loss of an ICOc log data.'
+        + ' Additionally it can be used to get the % of sample points outside of a given range'
+        + ' as long as a min or max is defined via additional parameters at the script call.')
     parser.add_argument('-m', '--min', metavar='MIN-Value',
                         help='Define a Min-Value')
     parser.add_argument('-v', '--value', metavar='MAX-Value',
@@ -94,173 +96,59 @@ def main():
             first_counter = datapoint
             element.packets = element.packets + lost_packets + 1
             element.packet_loss = element.packet_loss + lost_packets
-    nr_of_axis = 0
-    x = None
-    y = None
-    z = None
+    x_data = None
+    y_data = None
+    z_data = None
     try:
-        x = data["x"]
-        nr_of_axis = nr_of_axis + 1
+        x_data = data["x"]
     except:
         pass
     try:
-        y = data["y"]
-        nr_of_axis = nr_of_axis + 1
+        y_data = data["y"]
     except:
         pass
     try:
-        z = data["z"]
-        nr_of_axis = nr_of_axis + 1
+        z_data = data["z"]
     except:
         pass
-    if nr_of_axis == 1:
-        while (element.datapoints) < (len(data["timestamp"])):
-            if x is not None:
-                acc_data = data["x"][element.datapoints]
-            elif y is not None:
-                acc_data = data["y"][element.datapoints]
-            elif z is not None:
-                acc_data = data["z"][element.datapoints]
-            element.datapoints = element.datapoints + 1
-            if (acc_data > test_value_max) or (acc_data < test_value_min):
-                if x is not None:
-                    element.out_of_range = element.out_of_range + 1
-                elif y is not None:
-                    element.out_of_range2 = element.out_of_range2 + 1
-                elif z is not None:
-                    element.out_of_range3 = element.out_of_range3 + 1
-    elif nr_of_axis == 2:
-        while (element.datapoints) < (len(data["timestamp"])):
-            if x is None:
-                acc_data2 = data["y"][element.datapoints]
-                acc_data3 = data["z"][element.datapoints]
-                element.datapoints = element.datapoints + 1
-                if (acc_data2 > test_value_max) or (acc_data2 < test_value_min):
-                    element.out_of_range2 = element.out_of_range2 + 1
-                if (acc_data3 > test_value_max) or (acc_data3 < test_value_min):
-                    element.out_of_range3 = element.out_of_range3 + 1
-            elif y is None:
-                acc_data = data["x"][element.datapoints]
-                acc_data3 = data["z"][element.datapoints]
-                element.datapoints = element.datapoints + 1
-                if (acc_data > test_value_max) or (acc_data < test_value_min):
-                    element.out_of_range = element.out_of_range + 1
-                if (acc_data3 > test_value_max) or (acc_data3 < test_value_min):
-                    element.out_of_range3 = element.out_of_range3 + 1
-            elif z is None:
-                acc_data = data["x"][element.datapoints]
-                acc_data2 = data["y"][element.datapoints]
-                element.datapoints = element.datapoints + 1
-                if (acc_data > test_value_max) or (acc_data < test_value_min):
-                    element.out_of_range = element.out_of_range + 1
-                if (acc_data2 > test_value_max) or (acc_data2 < test_value_min):
-                    element.out_of_range2 = element.out_of_range2 + 1
-    elif nr_of_axis == 3:
-        while (element.datapoints) < (len(data["timestamp"])):
+
+    while (element.datapoints) < (len(data["timestamp"])):
+        if x_data is not None:
             acc_data = data["x"][element.datapoints]
-            acc_data2 = data["y"][element.datapoints]
-            acc_data3 = data["z"][element.datapoints]
-            element.datapoints = element.datapoints + 1
             if (acc_data > test_value_max) or (acc_data < test_value_min):
                 element.out_of_range = element.out_of_range + 1
+        if y_data is not None:
+            acc_data2 = data["y"][element.datapoints]
             if (acc_data2 > test_value_max) or (acc_data2 < test_value_min):
                 element.out_of_range2 = element.out_of_range2 + 1
+        if z_data is not None:
+            acc_data3 = data["z"][element.datapoints]
             if (acc_data3 > test_value_max) or (acc_data3 < test_value_min):
                 element.out_of_range3 = element.out_of_range3 + 1
-    else:
-        print("Error: Number of axis found is not valid")
+        element.datapoints = element.datapoints + 1
     print("PACKETLOSS:")
     print(str(round((element.packet_loss / element.packets)*100, 2)) + "%")
-    if nr_of_axis == 1:
+    print("DATAPOINTS:")
+    if x_data is not None:
         percent_overflow = (element.out_of_range /
                             element.datapoints)*100
         percent_overflow = round(percent_overflow, 2)
-        if x is not None:
-            print("DATAPOINTS:")
-            print(str(element.out_of_range) +
-                  " Samples were over " + str(test_value_max) +
-                  "g or below " + str(test_value_min) +
-                  "g ("+str(percent_overflow)+"%)")
-        elif y is not None:
-            print("DATAPOINTS:")
-            print(str(element.out_of_range2) +
-                  " Samples were over " + str(test_value_max) +
-                  "g or below " + str(test_value_min) +
-                  "g ("+str(percent_overflow)+"%)")
-        elif z is not None:
-            print("DATAPOINTS:")
-            print(str(element.out_of_range3) +
-                  " Samples were over " + str(test_value_max) +
-                  "g or below " + str(test_value_min) +
-                  "g ("+str(percent_overflow)+"%)")
-    elif nr_of_axis == 2:
-        if x is None:
-            percent_overflow2 = (element.out_of_range2 /
-                                 element.datapoints)*100
-            percent_overflow2 = round(percent_overflow2, 2)
-            percent_overflow3 = (element.out_of_range3 /
-                                 element.datapoints)*100
-            percent_overflow3 = round(percent_overflow3, 2)
-            print("DATAPOINTS:")
-            print("Y-AXIS: " + str(element.out_of_range2) +
-                  " Samples were over " + str(test_value_max) +
-                  "g or below " + str(test_value_min) +
-                  "g ("+str(percent_overflow2)+"%)")
-            print("Z-AXIS: " + str(element.out_of_range3) +
-                  " Samples were over " + str(test_value_max) +
-                  "g or below " + str(test_value_min) +
-                  "g ("+str(percent_overflow3)+"%)")
-        elif y is None:
-            percent_overflow = (element.out_of_range /
-                                element.datapoints)*100
-            percent_overflow = round(percent_overflow, 2)
-            percent_overflow3 = (element.out_of_range3 /
-                                 element.datapoints)*100
-            percent_overflow3 = round(percent_overflow3, 2)
-            print("DATAPOINTS:")
-            print("X-AXIS: " + str(element.out_of_range) +
-                  " Samples were over " + str(test_value_max) +
-                  "g or below " + str(test_value_min) +
-                  "g ("+str(percent_overflow)+"%)")
-            print("Z-AXIS: " + str(element.out_of_range3) +
-                  " Samples were over " + str(test_value_max) +
-                  "g or below " + str(test_value_min) +
-                  "g ("+str(percent_overflow3)+"%)")
-        elif z is None:
-            percent_overflow = (element.out_of_range /
-                                element.datapoints)*100
-            percent_overflow = round(percent_overflow, 2)
-            percent_overflow2 = (element.out_of_range2 /
-                                 element.datapoints)*100
-            percent_overflow2 = round(percent_overflow2, 2)
-            print("DATAPOINTS:")
-            print("X-AXIS: " + str(element.out_of_range) +
-                  " Samples were over " + str(test_value_max) +
-                  "g or below " + str(test_value_min) +
-                  "g ("+str(percent_overflow)+"%)")
-            print("Y-AXIS: " + str(element.out_of_range2) +
-                  " Samples were over " + str(test_value_max) +
-                  "g or below " + str(test_value_min) +
-                  "g ("+str(percent_overflow2)+"%)")
-    elif nr_of_axis == 3:
-        percent_overflow = (element.out_of_range /
-                            element.datapoints)*100
-        percent_overflow = round(percent_overflow, 2)
-        percent_overflow2 = (element.out_of_range2 /
-                             element.datapoints)*100
-        percent_overflow2 = round(percent_overflow2, 2)
-        percent_overflow3 = (element.out_of_range3 /
-                             element.datapoints)*100
-        percent_overflow3 = round(percent_overflow3, 2)
-        print("DATAPOINTS:")
         print("X-AXIS: " + str(element.out_of_range) +
               " Samples were over " + str(test_value_max) +
               "g or below " + str(test_value_min) +
               "g ("+str(percent_overflow)+"%)")
+    if y_data is not None:
+        percent_overflow2 = (element.out_of_range2 /
+                             element.datapoints)*100
+        percent_overflow2 = round(percent_overflow2, 2)
         print("Y-AXIS: " + str(element.out_of_range2) +
               " Samples were over " + str(test_value_max) +
               "g or below " + str(test_value_min) +
               "g ("+str(percent_overflow2)+"%)")
+    if z_data is not None:
+        percent_overflow3 = (element.out_of_range3 /
+                             element.datapoints)*100
+        percent_overflow3 = round(percent_overflow3, 2)
         print("Z-AXIS: " + str(element.out_of_range3) +
               " Samples were over " + str(test_value_max) +
               "g or below " + str(test_value_min) +
