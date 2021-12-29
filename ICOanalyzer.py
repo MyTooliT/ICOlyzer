@@ -29,9 +29,11 @@ def get_arguments(element):
     @return Returns the parameters
     """
     parser = argparse.ArgumentParser(
-        description='This script is used to calculate the occurred packet loss of an ICOc log data.'
-        + ' Additionally it can be used to get the % of sample points outside of a given range'
-        + ' as long as a min or max is defined via additional parameters at the script call.')
+        description='This script is used to calculate the occurred packet '
+        + 'loss of an ICOc log data. Additionally it can be used to get '
+        + 'the % of sample points outside of a given range'
+        + ' as long as a min or max is defined via additional '
+        + 'parameters at the script call.')
     parser.add_argument('-m', '--min', metavar='MIN-Value',
                         help='Define a Min-Value')
     parser.add_argument('-v', '--value', metavar='MAX-Value',
@@ -101,28 +103,28 @@ def main():
     z_data = None
     try:
         x_data = data["x"]
-    except:
+    except KeyError:
         pass
     try:
         y_data = data["y"]
-    except:
+    except KeyError:
         pass
     try:
         z_data = data["z"]
-    except:
+    except KeyError:
         pass
 
     while (element.datapoints) < (len(data["timestamp"])):
         if x_data is not None:
-            acc_data = data["x"][element.datapoints]
+            acc_data = x_data[element.datapoints]
             if (acc_data > test_value_max) or (acc_data < test_value_min):
                 element.out_of_range = element.out_of_range + 1
         if y_data is not None:
-            acc_data2 = data["y"][element.datapoints]
+            acc_data2 = y_data[element.datapoints]
             if (acc_data2 > test_value_max) or (acc_data2 < test_value_min):
                 element.out_of_range2 = element.out_of_range2 + 1
         if z_data is not None:
-            acc_data3 = data["z"][element.datapoints]
+            acc_data3 = z_data[element.datapoints]
             if (acc_data3 > test_value_max) or (acc_data3 < test_value_min):
                 element.out_of_range3 = element.out_of_range3 + 1
         element.datapoints = element.datapoints + 1
