@@ -60,28 +60,16 @@ def main():
               file=sys.stderr)
         exit(1)
 
-    if nr_of_axis == 1:
-        axis = ('x'
-                if x_data is not None else 'y' if y_data is not None else 'z')
-        std_dev = stats.loc['std', [axis]]
-    elif nr_of_axis == 3:
-        std_dev = stats.loc['std', ['x', 'y', 'z']]
-        print("Avg  X: %d Y: %d Z: %d" %
-              (stats.loc['mean', ['x']], stats.loc['mean', ['y']],
-               stats.loc['mean', ['z']]))
-    elif nr_of_axis == 2:
-        if x_data is None:
-            std_dev = stats.loc['std', ['y', 'z']]
-            print("Avg  Y: %d Z: %d " %
-                  (stats.loc['mean', ['y']], stats.loc['mean', ['z']]))
-        elif y_data is None:
-            std_dev = stats.loc['std', ['x', 'z']]
-            print("Avg  X: %d Z: %d " %
-                  (stats.loc['mean', ['x']], stats.loc['mean', ['z']]))
-        elif z_data is None:
-            std_dev = stats.loc['std', ['x', 'y']]
-            print("Avg  X: %d Y: %d " %
-                  (stats.loc['mean', ['x']], stats.loc['mean', ['y']]))
+    axes = [
+        axis for axis, data in [('x', x_data), ('y', y_data), ('z', z_data)]
+        if data is not None
+    ]
+
+    std_dev = stats.loc['std', axes]
+    print(" ".join([
+        f"Avg {axis.upper()}: {int(stats.loc['mean', [axis]])}"
+        for axis in axes
+    ]))
 
     snr = 20 * np.log10(std_dev / (np.power(2, 16) - 1))
     print("SNR of this file is : {:.2f} dB and {:.2f} dB @ {:.2f} kHz".format(
