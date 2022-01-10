@@ -46,25 +46,11 @@ def main():
         (timestamps.iloc[n_points-1]-timestamps.iloc[0])*1000000
     stats = data.describe()
 
-    nr_of_axis = 0
-    x_data = None
-    y_data = None
-    z_data = None
-    try:
-        x_data = data["x"]
-        nr_of_axis = nr_of_axis + 1
-    except KeyError:
-        pass
-    try:
-        y_data = data["y"]
-        nr_of_axis = nr_of_axis + 1
-    except KeyError:
-        pass
-    try:
-        z_data = data["z"]
-        nr_of_axis = nr_of_axis + 1
-    except KeyError:
-        pass
+    x_data = data.get('x')
+    y_data = data.get('y')
+    z_data = data.get('z')
+    nr_of_axis = len(
+        [True for axis in (x_data, y_data, z_data) if axis is not None])
 
     if nr_of_axis == 1:
         if x_data is not None:
