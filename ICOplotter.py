@@ -56,7 +56,8 @@ def main():
         [True for axis in (x_data, y_data, z_data) if axis is not None])
 
     if nr_of_axis < 1 or nr_of_axis > 3:
-        print("ERROR: UNDEFINED NR OF AXIS", file=sys.stderr)
+        print(f"Error: Incorrect number of axis: “{nr_of_axis}”",
+              file=sys.stderr)
         exit(1)
 
     if nr_of_axis == 1:
