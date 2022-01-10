@@ -77,12 +77,9 @@ def main():
 
     plt.subplots(2, 1, figsize=(20, 10))
     plt.subplot(211)
-    if x_data is not None:
-        plt.plot(timestamps, data["x"])
-    if y_data is not None:
-        plt.plot(timestamps, data["y"])
-    if z_data is not None:
-        plt.plot(timestamps, data["z"])
+    for axis in axes:
+        plt.plot(timestamps, data[axis])
+
     plt.subplot(212)
     if x_data is not None:
         plt.psd(data["x"] - data["x"].mean(), 512, f_sample)
