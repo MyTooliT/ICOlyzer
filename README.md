@@ -1,4 +1,5 @@
 # ICOtools
+
 Contains the ICOtronic tools that can be used on the ICOtronic log files for later analyses of the recorded signals from the ICOc scripts.
 
 ## Version
@@ -8,16 +9,19 @@ This Readme is written for ICOtools v.1.1.0
 ## Tools
 
 ### IcoPlotter
+
 - Measures a SNR value of the recording
 - Opens a plotter with the recorded signal
 - Plots the Power Spectral Density Graph for the recorded signal
 
 ### IcoAnalyzer
+
 - Measures packetloss of the recorded signal
 - Measures how many datapoints are outside of a given maximum and minimum
 
 ## Setup Instructions
-To use the ICOtools you need to have Python installed. 
+
+To use the ICOtools you need to have Python installed.
 
 It could be possible that some libraries are needed for the system to run. they can be installed via "pip install LIBRARY-NAME" in the command line.
 
@@ -25,8 +29,8 @@ To setup the scripts you just need to clone the repository of ICOtools.
 
 https://github.com/MyTooliT/ICOtools
 
-
 ## Using the tools
+
 Open the command line in the folder of the scripts. Now you just have to run the script you want with "python SCRIPT-NAME" and maybe some parameter if you don't want to use the standard parameters.
 
 ### Using IcoPlotter
