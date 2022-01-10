@@ -69,11 +69,14 @@ def main():
     plt.subplots(2, 1, figsize=(20, 10))
     plt.subplot(211)
     for axis in axes:
-        plt.plot(timestamps, data[axis])
+        plt.plot(timestamps, data[axis], label=axis)
+    plt.legend()
 
     plt.subplot(212)
     for axis in axes:
-        plt.psd(data[axis] - data[axis].mean(), 512, f_sample)
+        plt.psd(data[axis] - data[axis].mean(), 512, f_sample, label=axis)
+    plt.legend()
+
     plt.show()
 
 
