@@ -65,11 +65,17 @@ Example:
 
 ### Using IcoAnalyzer
 
-The IcoAnalyzer script looks for the log.hdf5 file in the folder the script is run at as a default. After using the command: `python IcoAnalyzer.py` the script will run and look at log.hdf5 file in the folder. It will list the paketloss and values outside of the given range. All values outside the defined values (default is -1g and 1g) are deemed as outside and will be counted. After finishing looking through the file the script will print the results in the command line.
+The IcoAnalyzer script looks for the file `log.hdf5` in the current working directory (usually this will be the root of this repository) by default. After you use the command:
+
+```
+python ICOAnalyzer.py
+```
+
+the script will run and analyze `log.hdf5`. The script will then list the packet loss and values outside of the given range (default is -1g and 1g).
 
 ![analyzer](assets/analyzer.png)
 
-If you want to change the file the script looks through or the minimum and maximum values you have to give the script some extra parameter. Using multiple parameters on one command is also possible.
+If you want to change the file the script analyzes or the minimum and maximum values you have to provide some extra parameters. Using multiple parameters is also possible.
 
 #### IcoAnalyzer parameter
 
