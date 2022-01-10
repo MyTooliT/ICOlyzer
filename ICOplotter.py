@@ -58,7 +58,7 @@ def main():
     if nr_of_axis < 1 or nr_of_axis > 3:
         print(f"Error: Incorrect number of axis: “{nr_of_axis}”",
               file=sys.stderr)
-        exit(1)
+        sys.exit(1)
 
     axes = [
         axis for axis, data in [('x', x_data), ('y', y_data), ('z', z_data)]
@@ -72,10 +72,10 @@ def main():
     ]))
 
     snr = 20 * np.log10(std_dev / (np.power(2, 16) - 1))
-    print("SNR of this file is : {:.2f} dB and {:.2f} dB @ {:.2f} kHz".format(
-        min(snr), max(snr), f_sample / 1000))
+    print(f"SNR of this file is : {min(snr):.2f} dB and {max(snr):.2f} dB "
+          f"@ {f_sample / 1000:.2f} kHz")
 
-    fig, axs = plt.subplots(2, 1, figsize=(20, 10))
+    plt.subplots(2, 1, figsize=(20, 10))
     plt.subplot(211)
     if x_data is not None:
         plt.plot(timestamps, data["x"])
