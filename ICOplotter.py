@@ -56,12 +56,12 @@ def main():
         print("Error: No axis data available", file=sys.stderr)
         sys.exit(1)
 
-    std_dev = stats.loc['std', axes]
     print(" ".join([
         f"Avg {axis.upper()}: {int(stats.loc['mean', [axis]])}"
         for axis in axes
     ]))
 
+    std_dev = stats.loc['std', axes]
     snr = 20 * np.log10(std_dev / (np.power(2, 16) - 1))
     print(f"SNR of this file is : {min(snr):.2f} dB and {max(snr):.2f} dB "
           f"@ {f_sample / 1000:.2f} kHz")
