@@ -49,21 +49,13 @@ def main():
         (timestamps.iloc[n_points-1]-timestamps.iloc[0])*1000000
     stats = data.describe()
 
-    x_data = data.get('x')
-    y_data = data.get('y')
-    z_data = data.get('z')
-    nr_of_axis = len(
-        [True for axis in (x_data, y_data, z_data) if axis is not None])
+    axes = [axis for axis in ('x', 'y', 'z') if data.get(axis) is not None]
+    nr_of_axis = len(axes)
 
     if nr_of_axis < 1 or nr_of_axis > 3:
         print(f"Error: Incorrect number of axis: “{nr_of_axis}”",
               file=sys.stderr)
         sys.exit(1)
-
-    axes = [
-        axis for axis, data in [('x', x_data), ('y', y_data), ('z', z_data)]
-        if data is not None
-    ]
 
     std_dev = stats.loc['std', axes]
     print(" ".join([
