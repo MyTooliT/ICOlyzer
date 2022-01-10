@@ -23,11 +23,13 @@ This Readme is written for ICOtools v.1.1.0
 
 To use the ICOtools you need to have Python installed.
 
-It could be possible that some libraries are needed for the system to run. they can be installed via "pip install LIBRARY-NAME" in the command line.
+To setup the scripts you just need to clone the repository of [ICOtools](https://github.com/MyTooliT/ICOtools).
 
-To setup the scripts you just need to clone the repository of ICOtools.
+To install the required libraries please use the following command in the root directory of the repository:
 
-https://github.com/MyTooliT/ICOtools
+```sh
+pip install -r requirements.txt
+```
 
 ## Using the tools
 
