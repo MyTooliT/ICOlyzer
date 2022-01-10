@@ -65,7 +65,7 @@ Example:
 
 ### Using IcoAnalyzer
 
-The IcoAnalyzer script looks for the log.hdf5 file in the folder the script is run at as a default. After using the command: "python IcoAnalyzer.py" the script will run and look at log.hdf5 file in the folder. It will list the paketloss and values outside of the given range. All values outside the defined values (default is -1g and 1g) are deemed as outside and will be counted. After finishing looking through the file the script will print the results in the command line.
+The IcoAnalyzer script looks for the log.hdf5 file in the folder the script is run at as a default. After using the command: `python IcoAnalyzer.py` the script will run and look at log.hdf5 file in the folder. It will list the paketloss and values outside of the given range. All values outside the defined values (default is -1g and 1g) are deemed as outside and will be counted. After finishing looking through the file the script will print the results in the command line.
 
 ![analyzer](assets/analyzer.png)
 
