@@ -6,10 +6,11 @@ Created on Mon May 13 17:33:09 2019
 
 # Load the Pandas libraries with alias 'pd'
 import argparse
-import pandas as pd
+import sys
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 
 def get_arguments():
@@ -54,6 +55,10 @@ def main():
     nr_of_axis = len(
         [True for axis in (x_data, y_data, z_data) if axis is not None])
 
+    if nr_of_axis < 1 or nr_of_axis > 3:
+        print("ERROR: UNDEFINED NR OF AXIS", file=sys.stderr)
+        exit(1)
+
     if nr_of_axis == 1:
         axis = ('x'
                 if x_data is not None else 'y' if y_data is not None else 'z')
@@ -91,8 +96,7 @@ def main():
             snr = 20 * np.log10(std_dev / (np.power(2, 16) - 1))
             print("SNR of this file is : {:.2f} dB and {:.2f} dB @ {:.2f} kHz".
                   format(min(snr), max(snr), f_sample / 1000))
-    else:
-        print("ERROR: UNDEFINED NR OF AXIS")
+
     fig, axs = plt.subplots(2, 1, figsize=(20, 10))
     plt.subplot(211)
     if x_data is not None:
