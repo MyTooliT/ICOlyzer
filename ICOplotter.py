@@ -53,15 +53,12 @@ def main():
         [True for axis in (x_data, y_data, z_data) if axis is not None])
 
     if nr_of_axis == 1:
-        if x_data is not None:
-            std_dev = stats.loc['std', ['x']]
-        elif y_data is not None:
-            std_dev = stats.loc['std', ['y']]
-        elif z_data is not None:
-            std_dev = stats.loc['std', ['z']]
-        snr = 20*np.log10(std_dev/(np.power(2, 16)-1))
-        print("SNR of this file is : {:.2f} dB and {:.2f} dB @ {:.2f} kHz".format(
-            min(snr), max(snr), f_sample/1000))
+        axis = ('x'
+                if x_data is not None else 'y' if y_data is not None else 'z')
+        std_dev = stats.loc['std', [axis]]
+        snr = 20 * np.log10(std_dev / (np.power(2, 16) - 1))
+        print("SNR of this file is : {:.2f} dB and {:.2f} dB @ {:.2f} kHz".
+              format(min(snr), max(snr), f_sample / 1000))
     elif nr_of_axis == 3:
         std_dev = stats.loc['std', ['x', 'y', 'z']]
         print("Avg  X: %d Y: %d Z: %d" % (stats.loc['mean', ['x']],
