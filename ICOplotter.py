@@ -21,7 +21,9 @@ def get_arguments():
     parser = argparse.ArgumentParser(
         description='This script is used to plot an existing ICOc log-data.' +
         ' For standard the file log.hdf5 in the file order is used.')
-    parser.add_argument('-i', '--input', metavar='Inputfile',
+    parser.add_argument('-i',
+                        '--input',
+                        metavar='Inputfile',
                         help='Chose another input file')
     args = parser.parse_args()
 
@@ -61,34 +63,34 @@ def main():
               format(min(snr), max(snr), f_sample / 1000))
     elif nr_of_axis == 3:
         std_dev = stats.loc['std', ['x', 'y', 'z']]
-        print("Avg  X: %d Y: %d Z: %d" % (stats.loc['mean', ['x']],
-                                          stats.loc['mean', ['y']],
-                                          stats.loc['mean', ['z']]))
-        snr = 20*np.log10(std_dev/(np.power(2, 16)-1))
-        print("SNR of this file is : {:.2f} dB and {:.2f} dB @ {:.2f} kHz".format(
-            min(snr), max(snr), f_sample/1000))
+        print("Avg  X: %d Y: %d Z: %d" %
+              (stats.loc['mean', ['x']], stats.loc['mean', ['y']],
+               stats.loc['mean', ['z']]))
+        snr = 20 * np.log10(std_dev / (np.power(2, 16) - 1))
+        print("SNR of this file is : {:.2f} dB and {:.2f} dB @ {:.2f} kHz".
+              format(min(snr), max(snr), f_sample / 1000))
     elif nr_of_axis == 2:
         if x_data is None:
             std_dev = stats.loc['std', ['y', 'z']]
-            print("Avg  Y: %d Z: %d " % (stats.loc['mean', ['y']],
-                                         stats.loc['mean', ['z']]))
-            snr = 20*np.log10(std_dev/(np.power(2, 16)-1))
-            print("SNR of this file is : {:.2f} dB and {:.2f} dB @ {:.2f} kHz".format(
-                min(snr), max(snr), f_sample/1000))
+            print("Avg  Y: %d Z: %d " %
+                  (stats.loc['mean', ['y']], stats.loc['mean', ['z']]))
+            snr = 20 * np.log10(std_dev / (np.power(2, 16) - 1))
+            print("SNR of this file is : {:.2f} dB and {:.2f} dB @ {:.2f} kHz".
+                  format(min(snr), max(snr), f_sample / 1000))
         elif y_data is None:
             std_dev = stats.loc['std', ['x', 'z']]
-            print("Avg  X: %d Z: %d " % (stats.loc['mean', ['x']],
-                                         stats.loc['mean', ['z']]))
-            snr = 20*np.log10(std_dev/(np.power(2, 16)-1))
-            print("SNR of this file is : {:.2f} dB and {:.2f} dB @ {:.2f} kHz".format(
-                min(snr), max(snr), f_sample/1000))
+            print("Avg  X: %d Z: %d " %
+                  (stats.loc['mean', ['x']], stats.loc['mean', ['z']]))
+            snr = 20 * np.log10(std_dev / (np.power(2, 16) - 1))
+            print("SNR of this file is : {:.2f} dB and {:.2f} dB @ {:.2f} kHz".
+                  format(min(snr), max(snr), f_sample / 1000))
         elif z_data is None:
             std_dev = stats.loc['std', ['x', 'y']]
-            print("Avg  X: %d Y: %d " % (stats.loc['mean', ['x']],
-                                         stats.loc['mean', ['y']]))
-            snr = 20*np.log10(std_dev/(np.power(2, 16)-1))
-            print("SNR of this file is : {:.2f} dB and {:.2f} dB @ {:.2f} kHz".format(
-                min(snr), max(snr), f_sample/1000))
+            print("Avg  X: %d Y: %d " %
+                  (stats.loc['mean', ['x']], stats.loc['mean', ['y']]))
+            snr = 20 * np.log10(std_dev / (np.power(2, 16) - 1))
+            print("SNR of this file is : {:.2f} dB and {:.2f} dB @ {:.2f} kHz".
+                  format(min(snr), max(snr), f_sample / 1000))
     else:
         print("ERROR: UNDEFINED NR OF AXIS")
     fig, axs = plt.subplots(2, 1, figsize=(20, 10))
@@ -101,11 +103,11 @@ def main():
         plt.plot(timestamps, data["z"])
     plt.subplot(212)
     if x_data is not None:
-        plt.psd(data["x"]-data["x"].mean(), 512, f_sample)
+        plt.psd(data["x"] - data["x"].mean(), 512, f_sample)
     if y_data is not None:
-        plt.psd(data["y"]-data["y"].mean(), 512, f_sample)
+        plt.psd(data["y"] - data["y"].mean(), 512, f_sample)
     if z_data is not None:
-        plt.psd(data["z"]-data["z"].mean(), 512, f_sample)
+        plt.psd(data["z"] - data["z"].mean(), 512, f_sample)
     plt.show()
 
 
