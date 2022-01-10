@@ -81,12 +81,8 @@ def main():
         plt.plot(timestamps, data[axis])
 
     plt.subplot(212)
-    if x_data is not None:
-        plt.psd(data["x"] - data["x"].mean(), 512, f_sample)
-    if y_data is not None:
-        plt.psd(data["y"] - data["y"].mean(), 512, f_sample)
-    if z_data is not None:
-        plt.psd(data["z"] - data["z"].mean(), 512, f_sample)
+    for axis in axes:
+        plt.psd(data[axis] - data[axis].mean(), 512, f_sample)
     plt.show()
 
 
