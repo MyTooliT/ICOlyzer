@@ -52,9 +52,8 @@ def main():
     axes = [axis for axis in ('x', 'y', 'z') if data.get(axis) is not None]
     nr_of_axis = len(axes)
 
-    if nr_of_axis < 1 or nr_of_axis > 3:
-        print(f"Error: Incorrect number of axis: “{nr_of_axis}”",
-              file=sys.stderr)
+    if nr_of_axis <= 0:
+        print("Error: No axis data available", file=sys.stderr)
         sys.exit(1)
 
     std_dev = stats.loc['std', axes]
