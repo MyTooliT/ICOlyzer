@@ -1,4 +1,5 @@
 # ICOtools
+
 Contains the ICOtronic tools that can be used on the ICOtronic log files for later analyses of the recorded signals from the ICOc scripts.
 
 ## Version
@@ -8,25 +9,30 @@ This Readme is written for ICOtools v.1.1.0
 ## Tools
 
 ### IcoPlotter
+
 - Measures a SNR value of the recording
 - Opens a plotter with the recorded signal
 - Plots the Power Spectral Density Graph for the recorded signal
 
 ### IcoAnalyzer
+
 - Measures packetloss of the recorded signal
 - Measures how many datapoints are outside of a given maximum and minimum
 
 ## Setup Instructions
-To use the ICOtools you need to have Python installed. 
 
-It could be possible that some libraries are needed for the system to run. they can be installed via "pip install LIBRARY-NAME" in the command line.
+To use the ICOtools you need to have Python installed.
 
-To setup the scripts you just need to clone the repository of ICOtools.
+To setup the scripts you just need to clone the repository of [ICOtools](https://github.com/MyTooliT/ICOtools).
 
-https://github.com/MyTooliT/ICOtools
+To install the required libraries please use the following command in the root directory of the repository:
 
+```sh
+pip install -r requirements.txt
+```
 
 ## Using the tools
+
 Open the command line in the folder of the scripts. Now you just have to run the script you want with "python SCRIPT-NAME" and maybe some parameter if you don't want to use the standard parameters.
 
 ### Using IcoPlotter
@@ -59,11 +65,17 @@ Example:
 
 ### Using IcoAnalyzer
 
-The IcoAnalyzer script looks for the log.hdf5 file in the folder the script is run at as a default. After using the command: "python IcoAnalyzer.py" the script will run and look at log.hdf5 file in the folder. It will list the paketloss and values outside of the given range. All values outside the defined values (default is -1g and 1g) are deemed as outside and will be counted. After finishing looking through the file the script will print the results in the command line.
+The IcoAnalyzer script looks for the file `log.hdf5` in the current working directory (usually this will be the root of this repository) by default. After you use the command:
+
+```
+python ICOAnalyzer.py
+```
+
+the script will run and analyze `log.hdf5`. The script will then list the packet loss and values outside of the given range (default is -1g and 1g).
 
 ![analyzer](assets/analyzer.png)
 
-If you want to change the file the script looks through or the minimum and maximum values you have to give the script some extra parameter. Using multiple parameters on one command is also possible.
+If you want to change the file the script analyzes or the minimum and maximum values you have to provide some extra parameters. Using multiple parameters is also possible.
 
 #### IcoAnalyzer parameter
 
