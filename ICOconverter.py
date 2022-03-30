@@ -5,6 +5,7 @@ Created on Wed Mar 30 08:54:27 2022
 """
 import argparse
 import pandas as pd
+import os
 
 
 def get_arguments():
@@ -64,6 +65,21 @@ def main():
             name = log_file[:-5]
             name = name + '.csv'
             loaded_file.to_csv(name, index=False, header=True)
+    if getfolder is True:
+        for file in os.listdir(log_file):
+            if file.endswith(".hdf5"):
+                print('Starting the conversion of: '+file)
+                file_path = os.path.join(log_file, file)
+                loaded_file = pd.read_hdf(file_path, key="acceleration")
+                if convertexcel is True:
+                    name = file_path[:-5]
+                    name = name + '.xlsx'
+                    loaded_file.to_excel(name, index=False, header=True)
+                if convertexcel is False:
+                    name = file_path[:-5]
+                    name = name + '.csv'
+                    loaded_file.to_csv(name, index=False, header=True)
+
     print('Finished the conversion process')
 
 
