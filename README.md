@@ -4,7 +4,7 @@ Contains the ICOtronic tools that can be used on the ICOtronic log files for lat
 
 ## Version
 
-This Readme is written for ICOtools v.1.1.0
+This Readme is written for ICOtools v.1.2.0
 
 ## Tools
 
