@@ -135,18 +135,40 @@ If you want to change the file the script converts or the format it should conve
 
 This argument calls the help menu of the script instead of running the script.
 
-##### -i
+##### Filepath
 
-With "-i FILEPATH" you can change the file the script converts.
+With `inputs` positional parameter you can change the file the script converts.
 
-![converter_i](assets/converter_i.png)
+```
+python ICOconverter.py ~/Downloads/log.hdf5
+Starting the conversion process
+Converting “/Users/rene/Downloads/log.hdf5” to “/Users/rene/Downloads/log.csv”
+Finished the conversion process
+```
 
-This path can be given as a relative or an absolute path. If the given path is a folder the script will convert ALL .hdf5 files inside this folder.
+This path can be given as a relative or an absolute path. If the given path is a folder the script will convert ALL .hdf5 files inside the given folder.
 
-![converter_folder](assets/converter_folder.png)
+```
+python ICOconverter.py ~/Downloads/TEST-LOGS-HDF5
+Starting the conversion process
+Converting “/Users/rene/Downloads/TEST-LOGS-HDF5/log-z.hdf5” to “/Users/rene/Downloads/TEST-LOGS-HDF5/log-z.csv”
+Converting “/Users/rene/Downloads/TEST-LOGS-HDF5/log-xy.hdf5” to “/Users/rene/Downloads/TEST-LOGS-HDF5/log-xy.csv”
+Converting “/Users/rene/Downloads/TEST-LOGS-HDF5/log-xyz.hdf5” to “/Users/rene/Downloads/TEST-LOGS-HDF5/log-xyz.csv”
+Converting “/Users/rene/Downloads/TEST-LOGS-HDF5/log-xz.hdf5” to “/Users/rene/Downloads/TEST-LOGS-HDF5/log-xz.csv”
+Converting “/Users/rene/Downloads/TEST-LOGS-HDF5/log-x.hdf5” to “/Users/rene/Downloads/TEST-LOGS-HDF5/log-x.csv”
+Converting “/Users/rene/Downloads/TEST-LOGS-HDF5/log-yz.hdf5” to “/Users/rene/Downloads/TEST-LOGS-HDF5/log-yz.csv”
+Converting “/Users/rene/Downloads/TEST-LOGS-HDF5/log-y.hdf5” to “/Users/rene/Downloads/TEST-LOGS-HDF5/log-y.csv”
+Finished the conversion process
+```
 
 ##### -e
 
 With "-e" you can change the format the script converts to to excel sheets. Instead of .csv it now creates .xlsx files.
 
-![converter_excel](assets/converter_excel.png)
+```
+python ICOconverter.py ~/Downloads/*.hdf5 -e
+Starting the conversion process
+Starting the conversion of: /Users/rene/Downloads/log.hdf5
+Starting the conversion of: /Users/rene/Downloads/Measurement_2022-03-31_10-20-16.hdf5
+Finished the conversion process
+```
