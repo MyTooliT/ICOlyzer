@@ -6,6 +6,7 @@ Created on Wed Mar 30 08:54:27 2022
 import argparse
 import glob
 import pandas as pd
+from pathlib import Path
 
 
 def get_arguments():
@@ -21,17 +22,12 @@ def get_arguments():
                         '--input',
                         metavar='Inputfile',
                         help='Chose another input file')
-    parser.add_argument('-f',
-                        '--folder',
-                        action='store_true',
-                        help='Fileinput is a folder and not a file')
     parser.add_argument('-e',
                         '--excel',
                         action='store_true',
                         help='Convert to excel instead of csv')
     args = parser.parse_args()
 
-    folder_selected = False
     excel = False
 
     if args.input is not None:
@@ -39,44 +35,43 @@ def get_arguments():
         print('INPUTFILE CHANGED')
     else:
         filename = 'log.hdf5'
-    if args.folder is True:
-        folder_selected = True
-        if filename == 'log.hdf5':
-            filename = '.'
     if args.excel is True:
         excel = True
-    return filename, folder_selected, excel
+    return filename, excel
 
 
 def main():
     """
     Main function of the ICOconverter.
     """
+    getfolder = False
+    log_file, convertexcel = get_arguments()
+    if Path(log_file).is_dir():
+        getfolder = True
 
-    log_file, getfolder, convertexcel = get_arguments()
     print('Starting the conversion process')
     if getfolder is False:
         loaded_file = pd.read_hdf(log_file, key="acceleration")
         if convertexcel is True:
-            name = log_file[:-5]
-            name = name + '.xlsx'
-            loaded_file.to_excel(name, index=False, header=True)
+            loaded_file.to_excel(Path(log_file).with_suffix('.xlsx'),
+                                 index=False,
+                                 header=True)
         if convertexcel is False:
-            name = log_file[:-5]
-            name = name + '.csv'
-            loaded_file.to_csv(name, index=False, header=True)
+            loaded_file.to_csv(Path(log_file).with_suffix('.csv'),
+                               index=False,
+                               header=True)
     if getfolder is True:
         for file_path in glob.glob(f"{log_file}/*.hdf5"):
             print('Starting the conversion of: ' + file_path)
             loaded_file = pd.read_hdf(file_path, key="acceleration")
             if convertexcel is True:
-                name = file_path[:-5]
-                name = name + '.xlsx'
-                loaded_file.to_excel(name, index=False, header=True)
+                loaded_file.to_excel(Path(file_path).with_suffix('.xlsx'),
+                                     index=False,
+                                     header=True)
             if convertexcel is False:
-                name = file_path[:-5]
-                name = name + '.csv'
-                loaded_file.to_csv(name, index=False, header=True)
+                loaded_file.to_csv(Path(file_path).with_suffix('.csv'),
+                                   index=False,
+                                   header=True)
 
     print('Finished the conversion process')
 
