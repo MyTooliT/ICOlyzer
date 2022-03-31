@@ -19,6 +19,10 @@ This Readme is written for ICOtools v.1.1.0
 - Measures packetloss of the recorded signal
 - Measures how many datapoints are outside of a given maximum and minimum
 
+### IcoConverter
+
+- Converts the recorded .hdf5 files into .csv or .xlsx files
+
 ## Setup Instructions
 
 To use the ICOtools you need to have Python installed.
@@ -37,7 +41,13 @@ Open the command line in the folder of the scripts. Now you just have to run the
 
 ### Using IcoPlotter
 
-The IcoPlotter script looks for a log.hdf5 file in the folder the scripts are as a default. After using the command: "python IcoPlotter.py" the script will run and after loading the file open the graph of the recording
+The IcoPlotter script looks for a `log.hdf5` file in the folder the scripts are as a default. After using the command:
+
+```
+python ICOPlotter.py
+```
+
+the script will run and after loading the file open the graph of the recording
 
 <img src="assets/plotter_image.png" alt="plotter_image" style="zoom:40%;" />
 
@@ -104,3 +114,39 @@ With "-m VALUE" you can change the minimal value for datapoints to be checked. A
 With "-v VALUE" you can change the maximum value for datapoints to be checked. All values above this parameter will be counted as out of the borders.
 
 ![analyzer_parameters](assets/analyzer_parameters.png)
+
+### Using IcoConverter
+
+The IcoConverter script looks for the file `log.hdf5` in the current working directory (usually this will be the root of this repository) by default. After you use the command:
+
+```
+python ICOConverter.py
+```
+
+the script will run and analyze `log.hdf5`. The script will then convert the .hdf5 file and create `log.csv` and save it into the same directory. Attention: When there is already an file with the name of the converted .csv it will be overwritten.
+
+![IcoConverter](assets/IcoConverter.png)
+
+If you want to change the file the script converts or the format it should convert to you have to provide some extra parameters. Using multiple parameters is also possible.
+
+#### IcoConverter parameter
+
+##### -h
+
+This argument calls the help menu of the script instead of running the script.
+
+##### -i
+
+With "-i FILEPATH" you can change the file the script converts.
+
+![converter_i](assets/converter_i.png)
+
+This path can be given as a relative or an absolute path. If the given path is a folder the script will convert ALL .hdf5 files inside this folder.
+
+![converter_folder](assets/converter_folder.png)
+
+##### -e
+
+With "-e" you can change the format the script converts to to excel sheets. Instead of .csv it now creates .xlsx files.
+
+![converter_excel](assets/converter_excel.png)

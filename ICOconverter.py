@@ -48,10 +48,14 @@ def main():
     log_file, convertexcel = get_arguments()
     if Path(log_file).is_dir():
         getfolder = True
-
+    if convertexcel is True:
+        print('Conversion to .xlsx')
+    if convertexcel is False:
+        print('Conversion to .csv')
     print('Starting the conversion process')
     if getfolder is False:
         loaded_file = pd.read_hdf(log_file, key="acceleration")
+        print('Starting the conversion of: ' + log_file)
         if convertexcel is True:
             loaded_file.to_excel(Path(log_file).with_suffix('.xlsx'),
                                  index=False,
