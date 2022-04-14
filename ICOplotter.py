@@ -60,8 +60,10 @@ class IFTLibrary:
     ]
 
     @classmethod
-    def ift_value(cls, samples: Collection[float], sampling_frequency: float,
-                  window_length: float) -> list[float]:
+    def ift_value(cls,
+                  samples: Collection[float],
+                  sampling_frequency: float,
+                  window_length: float = 0.05) -> list[float]:
         """Calculate the IFT value for the given input
 
         Preconditions
@@ -142,13 +144,20 @@ def main():
     print(f"SNR of this file is : {min(snr):.2f} dB and {max(snr):.2f} dB "
           f"@ {f_sample / 1000:.2f} kHz")
 
-    plt.subplots(2, 1, figsize=(20, 10))
-    plt.subplot(211)
+    plt.subplots(3, 1, figsize=(20, 10))
+    plt.subplot(311)
     for axis in axes:
         plt.plot(timestamps, data[axis], label=axis)
     plt.legend()
 
-    plt.subplot(212)
+    plt.subplot(312)
+    for axis in axes:
+        samples = data[axis]
+        ift_values = IFTLibrary.ift_value(samples, f_sample)
+        plt.plot(timestamps, ift_values, label=axis)
+    plt.legend()
+
+    plt.subplot(313)
     for axis in axes:
         plt.psd(data[axis] - data[axis].mean(), 512, f_sample, label=axis)
     plt.legend()
@@ -157,8 +166,4 @@ def main():
 
 
 if __name__ == "__main__":
-    values = IFTLibrary.ift_value(samples=range(1000),
-                                  sampling_frequency=1000,
-                                  window_length=0.005)
-    print(f"Values: {values}")
-    # main()
+    main()
