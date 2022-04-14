@@ -42,6 +42,9 @@ def get_arguments():
 class IFTLibrary:
     """Wrapper for IFT figure of merit (FOM) library"""
 
+    class IFTValueException(Exception):
+        """Raised if there are any problems with the IFT value calculation"""
+
     library = CDLL((Path(__file__).parent / "ift.dll").as_posix())
     ift_value_function = library.ift_value
     ift_value_function.argtypes = [
@@ -101,7 +104,10 @@ class IFTLibrary:
                                         window_length, sampling_frequency, 0,
                                         0, 0, 0, output)
 
-        print(f"Return value: {status}")
+        if status != 0:
+            message = "Sample size too "
+            message += "large" if status == -1 else "small"
+            raise IFTLibrary.IFTValueException(message)
 
         return list(output)
 
