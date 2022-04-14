@@ -96,6 +96,18 @@ class IFTLibrary:
 
         A list containing the calculated IFT values for the given input samples
 
+        Example
+        -------
+
+        >>> samples = range(1000)
+        >>> values = IFTLibrary.ift_value(samples=samples,
+        ...                               sampling_frequency=1000,
+        ...                               window_length=0.005)
+        >>> values # doctest:+ELLIPSIS
+        [3.5, 3.5, ..., 3.5, 3.5]
+        >>> len(values) == len(samples)
+        True
+
         """
 
         len_samples = len(samples)
