@@ -8,6 +8,9 @@ Created on Mon May 13 17:33:09 2019
 import argparse
 import sys
 
+from ctypes import CDLL, c_double, c_size_t, POINTER
+from pathlib import Path
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -34,6 +37,39 @@ def get_arguments():
     else:
         filename = 'log.hdf5'
     return filename
+
+
+class IFTLibrary:
+
+    library = CDLL((Path(__file__).parent / "ift.dll").as_posix())
+    ift_value_function = library.ift_value
+    ift_value_function.argtypes = [
+        POINTER(c_double),  # double samples[]
+        c_size_t,  # size_t sample_size
+        c_double,  # double window_length
+        c_double,  # double sampling_frequency
+        c_double,  # A2
+        c_double,  # A3
+        c_double,  # A4
+        c_double,  # A5
+        POINTER(c_double),  # double output[]
+    ]
+
+    @classmethod
+    def ift_value(cls):
+        samples = (c_double * 1000)(*(range(1000)))
+        len_samples = len(samples)
+        window_length = 0.005
+        frequency = 1000
+        output = (c_double * len_samples)()
+
+        status = cls.ift_value_function(samples, len_samples, window_length,
+                                        frequency, 0, 0, 0, 0, output)
+
+        print(f"Return value: {status}")
+        print("First output values:")
+        for index, value in enumerate(output[:10]):
+            print(f"[{index}]: {value}")
 
 
 def main():
@@ -81,4 +117,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    IFTLibrary.ift_value()
+    # main()
