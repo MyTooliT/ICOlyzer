@@ -4,7 +4,6 @@ Created on Mon May 13 17:33:09 2019
 @author: nleder
 """
 
-# Load the Pandas libraries with alias 'pd'
 import argparse
 import sys
 
@@ -14,7 +13,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
+import pandas as pd  # Load the Pandas libraries with alias 'pd'
 
 
 def get_arguments():
