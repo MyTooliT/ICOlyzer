@@ -8,6 +8,7 @@ Created on Mon May 13 17:33:09 2019
 import argparse
 import sys
 
+from collections.abc import Collection
 from ctypes import CDLL, c_double, c_size_t, POINTER
 from pathlib import Path
 
@@ -56,20 +57,23 @@ class IFTLibrary:
     ]
 
     @classmethod
-    def ift_value(cls):
-        samples = (c_double * 1000)(*(range(1000)))
+    def ift_value(
+        cls,
+        samples: Collection[float],
+        sampling_frequency: float,
+        window_length: float,
+    ) -> list[float]:
         len_samples = len(samples)
-        window_length = 0.005
-        frequency = 1000
+        samples_arg = (c_double * len_samples)(*samples)
         output = (c_double * len_samples)()
 
-        status = cls.ift_value_function(samples, len_samples, window_length,
-                                        frequency, 0, 0, 0, 0, output)
+        status = cls.ift_value_function(samples_arg, len_samples,
+                                        window_length, sampling_frequency, 0,
+                                        0, 0, 0, output)
 
         print(f"Return value: {status}")
-        print("First output values:")
-        for index, value in enumerate(output[:10]):
-            print(f"[{index}]: {value}")
+
+        return list(output)
 
 
 def main():
@@ -117,5 +121,8 @@ def main():
 
 
 if __name__ == "__main__":
-    IFTLibrary.ift_value()
+    values = IFTLibrary.ift_value(samples=range(1000),
+                                  sampling_frequency=1000,
+                                  window_length=0.005)
+    print(f"Values: {values}")
     # main()
