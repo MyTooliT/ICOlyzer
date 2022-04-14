@@ -40,6 +40,7 @@ def get_arguments():
 
 
 class IFTLibrary:
+    """Wrapper for IFT figure of merit (FOM) library"""
 
     library = CDLL((Path(__file__).parent / "ift.dll").as_posix())
     ift_value_function = library.ift_value
@@ -56,12 +57,42 @@ class IFTLibrary:
     ]
 
     @classmethod
-    def ift_value(
-        cls,
-        samples: Collection[float],
-        sampling_frequency: float,
-        window_length: float,
-    ) -> list[float]:
+    def ift_value(cls, samples: Collection[float], sampling_frequency: float,
+                  window_length: float) -> list[float]:
+        """Calculate the IFT value for the given input
+
+        Preconditions
+        -------------
+
+        Please note, that you have to provide samples for 0.6 seconds or more,
+        i.e. `len(samples) >= 0.6 * sampling_frequency` has to be true
+
+        Arguments
+        ---------
+
+        samples:
+            The sample values for which the IFT value should be calculated
+
+        sampling_frequency:
+            The frequency used to capture the input samples. If you specify a
+            value that is below `200`, then the default frequency of `9524` Hz
+            will be used instead.
+
+        window_length:
+            Possible values are between 0.005 and 1 second. If you
+            specify a value out of this range, then the function will use a
+            default window length of 0.05 seconds (50 ms). This default
+            value will also be used, if the amount of samples for the given
+            window length (=`floor(window_length*sampling_frequency)`) is
+            larger than (or equal to) the sample size.
+
+        Returns
+        -------
+
+        A list containing the calculated IFT values for the given input samples
+
+        """
+
         len_samples = len(samples)
         samples_arg = (c_double * len_samples)(*samples)
         output = (c_double * len_samples)()
