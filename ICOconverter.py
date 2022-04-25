@@ -16,8 +16,10 @@ def get_arguments():
     @return Returns the parameters
     """
     parser = argparse.ArgumentParser(
-        description='This script is used to convert hdf5 into other file types.' +
-        ' For standard the file log.hdf5 in the file order is used and converted into csv.')
+        description='This script is used to convert hdf5 into other file types.'
+        +
+        ' For standard the file log.hdf5 in the file order is used and converted into csv.'
+    )
     parser.add_argument('-i',
                         '--input',
                         metavar='Inputfile',

@@ -174,8 +174,4 @@ def main():
         plt.psd(data[axis] - data[axis].mean(), 512, f_sample, label=axis)
     plt.legend()
 
-    plt.show()
-
-
-if __name__ == "__main__":
-    main()
+ 

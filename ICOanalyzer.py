@@ -29,18 +29,26 @@ def get_arguments(element):
     @return Returns the parameters
     """
     parser = argparse.ArgumentParser(
-        description='This script is used to calculate the occurred packet '
-        + 'loss of an ICOc log data. Additionally it can be used to get '
-        + 'the % of sample points outside of a given range'
-        + ' as long as a min or max is defined via additional '
-        + 'parameters at the script call.')
-    parser.add_argument('-m', '--min', metavar='MIN-Value',
+        description='This script is used to calculate the occurred packet ' +
+        'loss of an ICOc log data. Additionally it can be used to get ' +
+        'the % of sample points outside of a given range' +
+        ' as long as a min or max is defined via additional ' +
+        'parameters at the script call.')
+    parser.add_argument('-m',
+                        '--min',
+                        metavar='MIN-Value',
                         help='Define a Min-Value')
-    parser.add_argument('-v', '--value', metavar='MAX-Value',
+    parser.add_argument('-v',
+                        '--value',
+                        metavar='MAX-Value',
                         help='Define a Max-Value')
-    parser.add_argument('-i', '--input', metavar='Inputfile',
+    parser.add_argument('-i',
+                        '--input',
+                        metavar='Inputfile',
                         help='Chose another input file')
-    parser.add_argument('-d', '--details', action='store_true',
+    parser.add_argument('-d',
+                        '--details',
+                        action='store_true',
                         help='Show more Information about Paketloss')
     args = parser.parse_args()
     details_on = False
@@ -83,16 +91,17 @@ def main():
 
     first_counter = data["counter"][0]
     for datapoint in data["counter"]:
-        if (datapoint == first_counter+1) or (datapoint == 0 and first_counter == 255):
+        if (datapoint == first_counter + 1) or (datapoint == 0
+                                                and first_counter == 255):
             element.packets = element.packets + 1
             first_counter = datapoint
         elif datapoint != first_counter:
-            lost_packets = datapoint-first_counter - 1
+            lost_packets = datapoint - first_counter - 1
             if details_on is True:
                 if lost_packets < 0:
-                    print(str(lost_packets+255+1)+" Packets lost")
+                    print(str(lost_packets + 255 + 1) + " Packets lost")
                 else:
-                    print(str(lost_packets)+" Packets lost")
+                    print(str(lost_packets) + " Packets lost")
             if lost_packets < 0:
                 lost_packets = lost_packets + 255
             first_counter = datapoint
@@ -129,32 +138,26 @@ def main():
                 element.out_of_range3 = element.out_of_range3 + 1
         element.datapoints = element.datapoints + 1
     print("PACKETLOSS:")
-    print(str(round((element.packet_loss / element.packets)*100, 2)) + "%")
+    print(str(round((element.packet_loss / element.packets) * 100, 2)) + "%")
     print("DATAPOINTS:")
     if x_data is not None:
-        percent_overflow = (element.out_of_range /
-                            element.datapoints)*100
+        percent_overflow = (element.out_of_range / element.datapoints) * 100
         percent_overflow = round(percent_overflow, 2)
-        print("X-AXIS: " + str(element.out_of_range) +
-              " Samples were over " + str(test_value_max) +
-              "g or below " + str(test_value_min) +
-              "g ("+str(percent_overflow)+"%)")
+        print("X-AXIS: " + str(element.out_of_range) + " Samples were over " +
+              str(test_value_max) + "g or below " + str(test_value_min) +
+              "g (" + str(percent_overflow) + "%)")
     if y_data is not None:
-        percent_overflow2 = (element.out_of_range2 /
-                             element.datapoints)*100
+        percent_overflow2 = (element.out_of_range2 / element.datapoints) * 100
         percent_overflow2 = round(percent_overflow2, 2)
-        print("Y-AXIS: " + str(element.out_of_range2) +
-              " Samples were over " + str(test_value_max) +
-              "g or below " + str(test_value_min) +
-              "g ("+str(percent_overflow2)+"%)")
+        print("Y-AXIS: " + str(element.out_of_range2) + " Samples were over " +
+              str(test_value_max) + "g or below " + str(test_value_min) +
+              "g (" + str(percent_overflow2) + "%)")
     if z_data is not None:
-        percent_overflow3 = (element.out_of_range3 /
-                             element.datapoints)*100
+        percent_overflow3 = (element.out_of_range3 / element.datapoints) * 100
         percent_overflow3 = round(percent_overflow3, 2)
-        print("Z-AXIS: " + str(element.out_of_range3) +
-              " Samples were over " + str(test_value_max) +
-              "g or below " + str(test_value_min) +
-              "g ("+str(percent_overflow3)+"%)")
+        print("Z-AXIS: " + str(element.out_of_range3) + " Samples were over " +
+              str(test_value_max) + "g or below " + str(test_value_min) +
+              "g (" + str(percent_overflow3) + "%)")
 
 
 if __name__ == "__main__":
