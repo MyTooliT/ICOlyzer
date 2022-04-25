@@ -61,9 +61,9 @@ class IFTLibrary:
 
     @classmethod
     def ift_value(cls,
-                  samples: Collection[float],
-                  sampling_frequency: float,
-                  window_length: float = 0.05) -> list[float]:
+                  samples,
+                  sampling_frequency,
+                  window_length=0.05):
         """Calculate the IFT value for the given input
 
         Preconditions
