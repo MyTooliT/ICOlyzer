@@ -9,6 +9,7 @@ import sys
 
 from ctypes import CDLL, c_double, c_size_t, POINTER
 from pathlib import Path
+from sys import stderr
 from typing import Collection, List
 
 import matplotlib.pyplot as plt
@@ -126,7 +127,19 @@ def main():
     """
     Main function of the ICOplotter
     """
-    log_file = get_arguments()
+    log_file = Path(get_arguments()).resolve()
+
+    error_message = ""
+    if not log_file.exists():
+        error_message = f"“{log_file}” does not exist"
+    elif log_file.is_dir():
+        error_message = f"“{log_file}” is a directory, not an HDF5 file"
+    elif not log_file.is_file():
+        error_message = f"“{log_file}” is not a file"
+    if error_message != "":
+        print(error_message, file=stderr)
+        return
+
     data = pd.read_hdf(log_file, key="acceleration")
     timestamps = data["timestamp"]
     n_points = len(timestamps)
