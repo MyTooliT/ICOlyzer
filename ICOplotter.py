@@ -7,7 +7,6 @@ Created on Mon May 13 17:33:09 2019
 import argparse
 import sys
 
-from collections.abc import Collection
 from ctypes import CDLL, c_double, c_size_t, POINTER
 from pathlib import Path
 
