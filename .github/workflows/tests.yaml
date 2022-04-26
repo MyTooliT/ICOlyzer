@@ -28,8 +28,11 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install flake8
+        pip install flake8 mypy
         pip install -r requirements.txt
 
     - name: Check code with Flake8
       run: flake8
+
+    - name: Check code with mypy
+      run: mypy .
