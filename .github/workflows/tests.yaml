@@ -28,7 +28,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install flake8 mypy
+        pip install flake8 mypy pytest
         pip install -r requirements.txt
 
     - name: Check code with Flake8
@@ -36,3 +36,7 @@ jobs:
 
     - name: Check code with mypy
       run: mypy .
+
+    - name: Test code with pytest
+      run: pytest
+
