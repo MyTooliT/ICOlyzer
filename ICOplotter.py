@@ -174,22 +174,25 @@ def main():
     if not IFTLibrary.available:
         print("Warning: IFT library not available for current architecture",
               file=stderr)
-        return
+        plots = 2
+    else:
+        plots = 3
 
-    plt.subplots(3, 1, figsize=(20, 10))
-    plt.subplot(311)
+    plt.subplots(plots, 1, figsize=(20, 10))
+    plt.subplot(plots, 1, 1)
     for axis in axes:
         plt.plot(timestamps, data[axis], label=axis)
     plt.legend()
 
-    plt.subplot(312)
-    for axis in axes:
-        samples = data[axis]
-        ift_values = IFTLibrary.ift_value(samples, f_sample)
-        plt.plot(timestamps, ift_values, label=axis)
-    plt.legend()
+    plt.subplot(plots, 1, 2)
+    if IFTLibrary.available:
+        for axis in axes:
+            samples = data[axis]
+            ift_values = IFTLibrary.ift_value(samples, f_sample)
+            plt.plot(timestamps, ift_values, label=axis)
+        plt.legend()
+        plt.subplot(plots, 1, 3)
 
-    plt.subplot(313)
     for axis in axes:
         plt.psd(data[axis] - data[axis].mean(), 512, f_sample, label=axis)
     plt.legend()
