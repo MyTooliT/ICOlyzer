@@ -39,39 +39,41 @@ pip install -r requirements.txt
 
 Open the command line in the folder of the scripts. Now you just have to run the script you want with "python SCRIPT-NAME" and maybe some parameter if you don't want to use the standard parameters.
 
-### Using IcoPlotter
+### Using ICOplotter
 
-The IcoPlotter script looks for a `log.hdf5` file in the folder the scripts are as a default. After using the command:
+The ICOplotter script looks for a `log.hdf5` file in the current working directory by default. After using the command:
 
-```
+```sh
 python ICOPlotter.py
 ```
 
-the script will run and after loading the file open the graph of the recording
+the script will load this file and open the graph of the recording
 
 <img src="assets/plotter_image.png" alt="plotter_image" style="zoom:40%;" />
 
-The calculated SNR will be written in the command line.
+The calculated SNR will be written to the standard output.
 
-![plotter_standard](assets/plotter_standard.png)
+```
+SNR of this file is : -106.50 dB and -106.50 dB @ 9.40 kHz
+```
 
-With closing the plotter the script will finish and the command line will be ready for a new command. For running the script with another input-file use the following parameter:
+With closing the plotter the script will finish and the command line will be ready for a new command. For running the script with another input-file use one of the parameters described below.
 
-#### IcoPlotter parameter
+#### IcoPlotter Parameter
 
 ##### -h
 
 This argument calls the help menu of the script instead of running the script.
 
-##### -i
+##### Filepath
 
-With "-i datapath" you can change the to be plotted file.
-
-The datapath is the path to the ICOc-logfile you want to plot and can be given as a relative path or an absolute path.
+To change the HDF filepath from `log.hdf5` in the current working directory, please specify the filepath as positional argument.
 
 Example:
 
-![plotter-i](assets/plotter-i.png)
+```sh
+python ICOplotter.py HDF5/log-x.hdf5
+```
 
 ### Using IcoAnalyzer
 

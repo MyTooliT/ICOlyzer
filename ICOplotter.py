@@ -25,18 +25,14 @@ def get_arguments():
     parser = argparse.ArgumentParser(
         description='This script is used to plot an existing ICOc log-data.' +
         ' For standard the file log.hdf5 in the file order is used.')
-    parser.add_argument('-i',
-                        '--input',
+    parser.add_argument('input',
                         metavar='Inputfile',
-                        help='Chose another input file')
+                        default='log.hdf5',
+                        nargs='?',
+                        help='Input file')
     args = parser.parse_args()
 
-    if args.input is not None:
-        filename = args.input
-        print('INPUTFILE CHANGED')
-    else:
-        filename = 'log.hdf5'
-    return filename
+    return args.input
 
 
 class IFTLibrary:
