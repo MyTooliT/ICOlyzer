@@ -42,19 +42,25 @@ class IFTLibrary:
     class IFTValueException(Exception):
         """Raised if there are any problems with the IFT value calculation"""
 
-    library = CDLL((Path(__file__).parent / "ift.dll").as_posix())
-    ift_value_function = library.ift_value
-    ift_value_function.argtypes = [
-        POINTER(c_double),  # double samples[]
-        c_size_t,  # size_t sample_size
-        c_double,  # double window_length
-        c_double,  # double sampling_frequency
-        c_double,  # A2
-        c_double,  # A3
-        c_double,  # A4
-        c_double,  # A5
-        POINTER(c_double),  # double output[]
-    ]
+    filepath_library = (Path(__file__).parent / "ift.dll").as_posix()
+
+    try:
+        library = CDLL(filepath_library)
+        ift_value_function = library.ift_value
+        ift_value_function.argtypes = [
+            POINTER(c_double),  # double samples[]
+            c_size_t,  # size_t sample_size
+            c_double,  # double window_length
+            c_double,  # double sampling_frequency
+            c_double,  # A2
+            c_double,  # A3
+            c_double,  # A4
+            c_double,  # A5
+            POINTER(c_double),  # double output[]
+        ]
+        available = True
+    except OSError:
+        available = False
 
     @classmethod
     def ift_value(cls,
@@ -164,6 +170,11 @@ def main():
     snr = 20 * np.log10(std_dev / (np.power(2, 16) - 1))
     print(f"SNR of this file is : {min(snr):.2f} dB and {max(snr):.2f} dB "
           f"@ {f_sample / 1000:.2f} kHz")
+
+    if not IFTLibrary.available:
+        print("Warning: IFT library not available for current architecture",
+              file=stderr)
+        return
 
     plt.subplots(3, 1, figsize=(20, 10))
     plt.subplot(311)
