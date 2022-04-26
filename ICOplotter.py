@@ -9,6 +9,7 @@ import sys
 
 from ctypes import CDLL, c_double, c_size_t, POINTER
 from pathlib import Path
+from typing import Collection, List
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -59,7 +60,10 @@ class IFTLibrary:
     ]
 
     @classmethod
-    def ift_value(cls, samples, sampling_frequency, window_length=0.05):
+    def ift_value(cls,
+                  samples: Collection[float],
+                  sampling_frequency: float,
+                  window_length: float = 0.05) -> List[float]:
         """Calculate the IFT value for the given input
 
         Preconditions
