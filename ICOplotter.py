@@ -59,10 +59,7 @@ class IFTLibrary:
     ]
 
     @classmethod
-    def ift_value(cls,
-                  samples,
-                  sampling_frequency,
-                  window_length=0.05):
+    def ift_value(cls, samples, sampling_frequency, window_length=0.05):
         """Calculate the IFT value for the given input
 
         Preconditions
@@ -173,4 +170,8 @@ def main():
         plt.psd(data[axis] - data[axis].mean(), 512, f_sample, label=axis)
     plt.legend()
 
- 
+    plt.show()
+
+
+if __name__ == "__main__":
+    main()
