@@ -1,0 +1,13 @@
+[tool.mypy]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+# Use doctests
+# Fail after first errors
+# Ignore macOS metadata files
+addopts = "--doctest-modules -x --ignore-glob='*._*.py'"
+minversion = "6.0"
+
+[tool.yapfignore]
+# Ignore macOS metadata files
+ignore_patterns = [ "*._*.py" ]
