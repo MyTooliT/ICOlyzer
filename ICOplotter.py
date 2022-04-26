@@ -9,6 +9,7 @@ import sys
 
 from ctypes import CDLL, c_double, c_size_t, POINTER
 from pathlib import Path
+from platform import system
 from sys import stderr
 from typing import Collection, List
 
@@ -42,7 +43,9 @@ class IFTLibrary:
     class IFTValueException(Exception):
         """Raised if there are any problems with the IFT value calculation"""
 
-    filepath_library = (Path(__file__).parent / "ift.dll").as_posix()
+    basename_library = "ift.dll" if system() == "Windows" else "libift.dylib"
+    filepath_library = (Path(__file__).parent / "Library" /
+                        basename_library).as_posix()
 
     try:
         library = CDLL(filepath_library)
