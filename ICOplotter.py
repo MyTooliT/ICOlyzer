@@ -185,6 +185,8 @@ def main():
     plt.subplot(plots, 1, 1)
     for axis in axes:
         plt.plot(timestamps, data[axis], label=axis)
+        plt.xlabel("Time")
+        plt.ylabel("Raw Sensor Data")
     plt.legend()
 
     plt.subplot(plots, 1, 2)
@@ -193,6 +195,8 @@ def main():
             samples = data[axis]
             ift_values = IFTLibrary.ift_value(samples, f_sample)
             plt.plot(timestamps, ift_values, label=axis)
+            plt.xlabel("Time")
+            plt.ylabel("IFT Value")
         plt.legend()
         plt.subplot(plots, 1, 3)
 
