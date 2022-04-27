@@ -43,7 +43,8 @@ class IFTLibrary:
     class IFTValueException(Exception):
         """Raised if there are any problems with the IFT value calculation"""
 
-    basename_library = "ift.dll" if system() == "Windows" else "libift.dylib"
+    basename_library = ("libift.so" if system() == "Linux" else
+                        "libift.dylib" if system() == "Darwin" else "ift.dll")
     filepath_library = (Path(__file__).parent / "Library" /
                         basename_library).as_posix()
 
