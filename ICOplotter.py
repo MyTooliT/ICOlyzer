@@ -7,7 +7,7 @@ Created on Mon May 13 17:33:09 2019
 import argparse
 import sys
 
-from ctypes import CDLL, c_double, c_size_t, POINTER
+from ctypes import CDLL, c_double, c_size_t, POINTER, sizeof
 from pathlib import Path
 from platform import system
 from sys import stderr
@@ -16,6 +16,8 @@ from typing import Collection, List
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd  # Load the Pandas libraries with alias 'pd'
+
+from numpy import array_split
 
 
 def get_arguments():
@@ -117,18 +119,33 @@ class IFTLibrary:
 
         """
 
+        size_t_max = 2**(sizeof(c_size_t) * 8) - 1
         len_samples = len(samples)
-        samples_arg = (c_double * len_samples)(*samples)
-        output = (c_double * len_samples)()
 
-        status = cls.ift_value_function(samples_arg, len_samples,
-                                        window_length, sampling_frequency, 0,
-                                        0, 0, 0, output)
+        # In the unlikely case that we want to retrieve the IFT value for more
+        # than `size_t` values we split the input into equal parts.
+        #
+        # We want large parts (“close” to `size_t`), since otherwise we
+        # might feed with arrays below the minimum size.
+        parts = len_samples // (size_t_max - 1) + 1
 
-        if status != 0:
-            message = "Sample size too "
-            message += "large" if status == -1 else "small"
-            raise IFTLibrary.IFTValueException(message)
+        output = []
+        for samples_part_array in array_split(samples, parts):
+            samples_part = list(samples_part_array)
+            len_samples_part = len(samples_part)
+            samples_arg = (c_double * len_samples_part)(*samples_part)
+            output_part = (c_double * len_samples_part)()
+
+            status = cls.ift_value_function(samples_arg, len_samples_part,
+                                            window_length, sampling_frequency,
+                                            0, 0, 0, 0, output_part)
+
+            if status != 0:
+                message = "Sample size too "
+                message += "large" if status == -1 else "small"
+                raise IFTLibrary.IFTValueException(message)
+
+            output.extend(output_part)
 
         return list(output)
 
