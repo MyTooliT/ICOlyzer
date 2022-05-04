@@ -140,8 +140,8 @@ class IFTLibrary:
         # might feed with arrays below the minimum size.
         parts = len_samples // (size_t_max - 1) + 1
 
-        output = []
-        for samples_part_array in array_split(samples, parts):
+        output: List[float] = []
+        for samples_part_array in array_split(list(samples), parts):
             samples_part = list(samples_part_array)
             len_samples_part = len(samples_part)
             samples_arg = (c_double * len_samples_part)(*samples_part)
