@@ -9,7 +9,7 @@ import sys
 
 from ctypes import CDLL, c_double, c_size_t, POINTER, sizeof
 from pathlib import Path
-from platform import system
+from platform import machine, system
 from sys import stderr
 from typing import Collection, List
 
@@ -208,7 +208,12 @@ def main():
     plt.legend()
 
     plt.subplot(plots, 1, 2)
-    if IFTLibrary.available:
+    if n_points < 0.6 * f_sample:
+        print(
+            "Warning: At least 0.6 seconds of samples required to "
+            "calculate IFT value",
+            file=stderr)
+    elif IFTLibrary.available:
         for axis in axes:
             samples = data[axis]
             ift_values = IFTLibrary.ift_value(samples, f_sample)
@@ -217,6 +222,12 @@ def main():
             plt.ylabel("IFT Value")
         plt.legend()
         plt.subplot(plots, 1, 3)
+    else:
+        print(
+            "Warning: IFT value calculation is not available on your\n"
+            f"• OS: “{system()}” or\n"
+            f"• CPU architecture: “{machine()}”",
+            file=stderr)
 
     for axis in axes:
         plt.psd(data[axis] - data[axis].mean(), 512, f_sample, label=axis)
