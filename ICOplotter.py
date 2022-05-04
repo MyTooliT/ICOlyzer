@@ -108,7 +108,9 @@ class IFTLibrary:
         Example
         -------
 
-        >>> samples = range(1000)
+        Calculate the IFT values for 0.6 seconds of sample data
+
+        >>> samples = range(600)
         >>> values = IFTLibrary.ift_value(samples=samples,
         ...                               sampling_frequency=1000,
         ...                               window_length=0.005)
@@ -116,6 +118,15 @@ class IFTLibrary:
         [3.5, 3.5, ..., 3.5, 3.5]
         >>> len(values) == len(samples)
         True
+
+        Calculating the IFT value for less than 0.6 s of sample data fails
+
+        >>> IFTLibrary.ift_value(
+        ...     samples=range(599), sampling_frequency=1000,
+        ...     window_length=0.005) # doctest: +IGNORE_EXCEPTION_DETAIL
+        Traceback (most recent call last):
+            ...
+        IFTValueException: Sample size too small
 
         """
 
