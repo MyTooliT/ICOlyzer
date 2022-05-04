@@ -21,6 +21,22 @@ jobs:
       - name: Check source and run tests
         uses: ./.github/actions/check-and-test
 
+  macos:
+
+    name: 🍏 macOS
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        python-version:
+          - '3.10'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@master
+
+      - name: Check source and run tests
+        uses: ./.github/actions/check-and-test
+
   windows:
 
     name: 🪟 Windows
