@@ -2,10 +2,6 @@
 
 Contains the ICOtronic tools that can be used on the ICOtronic log files for later analyses of the recorded signals from the ICOc scripts.
 
-## Version
-
-This Readme is written for ICOtools v.1.2.0
-
 ## Tools
 
 ### IcoPlotter
@@ -25,26 +21,34 @@ This Readme is written for ICOtools v.1.2.0
 
 ## Setup Instructions
 
-To use the ICOtools you need to have Python installed.
+### Requirements
 
-To setup the scripts you just need to clone the repository of [ICOtools](https://github.com/MyTooliT/ICOtools).
+- [Python](https://www.python.org)
 
-To install the required libraries please use the following command in the root directory of the repository:
+### Install
+
+Please execute the following command in the root directory of the repository:
 
 ```sh
-pip install -r requirements.txt
+pip install .
 ```
 
-## Using the tools
+### Remove
 
-Open the command line in the folder of the scripts. Now you just have to run the script you want with "python SCRIPT-NAME" and maybe some parameter if you don't want to use the standard parameters.
+```sh
+pip uninstall -y icotools
+```
+
+## Using the Tools
+
+After you installed ICOtools you just have to run the script you want and maybe some parameter if you don’t want to use the standard parameters.
 
 ### Using ICOplotter
 
 The ICOplotter script looks for a `log.hdf5` file in the current working directory by default. After using the command:
 
 ```sh
-python ICOPlotter.py
+icoplotter
 ```
 
 the script will load this file and open the graph of the recording
@@ -72,7 +76,7 @@ To change the HDF filepath from `log.hdf5` in the current working directory, ple
 Example:
 
 ```sh
-python ICOplotter.py HDF5/log-x.hdf5
+icoplotter HDF5/log-x.hdf5
 ```
 
 ### Using IcoAnalyzer
@@ -80,7 +84,7 @@ python ICOplotter.py HDF5/log-x.hdf5
 The IcoAnalyzer script looks for the file `log.hdf5` in the current working directory (usually this will be the root of this repository) by default. After you use the command:
 
 ```
-python ICOAnalyzer.py
+icoanalyzer
 ```
 
 the script will run and analyze `log.hdf5`. The script will then list the packet loss and values outside of the given range (default is -1g and 1g).
@@ -122,7 +126,7 @@ With "-v VALUE" you can change the maximum value for datapoints to be checked. A
 The IcoConverter script looks for the file `log.hdf5` in the current working directory (usually this will be the root of this repository) by default. After you use the command:
 
 ```
-python ICOConverter.py
+icoconverter
 ```
 
 the script will run and analyze `log.hdf5`. The script will then convert the .hdf5 file and create `log.csv` and save it into the same directory. Attention: When there is already an file with the name of the converted .csv it will be overwritten.
@@ -142,7 +146,7 @@ This argument calls the help menu of the script instead of running the script.
 With `inputs` positional parameter you can change the file the script converts.
 
 ```
-python ICOconverter.py ~/Downloads/log.hdf5
+icoconverter ~/Downloads/log.hdf5
 Starting the conversion process
 Converting “/Users/rene/Downloads/log.hdf5” to “/Users/rene/Downloads/log.csv”
 Finished the conversion process
@@ -151,7 +155,7 @@ Finished the conversion process
 This path can be given as a relative or an absolute path. If the given path is a folder the script will convert ALL .hdf5 files inside the given folder.
 
 ```
-python ICOconverter.py ~/Downloads/TEST-LOGS-HDF5
+icoconverter ~/Downloads/TEST-LOGS-HDF5
 Starting the conversion process
 Converting “/Users/rene/Downloads/TEST-LOGS-HDF5/log-z.hdf5” to “/Users/rene/Downloads/TEST-LOGS-HDF5/log-z.csv”
 Converting “/Users/rene/Downloads/TEST-LOGS-HDF5/log-xy.hdf5” to “/Users/rene/Downloads/TEST-LOGS-HDF5/log-xy.csv”
@@ -168,7 +172,7 @@ Finished the conversion process
 With "-e" you can change the format the script converts to to excel sheets. Instead of .csv it now creates .xlsx files.
 
 ```
-python ICOconverter.py ~/Downloads/*.hdf5 -e
+icoconverter ~/Downloads/*.hdf5 -e
 Starting the conversion process
 Starting the conversion of: /Users/rene/Downloads/log.hdf5
 Starting the conversion of: /Users/rene/Downloads/Measurement_2022-03-31_10-20-16.hdf5

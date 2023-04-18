@@ -47,8 +47,7 @@ class IFTLibrary:
 
     basename_library = ("libift.so" if system() == "Linux" else
                         "libift.dylib" if system() == "Darwin" else "ift.dll")
-    filepath_library = (Path(__file__).parent / "Library" /
-                        basename_library).as_posix()
+    filepath_library = (Path(__file__).parent / basename_library).as_posix()
 
     try:
         library = CDLL(filepath_library)

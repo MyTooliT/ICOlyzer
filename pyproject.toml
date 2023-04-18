@@ -1,3 +1,61 @@
+[build-system]
+requires = ["setuptools>=65"]
+build-backend = "setuptools.build_meta"
+
+[project]
+authors = [
+    {name = "Clemens Burgstaller", email = "burgstaller@ift.at"},
+    {name = "Norbert Leder", email = "norbert.leder@mytoolit.com"},
+    {name = "René Schwaiger", email = "rene.schwaiger@ift.at"},
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: Other/Proprietary License",
+    "Natural Language :: English",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python",
+]
+dependencies = [
+  "matplotlib>=3.5.1",
+  "numpy>=1.20",
+  "pandas>=1.3.5",
+  "tables>=3.7.0",
+  "openpyxl",
+]
+description = """Auxiliary set of tools to work with measurement data produced \
+                 by the ICOtronic system"""
+keywords = [
+    "smart-tool",
+    "smh",
+    "stu",
+    "sth",
+    "tool-holder",
+]
+name = "icotools"
+readme = "README.md"
+requires-python = ">=3.7"
+version = "1.2.0"
+
+[project.optional-dependencies]
+dev = [
+    "flake8",
+    "mypy",
+    "toml",
+]
+test = [
+    "pytest",
+]
+
+[project.scripts]
+icoanalyzer = "icotools.ICOanalyzer:main"
+icoconverter = "icotools.ICOconverter:main"
+icoplotter = "icotools.ICOplotter:main"
+
+[project.urls]
+Source = "https://github.com/mytoolit/ICOtools/"
+
 [tool.mypy]
 ignore_missing_imports = true
 
@@ -7,6 +65,9 @@ ignore_missing_imports = true
 # Ignore macOS metadata files
 addopts = "--doctest-modules -x --ignore-glob='*._*.py'"
 minversion = "6.0"
+
+[tool.setuptools.packages.find]
+include = ["icotools*"]
 
 [tool.yapfignore]
 # Ignore macOS metadata files
