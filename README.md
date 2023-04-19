@@ -83,13 +83,22 @@ icoplotter HDF5/log-x.hdf5
 
 The IcoAnalyzer script looks for the file `log.hdf5` in the current working directory (usually this will be the root of this repository) by default. After you use the command:
 
-```
+```sh
 icoanalyzer
 ```
 
 the script will run and analyze `log.hdf5`. The script will then list the packet loss and values outside of the given range (default is -1g and 1g).
 
-![analyzer](assets/analyzer.png)
+```
+> icoanalyzer -i logs.hdf5
+INPUTFILE CHANGED
+Input file is: log.hdf5
+PACKETLOSS:
+0.0%
+DATAPOINTS:
+X-AXIS: 0 Samples were over 1g or below -1g (0.0%)
+Z-AXIS: 8257 Samples were over 1g or below -1g (100.0%)
+```
 
 If you want to change the file the script analyzes or the minimum and maximum values you have to provide some extra parameters. Using multiple parameters is also possible.
 
@@ -103,13 +112,39 @@ This argument calls the help menu of the script instead of running the script.
 
 With "-i FILEPATH" you can change the file the script sees through. This path can be given as a relative or an absolute path.
 
-![analyzer-i](assets/analyzer-i.png)
+```
+> icoanalyzer -i logs/log-xz.hdf5
+INPUTFILE CHANGED
+Input file is: logs/log-xz.hdf5
+PACKETLOSS:
+24.59%
+DATAPOINTS:
+X-AXIS: 106992 Samples were over 1g or below -1g (100.0%)
+Z-AXIS: 106992 Samples were over 1g or below -1g (100.0%)
+```
 
 ##### -d
 
 With "-d" you can activate a more detailed information about the packetloss. Not only will it show the percentage of the file, it will now also show how many packets were lost with each packetloss.
 
-![packetloss_details](assets/packetlossdetails.png)
+```
+> icoanalyzer -d
+DETAILS ENABLED
+Input file is: log.hdf5
+64 Packets lost
+64 Packets lost
+64 Packets lost
+64 Packets lost
+64 Packets lost
+64 Packets lost
+64 Packets lost
+64 Packets lost
+64 Packets lost
+PACKETLOSS:
+0.61%
+DATAPOINTS:
+X-AXIS: 127772 Samples were over 1g or below -1g (45.318)
+```
 
 ##### -m
 
@@ -119,7 +154,16 @@ With "-m VALUE" you can change the minimal value for datapoints to be checked. A
 
 With "-v VALUE" you can change the maximum value for datapoints to be checked. All values above this parameter will be counted as out of the borders.
 
-![analyzer_parameters](assets/analyzer_parameters.png)
+```
+> icoanalyzer -m -0.42 -v 2.55
+MINIMUM CHANGED
+MAXIMUM CHANGED
+Input file is: log.hdf5
+PACKETLOSS:
+0.61%
+DATAPOINTS:
+X-AXIS: 269420 Samples were over 2.55g or below -0.42g (95.53%)
+```
 
 ### Using IcoConverter
 
