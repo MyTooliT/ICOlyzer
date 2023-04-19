@@ -7,6 +7,7 @@ authors = [
     {name = "Clemens Burgstaller", email = "burgstaller@ift.at"},
     {name = "Norbert Leder", email = "norbert.leder@mytoolit.com"},
     {name = "René Schwaiger", email = "rene.schwaiger@ift.at"},
+    {name = "Thomas  Hirschbüchler", email = "hirschbuechler@ift.at"},
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
