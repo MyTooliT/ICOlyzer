@@ -7,7 +7,7 @@ import argparse
 import pandas as pd
 
 
-class FileInformation():
+class FileInformation:
     """
     This class contains the information about the to be analyzed log-file.
     """
@@ -29,46 +29,46 @@ def get_arguments(element):
     @return Returns the parameters
     """
     parser = argparse.ArgumentParser(
-        description='This script is used to calculate the occurred packet ' +
-        'loss of an ICOc log data. Additionally it can be used to get ' +
-        'the % of sample points outside of a given range' +
-        ' as long as a min or max is defined via additional ' +
-        'parameters at the script call.')
-    parser.add_argument('-m',
-                        '--min',
-                        metavar='MIN-Value',
-                        help='Define a Min-Value')
-    parser.add_argument('-v',
-                        '--value',
-                        metavar='MAX-Value',
-                        help='Define a Max-Value')
-    parser.add_argument('-i',
-                        '--input',
-                        metavar='Inputfile',
-                        help='Chose another input file')
-    parser.add_argument('-d',
-                        '--details',
-                        action='store_true',
-                        help='Show more Information about Paketloss')
+        description="This script is used to calculate the occurred packet "
+        + "loss of an ICOc log data. Additionally it can be used to get "
+        + "the % of sample points outside of a given range"
+        + " as long as a min or max is defined via additional "
+        + "parameters at the script call."
+    )
+    parser.add_argument(
+        "-m", "--min", metavar="MIN-Value", help="Define a Min-Value"
+    )
+    parser.add_argument(
+        "-v", "--value", metavar="MAX-Value", help="Define a Max-Value"
+    )
+    parser.add_argument(
+        "-i", "--input", metavar="Inputfile", help="Chose another input file"
+    )
+    parser.add_argument(
+        "-d",
+        "--details",
+        action="store_true",
+        help="Show more Information about Paketloss",
+    )
     args = parser.parse_args()
     details_on = False
 
     if args.min is not None:
         test_value_min = float(args.min)
-        print('MINIMUM CHANGED')
+        print("MINIMUM CHANGED")
     else:
         test_value_min = -1
     if args.value is not None:
         test_value_max = float(args.value)
-        print('MAXIMUM CHANGED')
+        print("MAXIMUM CHANGED")
     else:
         test_value_max = 1
     if args.input is not None:
         element.filename = args.input
-        print('INPUTFILE CHANGED')
+        print("INPUTFILE CHANGED")
     if args.details is True:
         details_on = True
-        print('DETAILS ENABLED')
+        print("DETAILS ENABLED")
     else:
         details_on = False
     return element, test_value_min, test_value_max, details_on
@@ -81,18 +81,20 @@ def main():
     details_on = False
     test_value_max = 1
     test_value_min = -1
-    element = FileInformation('log.hdf5')
+    element = FileInformation("log.hdf5")
 
     element, test_value_min, test_value_max, details_on = get_arguments(
-        element)
+        element
+    )
 
-    print('Input file is: ' + element.filename)
+    print("Input file is: " + element.filename)
     data = pd.read_hdf(element.filename, key="acceleration")
 
     first_counter = data["counter"][0]
     for datapoint in data["counter"]:
-        if (datapoint == first_counter + 1) or (datapoint == 0
-                                                and first_counter == 255):
+        if (datapoint == first_counter + 1) or (
+            datapoint == 0 and first_counter == 255
+        ):
             element.packets = element.packets + 1
             first_counter = datapoint
         elif datapoint != first_counter:
@@ -143,21 +145,45 @@ def main():
     if x_data is not None:
         percent_overflow = (element.out_of_range / element.datapoints) * 100
         percent_overflow = round(percent_overflow, 2)
-        print("X-AXIS: " + str(element.out_of_range) + " Samples were over " +
-              str(test_value_max) + "g or below " + str(test_value_min) +
-              "g (" + str(percent_overflow) + "%)")
+        print(
+            "X-AXIS: "
+            + str(element.out_of_range)
+            + " Samples were over "
+            + str(test_value_max)
+            + "g or below "
+            + str(test_value_min)
+            + "g ("
+            + str(percent_overflow)
+            + "%)"
+        )
     if y_data is not None:
         percent_overflow2 = (element.out_of_range2 / element.datapoints) * 100
         percent_overflow2 = round(percent_overflow2, 2)
-        print("Y-AXIS: " + str(element.out_of_range2) + " Samples were over " +
-              str(test_value_max) + "g or below " + str(test_value_min) +
-              "g (" + str(percent_overflow2) + "%)")
+        print(
+            "Y-AXIS: "
+            + str(element.out_of_range2)
+            + " Samples were over "
+            + str(test_value_max)
+            + "g or below "
+            + str(test_value_min)
+            + "g ("
+            + str(percent_overflow2)
+            + "%)"
+        )
     if z_data is not None:
         percent_overflow3 = (element.out_of_range3 / element.datapoints) * 100
         percent_overflow3 = round(percent_overflow3, 2)
-        print("Z-AXIS: " + str(element.out_of_range3) + " Samples were over " +
-              str(test_value_max) + "g or below " + str(test_value_min) +
-              "g (" + str(percent_overflow3) + "%)")
+        print(
+            "Z-AXIS: "
+            + str(element.out_of_range3)
+            + " Samples were over "
+            + str(test_value_max)
+            + "g or below "
+            + str(test_value_min)
+            + "g ("
+            + str(percent_overflow3)
+            + "%)"
+        )
 
 
 if __name__ == "__main__":

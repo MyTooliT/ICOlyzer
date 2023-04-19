@@ -56,6 +56,10 @@ icoplotter = "icotools.ICOplotter:main"
 [project.urls]
 Source = "https://github.com/mytoolit/ICOtools/"
 
+[tool.black]
+line-length = 79
+preview = true
+
 [tool.mypy]
 ignore_missing_imports = true
 

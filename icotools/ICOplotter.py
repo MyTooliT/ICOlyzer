@@ -27,13 +27,16 @@ def get_arguments():
     @return Returns the parameters
     """
     parser = argparse.ArgumentParser(
-        description='This script is used to plot an existing ICOc log-data.' +
-        ' For standard the file log.hdf5 in the file order is used.')
-    parser.add_argument('input',
-                        metavar='Inputfile',
-                        default='log.hdf5',
-                        nargs='?',
-                        help='Input file')
+        description="This script is used to plot an existing ICOc log-data."
+        + " For standard the file log.hdf5 in the file order is used."
+    )
+    parser.add_argument(
+        "input",
+        metavar="Inputfile",
+        default="log.hdf5",
+        nargs="?",
+        help="Input file",
+    )
     args = parser.parse_args()
 
     return args.input
@@ -45,8 +48,11 @@ class IFTLibrary:
     class IFTValueException(Exception):
         """Raised if there are any problems with the IFT value calculation"""
 
-    basename_library = ("libift.so" if system() == "Linux" else
-                        "libift.dylib" if system() == "Darwin" else "ift.dll")
+    basename_library = (
+        "libift.so"
+        if system() == "Linux"
+        else "libift.dylib" if system() == "Darwin" else "ift.dll"
+    )
     filepath_library = (Path(__file__).parent / basename_library).as_posix()
 
     try:
@@ -68,10 +74,12 @@ class IFTLibrary:
         available = False
 
     @classmethod
-    def ift_value(cls,
-                  samples: Collection[float],
-                  sampling_frequency: float,
-                  window_length: float = 0.05) -> List[float]:
+    def ift_value(
+        cls,
+        samples: Collection[float],
+        sampling_frequency: float,
+        window_length: float = 0.05,
+    ) -> List[float]:
         """Calculate the IFT value for the given input
 
         Preconditions
@@ -129,7 +137,7 @@ class IFTLibrary:
 
         """
 
-        size_t_max = 2**(sizeof(c_size_t) * 8) - 1
+        size_t_max = 2 ** (sizeof(c_size_t) * 8) - 1
         len_samples = len(samples)
 
         # In the unlikely case that we want to retrieve the IFT value for more
@@ -146,9 +154,17 @@ class IFTLibrary:
             samples_arg = (c_double * len_samples_part)(*samples_part)
             output_part = (c_double * len_samples_part)()
 
-            status = cls.ift_value_function(samples_arg, len_samples_part,
-                                            window_length, sampling_frequency,
-                                            0, 0, 0, 0, output_part)
+            status = cls.ift_value_function(
+                samples_arg,
+                len_samples_part,
+                window_length,
+                sampling_frequency,
+                0,
+                0,
+                0,
+                0,
+                output_part,
+            )
 
             if status != 0:
                 message = "Sample size too "
@@ -181,30 +197,41 @@ def main():
     timestamps = data["timestamp"]
     n_points = len(timestamps)
 
-    f_sample = n_points / \
-        (timestamps.iloc[n_points-1]-timestamps.iloc[0])*1000000
+    f_sample = (
+        n_points
+        / (timestamps.iloc[n_points - 1] - timestamps.iloc[0])
+        * 1000000
+    )
     stats = data.describe()
 
-    axes = [axis for axis in ('x', 'y', 'z') if data.get(axis) is not None]
+    axes = [axis for axis in ("x", "y", "z") if data.get(axis) is not None]
     nr_of_axis = len(axes)
 
     if nr_of_axis <= 0:
         print("Error: No axis data available", file=sys.stderr)
         sys.exit(1)
 
-    print(" ".join([
-        f"Avg {axis.upper()}: {int(stats.loc['mean', [axis]])}"
-        for axis in axes
-    ]))
+    print(
+        " ".join(
+            [
+                f"Avg {axis.upper()}: {int(stats.loc['mean', [axis]])}"
+                for axis in axes
+            ]
+        )
+    )
 
-    std_dev = stats.loc['std', axes]
+    std_dev = stats.loc["std", axes]
     snr = 20 * np.log10(std_dev / (np.power(2, 16) - 1))
-    print(f"SNR of this file is : {min(snr):.2f} dB and {max(snr):.2f} dB "
-          f"@ {f_sample / 1000:.2f} kHz")
+    print(
+        f"SNR of this file is : {min(snr):.2f} dB and {max(snr):.2f} dB "
+        f"@ {f_sample / 1000:.2f} kHz"
+    )
 
     if not IFTLibrary.available:
-        print("Warning: IFT library not available for current architecture",
-              file=stderr)
+        print(
+            "Warning: IFT library not available for current architecture",
+            file=stderr,
+        )
         plots = 2
     else:
         plots = 3
@@ -220,9 +247,12 @@ def main():
     plt.subplot(plots, 1, 2)
     if n_points < 0.6 * f_sample:
         print(
-            "Warning: At least 0.6 seconds of samples required to "
-            "calculate IFT value",
-            file=stderr)
+            (
+                "Warning: At least 0.6 seconds of samples required to "
+                "calculate IFT value"
+            ),
+            file=stderr,
+        )
     elif IFTLibrary.available:
         for axis in axes:
             samples = data[axis]
@@ -234,10 +264,13 @@ def main():
         plt.subplot(plots, 1, 3)
     else:
         print(
-            "Warning: IFT value calculation is not available on your\n"
-            f"• OS: “{system()}” or\n"
-            f"• CPU architecture: “{machine()}”",
-            file=stderr)
+            (
+                "Warning: IFT value calculation is not available on your\n"
+                f"• OS: “{system()}” or\n"
+                f"• CPU architecture: “{machine()}”"
+            ),
+            file=stderr,
+        )
 
     for axis in axes:
         plt.psd(data[axis] - data[axis].mean(), 512, f_sample, label=axis)
