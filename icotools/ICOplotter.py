@@ -214,7 +214,7 @@ def main():
     print(
         " ".join(
             [
-                f"Avg {axis.upper()}: {int(stats.loc['mean', [axis]])}"
+                f"Avg {axis.upper()}: {int(stats.loc['mean'][axis])}"
                 for axis in axes
             ]
         )
