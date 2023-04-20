@@ -1,23 +1,22 @@
 # ICOtools
 
-Contains the ICOtronic tools that can be used on the ICOtronic log files for later analyses of the recorded signals from the ICOc scripts.
+Auxiliary set of tools to analyze data from the [ICOtronic system](https://github.com/MyTooliT/ICOc)
 
-## Tools
+## IcoPlotter
 
-### IcoPlotter
+- Measures signal to noise ratio (SNR) value of a measurement
+- Opens a plotter window visualizing the recorded signal
+- Plots the power spectral density graph for the recorded signal
+- Prints the IFT value of the signal
 
-- Measures a SNR value of the recording
-- Opens a plotter with the recorded signal
-- Plots the Power Spectral Density Graph for the recorded signal
+## IcoAnalyzer
 
-### IcoAnalyzer
+- Measures packet-loss of the recorded signal
+- Measures how many datapoints are outside of a given minimum and maximum value
 
-- Measures packetloss of the recorded signal
-- Measures how many datapoints are outside of a given maximum and minimum
+## IcoConverter
 
-### IcoConverter
-
-- Converts the recorded .hdf5 files into .csv or .xlsx files
+- Converts HDF5 measurement files (`.hdf5`) into `.csv` (Comma-Separated Values) or `.xlsx` (Excel) files
 
 ## Setup Instructions
 
