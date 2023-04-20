@@ -90,7 +90,7 @@ icoanalyzer
 the script will run and analyze `log.hdf5`. The script will then list the packet loss and values outside of the given range (default is -1g and 1g).
 
 ```
-> icoanalyzer -i logs.hdf5
+> icoanalyzer
 INPUTFILE CHANGED
 Input file is: log.hdf5
 PACKETLOSS:
@@ -108,12 +108,12 @@ If you want to change the file the script analyzes or the minimum and maximum va
 
 This argument calls the help menu of the script instead of running the script.
 
-##### -i
+##### Filepath
 
-With "-i FILEPATH" you can change the file the script sees through. This path can be given as a relative or an absolute path.
+With the `input` positional parameter you can change the file the script analyzes:
 
 ```
-> icoanalyzer -i logs/log-xz.hdf5
+> icoanalyzer logs/log-xz.hdf5
 INPUTFILE CHANGED
 Input file is: logs/log-xz.hdf5
 PACKETLOSS:
