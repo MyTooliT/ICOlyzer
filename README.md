@@ -167,7 +167,7 @@ X-AXIS: 269420 Samples were over 2.55g or below -0.42g (95.53%)
 
 ### Using IcoConverter
 
-The IcoConverter script looks for the file `log.hdf5` in the current working directory (usually this will be the root of this repository) by default. After you use the command:
+The IcoConverter script looks for the file `log.hdf5` in the current working directory by default. After you use the command:
 
 ```
 icoconverter
@@ -175,7 +175,12 @@ icoconverter
 
 the script will run and analyze `log.hdf5`. The script will then convert the .hdf5 file and create `log.csv` and save it into the same directory. Attention: When there is already an file with the name of the converted .csv it will be overwritten.
 
-![IcoConverter](assets/IcoConverter.png)
+```
+> icoconverter
+Starting the conversion process
+Converting “log.hdf5” to “log.csv”
+Finished the conversion process
+```
 
 If you want to change the file the script converts or the format it should convert to you have to provide some extra parameters. Using multiple parameters is also possible.
 
