@@ -5,9 +5,10 @@ Created on Wed Mar 30 08:54:27 2022
 """
 import argparse
 import glob
-import pandas as pd
 from pathlib import Path
 from sys import stderr
+
+import pandas as pd
 
 
 def get_arguments():
@@ -28,7 +29,7 @@ def get_arguments():
         metavar="Inputfiles",
         default=["log.hdf5"],
         nargs="*",
-        help="Chosen input files",
+        help="Chosen input files (default: log.hdf5)",
     )
     parser.add_argument(
         "-e",
