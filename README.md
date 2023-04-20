@@ -192,7 +192,7 @@ This argument calls the help menu of the script instead of running the script.
 
 ##### Filepath
 
-With `inputs` positional parameter you can change the file the script converts.
+With the `inputs` positional parameter you can change the file the script converts.
 
 ```
 icoconverter ~/Downloads/log.hdf5
