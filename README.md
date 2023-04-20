@@ -27,10 +27,10 @@ Contains the ICOtronic tools that can be used on the ICOtronic log files for lat
 
 ### Install
 
-Please execute the following command in the root directory of the repository:
+Please execute the following command:
 
 ```sh
-pip install .
+pip install pip@git+https://github.com/mytoolit/ICOtools
 ```
 
 ### Remove
