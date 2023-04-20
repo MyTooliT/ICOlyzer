@@ -3,7 +3,10 @@ Created on Fri Mar 27 08:16:22 2020
 
 @author: Clemens
 """
+
+
 import argparse
+from argparse import ArgumentDefaultsHelpFormatter
 import pandas as pd
 
 
@@ -22,7 +25,7 @@ class FileInformation:
         self.out_of_range3 = 0
 
 
-def get_arguments(element):
+def get_arguments():
     """
     Returns the given Function Parameters off the script-call
 
@@ -33,16 +36,30 @@ def get_arguments(element):
         + "loss of an ICOc log data. Additionally it can be used to get "
         + "the % of sample points outside of a given range"
         + " as long as a min or max is defined via additional "
-        + "parameters at the script call."
+        + "parameters at the script call.",
+        formatter_class=ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
-        "-m", "--min", metavar="MIN-Value", help="Define a Min-Value"
+        "-m",
+        "--min",
+        default=-1,
+        type=float,
+        metavar="MIN-Value",
+        help="Define a Min-Value",
     )
     parser.add_argument(
-        "-v", "--value", metavar="MAX-Value", help="Define a Max-Value"
+        "-v",
+        "--max",
+        default=1,
+        type=float,
+        metavar="MAX-Value",
+        help="Define a Max-Value",
     )
     parser.add_argument(
-        "-i", "--input", metavar="Inputfile", help="Chose another input file"
+        "input",
+        default="log.hdf5",
+        nargs="?",
+        help="measurement data in HDF5 format",
     )
     parser.add_argument(
         "-d",
@@ -51,27 +68,20 @@ def get_arguments(element):
         help="Show more Information about Paketloss",
     )
     args = parser.parse_args()
-    details_on = False
 
-    if args.min is not None:
-        test_value_min = float(args.min)
+    if args.min != -1:
         print("MINIMUM CHANGED")
-    else:
-        test_value_min = -1
-    if args.value is not None:
-        test_value_max = float(args.value)
+
+    if args.max != 1:
         print("MAXIMUM CHANGED")
-    else:
-        test_value_max = 1
-    if args.input is not None:
-        element.filename = args.input
+
+    if args.input != "log.hdf5":
         print("INPUTFILE CHANGED")
+
     if args.details is True:
-        details_on = True
         print("DETAILS ENABLED")
-    else:
-        details_on = False
-    return element, test_value_min, test_value_max, details_on
+
+    return args.input, args.min, args.max, args.details
 
 
 def main():
@@ -81,11 +91,9 @@ def main():
     details_on = False
     test_value_max = 1
     test_value_min = -1
-    element = FileInformation("log.hdf5")
 
-    element, test_value_min, test_value_max, details_on = get_arguments(
-        element
-    )
+    filepath, test_value_min, test_value_max, details_on = get_arguments()
+    element = FileInformation(filepath)
 
     print("Input file is: " + element.filename)
     data = pd.read_hdf(element.filename, key="acceleration")
