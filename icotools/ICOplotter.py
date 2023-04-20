@@ -7,6 +7,7 @@ Created on Mon May 13 17:33:09 2019
 import argparse
 import sys
 
+from argparse import ArgumentDefaultsHelpFormatter
 from ctypes import CDLL, c_double, c_size_t, POINTER, sizeof
 from pathlib import Path
 from platform import machine, system
@@ -27,15 +28,14 @@ def get_arguments():
     @return Returns the parameters
     """
     parser = argparse.ArgumentParser(
-        description="This script is used to plot an existing ICOc log-data."
-        + " For standard the file log.hdf5 in the file order is used."
+        description="Visualizes ICOc measurement data in HDF5 format",
+        formatter_class=ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
         "input",
-        metavar="Inputfile",
         default="log.hdf5",
         nargs="?",
-        help="Input file",
+        help="measurement data in HDF5 format",
     )
     args = parser.parse_args()
 
