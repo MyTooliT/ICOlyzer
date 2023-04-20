@@ -30,7 +30,7 @@ Contains the ICOtronic tools that can be used on the ICOtronic log files for lat
 Please execute the following command:
 
 ```sh
-pip install pip@git+https://github.com/mytoolit/ICOtools
+pip install git+https://github.com/mytoolit/ICOtools
 ```
 
 ### Remove
