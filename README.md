@@ -1,6 +1,10 @@
 # ICOtools
 
-Auxiliary set of tools to analyze data from the [ICOtronic system](https://github.com/MyTooliT/ICOc)
+Auxiliary set of tools to analyze data from the [ICOtronic system](https://github.com/MyTooliT/ICOc):
+
+- [ICOplotter](#readme:section:icoplotter): Visualize data and calculate signal to noise ratio
+- [ICOanalyzer](#readme:section:icoanalyzer): Measures packet loss
+- [ICOconverter](#readme:section:icoconverter): Convert HDF5 measurement files into other formats
 
 ## Requirements
 
@@ -21,6 +25,8 @@ pip install --upgrade git+https://github.com/mytoolit/ICOtools
 ```sh
 pip uninstall -y icotools
 ```
+
+<a name="readme:section:icoplotter"></a>
 
 ## ICOplotter
 
@@ -64,6 +70,8 @@ Example:
 ```sh
 icoplotter HDF5/log-x.hdf5
 ```
+
+<a name="readme:section:icoanalyzer"></a>
 
 ## ICOanalyzer
 
@@ -155,6 +163,8 @@ PACKETLOSS:
 DATAPOINTS:
 X-AXIS: 269420 Samples were over 2.55g or below -0.42g (95.53%)
 ```
+
+<a name="readme:section:icoconverter"></a>
 
 ## ICOconverter
 
