@@ -22,7 +22,7 @@ pip install --upgrade git+https://github.com/mytoolit/ICOtools
 pip uninstall -y icotools
 ```
 
-## IcoPlotter
+## ICOplotter
 
 - Measures signal to noise ratio (SNR) value of a measurement
 - Opens a plotter window visualizing the recorded signal
@@ -49,7 +49,7 @@ SNR of this file is : -106.50 dB and -106.50 dB @ 9.40 kHz
 
 With closing the plotter the script will finish and the command line will be ready for a new command. For running the script with another input-file use one of the parameters described below.
 
-#### IcoPlotter Parameter
+#### ICOplotter Parameter
 
 ##### -h
 
@@ -65,14 +65,14 @@ Example:
 icoplotter HDF5/log-x.hdf5
 ```
 
-## IcoAnalyzer
+## ICOanalyzer
 
 - Measures packet-loss of the recorded signal
 - Measures how many datapoints are outside of a given minimum and maximum value
 
-### Using IcoAnalyzer
+### Using ICOanalyzer
 
-The IcoAnalyzer script looks for the file `log.hdf5` in the current working directory (usually this will be the root of this repository) by default. After you use the command:
+The ICOanalyzer script looks for the file `log.hdf5` in the current working directory (usually this will be the root of this repository) by default. After you use the command:
 
 ```sh
 icoanalyzer
@@ -93,7 +93,7 @@ Z-AXIS: 8257 Samples were over 1g or below -1g (100.0%)
 
 If you want to change the file the script analyzes or the minimum and maximum values you have to provide some extra parameters. Using multiple parameters is also possible.
 
-#### IcoAnalyzer parameter
+#### ICOanalyzer parameter
 
 ##### -h
 
@@ -156,13 +156,13 @@ DATAPOINTS:
 X-AXIS: 269420 Samples were over 2.55g or below -0.42g (95.53%)
 ```
 
-## IcoConverter
+## ICOconverter
 
 - Converts HDF5 measurement files (`.hdf5`) into `.csv` (Comma-Separated Values) or `.xlsx` (Excel) files
 
-### Using IcoConverter
+### Using ICOconverter
 
-The IcoConverter script looks for the file `log.hdf5` in the current working directory by default. After you use the command:
+The ICOconverter script looks for the file `log.hdf5` in the current working directory by default. After you use the command:
 
 ```
 icoconverter
@@ -179,7 +179,7 @@ Finished the conversion process
 
 If you want to change the file the script converts or the format it should convert to you have to provide some extra parameters. Using multiple parameters is also possible.
 
-#### IcoConverter parameter
+#### ICOconverter parameter
 
 ##### -h
 
