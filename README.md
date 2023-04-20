@@ -2,27 +2,11 @@
 
 Auxiliary set of tools to analyze data from the [ICOtronic system](https://github.com/MyTooliT/ICOc)
 
-## IcoPlotter
-
-- Measures signal to noise ratio (SNR) value of a measurement
-- Opens a plotter window visualizing the recorded signal
-- Plots the power spectral density graph for the recorded signal
-- Prints the IFT value of the signal
-
-## IcoAnalyzer
-
-- Measures packet-loss of the recorded signal
-- Measures how many datapoints are outside of a given minimum and maximum value
-
-## IcoConverter
-
-- Converts HDF5 measurement files (`.hdf5`) into `.csv` (Comma-Separated Values) or `.xlsx` (Excel) files
-
-## Setup Instructions
-
-### Requirements
+## Requirements
 
 - [Python](https://www.python.org)
+
+## Setup Instructions
 
 ### Install
 
@@ -38,9 +22,12 @@ pip install --upgrade git+https://github.com/mytoolit/ICOtools
 pip uninstall -y icotools
 ```
 
-## Using the Tools
+## IcoPlotter
 
-After you installed ICOtools you just have to run the script you want and maybe some parameter if you don’t want to use the standard parameters.
+- Measures signal to noise ratio (SNR) value of a measurement
+- Opens a plotter window visualizing the recorded signal
+- Plots the power spectral density graph for the recorded signal
+- Prints the IFT value of the signal
 
 ### Using ICOplotter
 
@@ -77,6 +64,11 @@ Example:
 ```sh
 icoplotter HDF5/log-x.hdf5
 ```
+
+## IcoAnalyzer
+
+- Measures packet-loss of the recorded signal
+- Measures how many datapoints are outside of a given minimum and maximum value
 
 ### Using IcoAnalyzer
 
@@ -163,6 +155,10 @@ PACKETLOSS:
 DATAPOINTS:
 X-AXIS: 269420 Samples were over 2.55g or below -0.42g (95.53%)
 ```
+
+## IcoConverter
+
+- Converts HDF5 measurement files (`.hdf5`) into `.csv` (Comma-Separated Values) or `.xlsx` (Excel) files
 
 ### Using IcoConverter
 
