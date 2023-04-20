@@ -53,7 +53,7 @@ icoplotter
 
 the script will load this file and open the graph of the recording
 
-<img src="assets/plotter_image.png" alt="plotter_image" style="zoom:40%;" />
+<img src="assets/Plotter.webp" alt="Plotter" style="zoom:40%;" />
 
 The calculated SNR will be written to the standard output.
 
