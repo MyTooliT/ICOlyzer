@@ -35,7 +35,7 @@ pip uninstall -y icotools
 - Plots the power spectral density graph for the recorded signal
 - Prints the IFT value of the signal
 
-### Using ICOplotter
+### Usage
 
 The ICOplotter script looks for a `log.hdf5` file in the current working directory by default. After using the command:
 
@@ -55,9 +55,9 @@ SNR of this file is : -106.50 dB and -106.50 dB @ 9.40 kHz
 
 With closing the plotter the script will finish and the command line will be ready for a new command. For running the script with another input-file use one of the parameters described below.
 
-#### ICOplotter Parameter
+#### Parameters
 
-##### -h
+##### `-h`
 
 This argument calls the help menu of the script instead of running the script.
 
@@ -78,7 +78,7 @@ icoplotter HDF5/log-x.hdf5
 - Measures packet-loss of the recorded signal
 - Measures how many datapoints are outside of a given minimum and maximum value
 
-### Using ICOanalyzer
+### Usage
 
 The ICOanalyzer script looks for the file `log.hdf5` in the current working directory (usually this will be the root of this repository) by default. After you use the command:
 
@@ -101,9 +101,9 @@ Z-AXIS: 8257 Samples were over 1g or below -1g (100.0%)
 
 If you want to change the file the script analyzes or the minimum and maximum values you have to provide some extra parameters. Using multiple parameters is also possible.
 
-#### ICOanalyzer parameter
+#### Parameters
 
-##### -h
+##### `-h`, `--help`
 
 This argument calls the help menu of the script instead of running the script.
 
@@ -122,7 +122,7 @@ X-AXIS: 106992 Samples were over 1g or below -1g (100.0%)
 Z-AXIS: 106992 Samples were over 1g or below -1g (100.0%)
 ```
 
-##### -d
+##### `-d`, `--details`
 
 With "-d" you can activate a more detailed information about the packetloss. Not only will it show the percentage of the file, it will now also show how many packets were lost with each packetloss.
 
@@ -145,11 +145,11 @@ DATAPOINTS:
 X-AXIS: 127772 Samples were over 1g or below -1g (45.318)
 ```
 
-##### -m
+##### `-m`, `--min`
 
 With "-m VALUE" you can change the minimal value for datapoints to be checked. All values below this parameter will be counted as out of the borders.
 
-##### -v
+##### `-v`, `--max`
 
 With "-v VALUE" you can change the maximum value for datapoints to be checked. All values above this parameter will be counted as out of the borders.
 
@@ -170,7 +170,7 @@ X-AXIS: 269420 Samples were over 2.55g or below -0.42g (95.53%)
 
 - Converts HDF5 measurement files (`.hdf5`) into `.csv` (Comma-Separated Values) or `.xlsx` (Excel) files
 
-### Using ICOconverter
+### Usage
 
 The ICOconverter script looks for the file `log.hdf5` in the current working directory by default. After you use the command:
 
@@ -189,9 +189,9 @@ Finished the conversion process
 
 If you want to change the file the script converts or the format it should convert to you have to provide some extra parameters. Using multiple parameters is also possible.
 
-#### ICOconverter parameter
+#### Parameters
 
-##### -h
+##### `-h`, `--help`
 
 This argument calls the help menu of the script instead of running the script.
 
@@ -221,7 +221,7 @@ Converting “/Users/rene/Downloads/TEST-LOGS-HDF5/log-y.hdf5” to “/Users/re
 Finished the conversion process
 ```
 
-##### -e
+##### `-e`, `--excel`
 
 With "-e" you can change the format the script converts to to excel sheets. Instead of .csv it now creates .xlsx files.
 
