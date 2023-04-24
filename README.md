@@ -122,6 +122,12 @@ X-AXIS: 106992 Samples were over 1g or below -1g (100.0%)
 Z-AXIS: 106992 Samples were over 1g or below -1g (100.0%)
 ```
 
+The tool also supports multiple input files. For example, if you want to analyze all `.hdf5` files in the current directory, then you can use the following command:
+
+```sh
+icoanalyzer *.hdf5
+```
+
 ##### `-d`, `--details`
 
 With "-d" you can activate a more detailed information about the packetloss. Not only will it show the percentage of the file, it will now also show how many packets were lost with each packetloss.
