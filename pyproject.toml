@@ -50,9 +50,9 @@ test = [
 ]
 
 [project.scripts]
-icoanalyzer = "icotools.ICOanalyzer:main"
-icoconverter = "icotools.ICOconverter:main"
-icoplotter = "icotools.ICOplotter:main"
+icoanalyzer = "icotools.analyzer:main"
+icoconverter = "icotools.converter:main"
+icoplotter = "icotools.plotter:main"
 
 [project.urls]
 Source = "https://github.com/mytoolit/ICOtools/"
