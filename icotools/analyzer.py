@@ -6,7 +6,6 @@ Created on Fri Mar 27 08:16:22 2020
 
 
 import argparse
-from argparse import ArgumentDefaultsHelpFormatter
 import pandas as pd
 
 
@@ -37,7 +36,6 @@ def get_arguments():
         + "the % of sample points outside of a given range"
         + " as long as a min or max is defined via additional "
         + "parameters at the script call.",
-        formatter_class=ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
         "-m",
@@ -45,7 +43,7 @@ def get_arguments():
         default=-1,
         type=float,
         metavar="MIN-Value",
-        help="Define a Min-Value",
+        help="Define a Min-Value (default: -1)",
     )
     parser.add_argument(
         "-v",
@@ -53,7 +51,7 @@ def get_arguments():
         default=1,
         type=float,
         metavar="MAX-Value",
-        help="Define a Max-Value",
+        help="Define a Max-Value (default: 1)",
     )
     parser.add_argument(
         "inputs",
@@ -66,7 +64,7 @@ def get_arguments():
         "-d",
         "--details",
         action="store_true",
-        help="Show more Information about Paketloss",
+        help="Show more Information about Paketloss (default: false)",
     )
     args = parser.parse_args()
 
