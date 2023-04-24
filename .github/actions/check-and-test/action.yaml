@@ -14,15 +14,11 @@ runs:
         pip install .[dev,test]
       shell: bash
 
-    - name: Check code with Flake8
-      run: flake8
+    - name: Check code
+      run: make check
       shell: bash
 
-    - name: Check code with mypy
-      run: mypy icotools
-      shell: bash
-
-    - name: Test code with pytest
-      run: pytest
+    - name: Test code
+      run: make test
       shell: bash
 
