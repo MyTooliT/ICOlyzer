@@ -46,6 +46,7 @@ dev = [
     "toml",
 ]
 test = [
+    "prysk>=0.13.1",
     "pytest",
 ]
 
