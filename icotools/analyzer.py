@@ -88,9 +88,7 @@ def main():
 
         first_counter = data["counter"][0]
         for datapoint in data["counter"]:
-            if (datapoint == first_counter + 1) or (
-                datapoint == 0 and first_counter == 255
-            ):
+            if datapoint == (first_counter + 1) % 256:
                 element.packets = element.packets + 1
                 first_counter = datapoint
             elif datapoint != first_counter:
