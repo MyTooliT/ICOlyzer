@@ -88,16 +88,18 @@ def main():
 
         first_counter = data["counter"][0]
         for datapoint in data["counter"]:
-            if datapoint == (first_counter + 1) % 256:
-                element.packets = element.packets + 1
-                first_counter = datapoint
-            elif datapoint != first_counter:
-                lost_packets = (datapoint - first_counter) % 256 - 1
-                if details_on is True:
-                    print(f"{lost_packets} Packets lost")
-                first_counter = datapoint
-                element.packets = element.packets + lost_packets + 1
-                element.packet_loss = element.packet_loss + lost_packets
+            if datapoint == first_counter:
+                continue  # Skip packages with same counter value
+
+            lost_packets = (datapoint - first_counter) % 256 - 1
+            element.packets = element.packets + lost_packets + 1
+            element.packet_loss = element.packet_loss + lost_packets
+
+            if lost_packets != 0 and details_on is True:
+                print(f"{lost_packets} Packets lost")
+
+            first_counter = datapoint
+
         x_data = None
         y_data = None
         z_data = None
