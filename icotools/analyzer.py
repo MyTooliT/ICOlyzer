@@ -92,14 +92,9 @@ def main():
                 element.packets = element.packets + 1
                 first_counter = datapoint
             elif datapoint != first_counter:
-                lost_packets = datapoint - first_counter - 1
+                lost_packets = (datapoint - first_counter) % 256 - 1
                 if details_on is True:
-                    if lost_packets < 0:
-                        print(str(lost_packets + 255 + 1) + " Packets lost")
-                    else:
-                        print(str(lost_packets) + " Packets lost")
-                if lost_packets < 0:
-                    lost_packets = lost_packets + 255
+                    print(f"{lost_packets} Packets lost")
                 first_counter = datapoint
                 element.packets = element.packets + lost_packets + 1
                 element.packet_loss = element.packet_loss + lost_packets
