@@ -72,9 +72,6 @@ def main():
     """
     Main function of the ICOanalyzer.
     """
-    details_on = False
-    test_value_max = 1
-    test_value_min = -1
 
     filepaths, test_value_min, test_value_max, details_on = get_arguments()
 
