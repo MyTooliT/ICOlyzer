@@ -15,7 +15,6 @@ class FileInformation:
     """
 
     def __init__(self, filename):
-        self.packet_loss = 0
         self.packets = 0
 
 
@@ -79,13 +78,14 @@ def main():
         data = pd.read_hdf(filepath, key="acceleration")
 
         last_counter = data["counter"][0]
+        packet_loss = 0
         for counter in data["counter"]:
             if counter == last_counter:
                 continue  # Skip packages with same counter value
 
             lost_packets = (counter - last_counter) % 256 - 1
             element.packets = element.packets + lost_packets + 1
-            element.packet_loss = element.packet_loss + lost_packets
+            packet_loss += lost_packets
 
             if lost_packets != 0 and details_on is True:
                 print(f"{lost_packets} Packets lost")
@@ -102,7 +102,7 @@ def main():
                     out_of_range[axis] += 1
 
         print("PACKETLOSS:")
-        packet_loss = round((element.packet_loss / element.packets) * 100, 2)
+        packet_loss = round((packet_loss / element.packets) * 100, 2)
 
         print(f"{packet_loss}%")
         print("DATAPOINTS:")
