@@ -100,21 +100,9 @@ def main():
 
             first_counter = datapoint
 
-        x_data = None
-        y_data = None
-        z_data = None
-        try:
-            x_data = data["x"]
-        except KeyError:
-            pass
-        try:
-            y_data = data["y"]
-        except KeyError:
-            pass
-        try:
-            z_data = data["z"]
-        except KeyError:
-            pass
+        x_data = data.get("x")
+        y_data = data.get("y")
+        z_data = data.get("z")
 
         while element.datapoints < len(data["timestamp"]):
             if x_data is not None:
