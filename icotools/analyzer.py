@@ -10,6 +10,7 @@ from pathlib import Path
 from sys import stderr
 
 import pandas as pd
+from tables import open_file
 
 
 def get_arguments():
@@ -123,6 +124,11 @@ def main():
                 f"Samples were over {test_value_max}g or below "
                 f"{test_value_min}g ({percent_overflow}%)"
             )
+
+        with open_file(filepath, mode="r") as file:
+            start_time = file.get_node("/acceleration").attrs["Start_Time"]
+
+        print(f"Measurement Date: {start_time}")
 
         if len(data["timestamp"]) >= 2:
             # Accessing last element via `-1` raises `KeyError`
