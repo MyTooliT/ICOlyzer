@@ -11,6 +11,9 @@ Analyze example file
   0.61%
   DATAPOINTS:
   X-AXIS: 127772 Samples were over 1g or below -1g (45.31%)
+  Runtime: 30.0 seconds
+
+# Test detailed output
 
   $ icoanalyzer -d examples/log-x.hdf5
   Input file is: examples/log-x.hdf5
@@ -27,3 +30,4 @@ Analyze example file
   0.61%
   DATAPOINTS:
   X-AXIS: 127772 Samples were over 1g or below -1g (45.31%)
+  Runtime: 30.0 seconds
