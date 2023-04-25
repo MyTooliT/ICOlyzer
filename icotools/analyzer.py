@@ -73,19 +73,27 @@ def main():
         data = pd.read_hdf(filepath, key="acceleration")
 
         last_counter = data["counter"][0]
+        last_timestamp = data["timestamp"][0]
         packet_loss = 0
         packets = 0
-        for counter in data["counter"]:
+        for counter, timestamp in zip(data["counter"], data["timestamp"]):
             if counter == last_counter:
                 continue  # Skip packages with same counter value
 
             lost_packets = (counter - last_counter) % 256 - 1
             if lost_packets != 0 and details_on is True:
-                print(f"{lost_packets} Packets lost")
+                loss_timestamp_s = last_timestamp / 1_000_000
+                loss_duration_ms = (timestamp - last_timestamp) / 100
+                print(
+                    f"{lost_packets:3} Packets lost after "
+                    f"{loss_timestamp_s:6.3f} seconds - No values for "
+                    f"{loss_duration_ms:3.0f} milliseconds"
+                )
 
             packet_loss += lost_packets
             packets += lost_packets + 1
 
+            last_timestamp = timestamp
             last_counter = counter
 
         out_of_range = {"x": 0, "y": 0, "z": 0}
