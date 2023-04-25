@@ -94,12 +94,9 @@ def main():
 
             last_counter = counter
 
-        x_data = data.get("x")
-        y_data = data.get("y")
-        z_data = data.get("z")
-
         out_of_range = {"x": 0, "y": 0, "z": 0}
-        for axis, acceleration_values in zip("xyz", (x_data, y_data, z_data)):
+        for axis in "xyz":
+            acceleration_values = data.get(axis)
             if acceleration_values is None:
                 continue
             element.datapoints = len(acceleration_values)
@@ -112,7 +109,8 @@ def main():
             str(round((element.packet_loss / element.packets) * 100, 2)) + "%"
         )
         print("DATAPOINTS:")
-        for axis, acceleration_values in zip("xyz", (x_data, y_data, z_data)):
+        for axis in "xyz":
+            acceleration_values = data.get(axis)
             if acceleration_values is None:
                 continue
 
