@@ -104,20 +104,19 @@ def main():
         y_data = data.get("y")
         z_data = data.get("z")
 
-        while element.datapoints < len(data["timestamp"]):
-            if x_data is not None:
-                acc_data = x_data[element.datapoints]
-                if acc_data > test_value_max or acc_data < test_value_min:
-                    element.out_of_range = element.out_of_range + 1
-            if y_data is not None:
-                acc_data2 = y_data[element.datapoints]
-                if acc_data2 > test_value_max or acc_data2 < test_value_min:
-                    element.out_of_range2 = element.out_of_range2 + 1
-            if z_data is not None:
-                acc_data3 = z_data[element.datapoints]
-                if acc_data3 > test_value_max or acc_data3 < test_value_min:
-                    element.out_of_range3 = element.out_of_range3 + 1
-            element.datapoints = element.datapoints + 1
+        out_of_range = {"x": 0, "y": 0, "z": 0}
+        for axis, acceleration_values in zip("xyz", (x_data, y_data, z_data)):
+            if acceleration_values is None:
+                continue
+            element.datapoints = len(acceleration_values)
+            for datapoint in acceleration_values:
+                if datapoint > test_value_max or datapoint < test_value_min:
+                    out_of_range[axis] += 1
+
+        element.out_of_range += out_of_range["x"]
+        element.out_of_range2 += out_of_range["y"]
+        element.out_of_range3 += out_of_range["z"]
+
         print("PACKETLOSS:")
         print(
             str(round((element.packet_loss / element.packets) * 100, 2)) + "%"
