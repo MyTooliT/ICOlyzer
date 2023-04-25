@@ -90,11 +90,11 @@ the script will run and analyze `log.hdf5`. The script will then list the packet
 
 ```
 Input: log.hdf5
-Packet Loss: 24.67%
+Packet Loss: 0.61%
 Data Points:
-  X-Axis: 106992 Samples were over 1g or below -1g (100.0%)
-  Z-Axis: 106992 Samples were over 1g or below -1g (100.0%)
-Runtime: 30.0 seconds
+  X-Axis: 127772 Samples were over 1g or below -1g (45.31%)
+Measurement Date: 2021-12-20T11:00:21.489537
+Runtime: 29.996 seconds
 ```
 
 If you want to change the file the script analyzes or the minimum and maximum values you have to provide some extra parameters. Using multiple parameters is also possible.
@@ -121,7 +121,8 @@ Packet Loss: 24.67%
 Data Points:
   X-Axis: 106992 Samples were over 1g or below -1g (100.0%)
   Z-Axis: 106992 Samples were over 1g or below -1g (100.0%)
-Runtime: 30.0 seconds
+Measurement Date: 2022-01-03T07:52:29.573573
+Runtime: 29.993 seconds
 ```
 
 The tool also supports multiple input files. For example, if you want to analyze all `.hdf5` files in the current directory, then you can use the following command:
@@ -132,26 +133,33 @@ icoanalyzer *.hdf5
 
 ##### `-d`, `--details`
 
-With "-d" you can activate a more detailed information about the packetloss. Not only will it show the percentage of the file, it will now also show how many packets were lost with each packetloss.
+With `-d`:
+
+```sh
+icoanalyzer -d
+```
+
+you can activate a more detailed information about the packet loss:
 
 ```
-> icoanalyzer -d
-DETAILS ENABLED
-Input file is: log.hdf5
-64 Packets lost
-64 Packets lost
-64 Packets lost
-64 Packets lost
-64 Packets lost
-64 Packets lost
-64 Packets lost
-64 Packets lost
-64 Packets lost
-PACKETLOSS:
-0.61%
-DATAPOINTS:
-X-AXIS: 127772 Samples were over 1g or below -1g (45.318)
+Input: log.hdf5
+ 64 Packets lost after  2.979 seconds - No values for   3 milliseconds
+ 64 Packets lost after  3.274 seconds - No values for   3 milliseconds
+ 64 Packets lost after  7.089 seconds - No values for   3 milliseconds
+ 64 Packets lost after 11.192 seconds - No values for   3 milliseconds
+ 64 Packets lost after 16.931 seconds - No values for   3 milliseconds
+ 64 Packets lost after 22.149 seconds - No values for   3 milliseconds
+ 64 Packets lost after 22.782 seconds - No values for   2 milliseconds
+ 64 Packets lost after 25.781 seconds - No values for   3 milliseconds
+ 64 Packets lost after 29.623 seconds - No values for   2 milliseconds
+Packet Loss: 0.61%
+Data Points:
+  X-Axis: 127772 Samples were over 1g or below -1g (45.31%)
+Measurement Date: 2021-12-20T11:00:21.489537
+Runtime: 29.996 seconds
 ```
+
+Not only will it show the percentage of data loss for the file, it will now also show how many packets were lost in each packet loss event.
 
 ##### `-m`, `--min`
 
