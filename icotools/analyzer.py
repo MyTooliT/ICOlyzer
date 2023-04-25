@@ -122,53 +122,16 @@ def main():
             str(round((element.packet_loss / element.packets) * 100, 2)) + "%"
         )
         print("DATAPOINTS:")
-        if x_data is not None:
-            percent_overflow = (
-                element.out_of_range / element.datapoints
-            ) * 100
+        for axis, acceleration_values in zip("xyz", (x_data, y_data, z_data)):
+            if acceleration_values is None:
+                continue
+
+            percent_overflow = (out_of_range[axis] / element.datapoints) * 100
             percent_overflow = round(percent_overflow, 2)
             print(
-                "X-AXIS: "
-                + str(element.out_of_range)
-                + " Samples were over "
-                + str(test_value_max)
-                + "g or below "
-                + str(test_value_min)
-                + "g ("
-                + str(percent_overflow)
-                + "%)"
-            )
-        if y_data is not None:
-            percent_overflow2 = (
-                element.out_of_range2 / element.datapoints
-            ) * 100
-            percent_overflow2 = round(percent_overflow2, 2)
-            print(
-                "Y-AXIS: "
-                + str(element.out_of_range2)
-                + " Samples were over "
-                + str(test_value_max)
-                + "g or below "
-                + str(test_value_min)
-                + "g ("
-                + str(percent_overflow2)
-                + "%)"
-            )
-        if z_data is not None:
-            percent_overflow3 = (
-                element.out_of_range3 / element.datapoints
-            ) * 100
-            percent_overflow3 = round(percent_overflow3, 2)
-            print(
-                "Z-AXIS: "
-                + str(element.out_of_range3)
-                + " Samples were over "
-                + str(test_value_max)
-                + "g or below "
-                + str(test_value_min)
-                + "g ("
-                + str(percent_overflow3)
-                + "%)"
+                f"{axis.upper()}-AXIS: {out_of_range[axis]} "
+                f"Samples were over {test_value_max}g or below "
+                f"{test_value_min}g ({percent_overflow}%)"
             )
 
         if len(data["timestamp"]) >= 2:
