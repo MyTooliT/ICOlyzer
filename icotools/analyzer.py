@@ -83,19 +83,19 @@ def main():
         print("Input file is: " + element.filename)
         data = pd.read_hdf(element.filename, key="acceleration")
 
-        first_counter = data["counter"][0]
-        for datapoint in data["counter"]:
-            if datapoint == first_counter:
+        last_counter = data["counter"][0]
+        for counter in data["counter"]:
+            if counter == last_counter:
                 continue  # Skip packages with same counter value
 
-            lost_packets = (datapoint - first_counter) % 256 - 1
+            lost_packets = (counter - last_counter) % 256 - 1
             element.packets = element.packets + lost_packets + 1
             element.packet_loss = element.packet_loss + lost_packets
 
             if lost_packets != 0 and details_on is True:
                 print(f"{lost_packets} Packets lost")
 
-            first_counter = datapoint
+            last_counter = counter
 
         x_data = data.get("x")
         y_data = data.get("y")
