@@ -18,7 +18,6 @@ class FileInformation:
         self.filename = filename
         self.packet_loss = 0
         self.packets = 0
-        self.datapoints = 0
 
 
 def get_arguments():
@@ -99,23 +98,23 @@ def main():
             acceleration_values = data.get(axis)
             if acceleration_values is None:
                 continue
-            element.datapoints = len(acceleration_values)
             for datapoint in acceleration_values:
                 if datapoint > test_value_max or datapoint < test_value_min:
                     out_of_range[axis] += 1
 
         print("PACKETLOSS:")
-        print(
-            str(round((element.packet_loss / element.packets) * 100, 2)) + "%"
-        )
+        packet_loss = round((element.packet_loss / element.packets) * 100, 2)
+
+        print(f"{packet_loss}%")
         print("DATAPOINTS:")
         for axis in "xyz":
             acceleration_values = data.get(axis)
             if acceleration_values is None:
                 continue
 
-            percent_overflow = (out_of_range[axis] / element.datapoints) * 100
-            percent_overflow = round(percent_overflow, 2)
+            percent_overflow = round(
+                (out_of_range[axis] / len(acceleration_values)) * 100, 2
+            )
             print(
                 f"{axis.upper()}-AXIS: {out_of_range[axis]} "
                 f"Samples were over {test_value_max}g or below "
