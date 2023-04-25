@@ -64,7 +64,7 @@ def main():
     filepaths, test_value_min, test_value_max, details_on = get_arguments()
 
     for filepath in filepaths:
-        print(f"Input file is: {filepath}")
+        print(f"Input: {filepath}")
         data = pd.read_hdf(filepath, key="acceleration")
 
         last_counter = data["counter"][0]
@@ -92,11 +92,10 @@ def main():
                 if datapoint > test_value_max or datapoint < test_value_min:
                     out_of_range[axis] += 1
 
-        print("PACKETLOSS:")
         packet_loss = round((packet_loss / packets) * 100, 2)
+        print(f"Packet Loss: {packet_loss}%")
 
-        print(f"{packet_loss}%")
-        print("DATAPOINTS:")
+        print("Data Points:")
         for axis in "xyz":
             acceleration_values = data.get(axis)
             if acceleration_values is None:
@@ -106,7 +105,7 @@ def main():
                 (out_of_range[axis] / len(acceleration_values)) * 100, 2
             )
             print(
-                f"{axis.upper()}-AXIS: {out_of_range[axis]} "
+                f"{axis.upper()}-Axis: {out_of_range[axis]} "
                 f"Samples were over {test_value_max}g or below "
                 f"{test_value_min}g ({percent_overflow}%)"
             )

@@ -86,17 +86,15 @@ The ICOanalyzer script looks for the file `log.hdf5` in the current working dire
 icoanalyzer
 ```
 
-the script will run and analyze `log.hdf5`. The script will then list the packet loss and values outside of the given range (default is -1g and 1g).
+the script will run and analyze `log.hdf5`. The script will then list the packet loss and values outside of the given range (default is -1g and 1g):
 
 ```
-> icoanalyzer
-INPUTFILE CHANGED
-Input file is: log.hdf5
-PACKETLOSS:
-0.0%
-DATAPOINTS:
-X-AXIS: 0 Samples were over 1g or below -1g (0.0%)
-Z-AXIS: 8257 Samples were over 1g or below -1g (100.0%)
+Input: log.hdf5
+Packet Loss: 24.67%
+Data Points:
+X-Axis: 106992 Samples were over 1g or below -1g (100.0%)
+Z-Axis: 106992 Samples were over 1g or below -1g (100.0%)
+Runtime: 30.0 seconds
 ```
 
 If you want to change the file the script analyzes or the minimum and maximum values you have to provide some extra parameters. Using multiple parameters is also possible.
@@ -109,17 +107,21 @@ This argument calls the help menu of the script instead of running the script.
 
 ##### Filepath
 
-With the `input` positional parameter you can change the file the script analyzes:
+With the `input` positional parameter:
+
+```sh
+icoanalyzer examples/log-xz.hdf5
+```
+
+you can change the file the script analyzes:
 
 ```
-> icoanalyzer logs/log-xz.hdf5
-INPUTFILE CHANGED
-Input file is: logs/log-xz.hdf5
-PACKETLOSS:
-24.59%
-DATAPOINTS:
-X-AXIS: 106992 Samples were over 1g or below -1g (100.0%)
-Z-AXIS: 106992 Samples were over 1g or below -1g (100.0%)
+Input: examples/log-xz.hdf5
+Packet Loss: 24.67%
+Data Points:
+X-Axis: 106992 Samples were over 1g or below -1g (100.0%)
+Z-Axis: 106992 Samples were over 1g or below -1g (100.0%)
+Runtime: 30.0 seconds
 ```
 
 The tool also supports multiple input files. For example, if you want to analyze all `.hdf5` files in the current directory, then you can use the following command:
