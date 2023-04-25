@@ -104,8 +104,9 @@ def main():
             percent_overflow = round(
                 (out_of_range[axis] / len(acceleration_values)) * 100, 2
             )
+            indent = " " * 2
             print(
-                f"{axis.upper()}-Axis: {out_of_range[axis]} "
+                f"{indent}{axis.upper()}-Axis: {out_of_range[axis]} "
                 f"Samples were over {test_value_max}g or below "
                 f"{test_value_min}g ({percent_overflow}%)"
             )

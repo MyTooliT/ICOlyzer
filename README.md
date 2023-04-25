@@ -92,8 +92,8 @@ the script will run and analyze `log.hdf5`. The script will then list the packet
 Input: log.hdf5
 Packet Loss: 24.67%
 Data Points:
-X-Axis: 106992 Samples were over 1g or below -1g (100.0%)
-Z-Axis: 106992 Samples were over 1g or below -1g (100.0%)
+  X-Axis: 106992 Samples were over 1g or below -1g (100.0%)
+  Z-Axis: 106992 Samples were over 1g or below -1g (100.0%)
 Runtime: 30.0 seconds
 ```
 
@@ -119,8 +119,8 @@ you can change the file the script analyzes:
 Input: examples/log-xz.hdf5
 Packet Loss: 24.67%
 Data Points:
-X-Axis: 106992 Samples were over 1g or below -1g (100.0%)
-Z-Axis: 106992 Samples were over 1g or below -1g (100.0%)
+  X-Axis: 106992 Samples were over 1g or below -1g (100.0%)
+  Z-Axis: 106992 Samples were over 1g or below -1g (100.0%)
 Runtime: 30.0 seconds
 ```
 
