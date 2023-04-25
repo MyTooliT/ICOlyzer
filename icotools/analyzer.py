@@ -18,28 +18,26 @@ def get_arguments():
 
     @return Returns the parameters
     """
+
     parser = argparse.ArgumentParser(
-        description="This script is used to calculate the occurred packet "
-        + "loss of an ICOc log data. Additionally it can be used to get "
-        + "the % of sample points outside of a given range"
-        + " as long as a min or max is defined via additional "
-        + "parameters at the script call.",
+        description=(
+            "Calculate packet loss, values outside of given range, and "
+            "runtime for HDF5 input files"
+        )
     )
     parser.add_argument(
         "-m",
         "--min",
         default=-1,
         type=float,
-        metavar="MIN-Value",
-        help="Define a Min-Value (default: -1)",
+        help="minimum value for data range (default: -1)",
     )
     parser.add_argument(
         "-v",
         "--max",
         default=1,
         type=float,
-        metavar="MAX-Value",
-        help="Define a Max-Value (default: 1)",
+        help="maximum value for data range (default: 1)",
     )
     parser.add_argument(
         "inputs",
@@ -52,7 +50,7 @@ def get_arguments():
         "-d",
         "--details",
         action="store_true",
-        help="Show more Information about Paketloss (default: false)",
+        help="Show additional information about paket loss (default: false)",
     )
     args = parser.parse_args()
 
