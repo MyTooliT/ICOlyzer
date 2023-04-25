@@ -15,7 +15,6 @@ class FileInformation:
     """
 
     def __init__(self, filename):
-        self.filename = filename
         self.packet_loss = 0
         self.packets = 0
 
@@ -76,8 +75,8 @@ def main():
 
     for filepath in filepaths:
         element = FileInformation(filepath)
-        print("Input file is: " + element.filename)
-        data = pd.read_hdf(element.filename, key="acceleration")
+        print(f"Input file is: {filepath}")
+        data = pd.read_hdf(filepath, key="acceleration")
 
         last_counter = data["counter"][0]
         for counter in data["counter"]:
