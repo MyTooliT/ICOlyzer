@@ -116,22 +116,18 @@ def main():
         except KeyError:
             pass
 
-        while (element.datapoints) < (len(data["timestamp"])):
+        while element.datapoints < len(data["timestamp"]):
             if x_data is not None:
                 acc_data = x_data[element.datapoints]
-                if (acc_data > test_value_max) or (acc_data < test_value_min):
+                if acc_data > test_value_max or acc_data < test_value_min:
                     element.out_of_range = element.out_of_range + 1
             if y_data is not None:
                 acc_data2 = y_data[element.datapoints]
-                if (acc_data2 > test_value_max) or (
-                    acc_data2 < test_value_min
-                ):
+                if acc_data2 > test_value_max or acc_data2 < test_value_min:
                     element.out_of_range2 = element.out_of_range2 + 1
             if z_data is not None:
                 acc_data3 = z_data[element.datapoints]
-                if (acc_data3 > test_value_max) or (
-                    acc_data3 < test_value_min
-                ):
+                if acc_data3 > test_value_max or acc_data3 < test_value_min:
                     element.out_of_range3 = element.out_of_range3 + 1
             element.datapoints = element.datapoints + 1
         print("PACKETLOSS:")
