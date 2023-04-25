@@ -6,6 +6,9 @@ Created on Fri Mar 27 08:16:22 2020
 
 
 import argparse
+from pathlib import Path
+from sys import stderr
+
 import pandas as pd
 
 
@@ -65,6 +68,10 @@ def main():
 
     for filepath in filepaths:
         print(f"Input: {filepath}")
+        if not Path(filepath).exists():
+            print(f"Skipping non-existent file “{filepath}”", file=stderr)
+            continue
+
         data = pd.read_hdf(filepath, key="acceleration")
 
         last_counter = data["counter"][0]
