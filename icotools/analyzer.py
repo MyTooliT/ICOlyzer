@@ -9,15 +9,6 @@ import argparse
 import pandas as pd
 
 
-class FileInformation:
-    """
-    This class contains the information about the to be analyzed log-file.
-    """
-
-    def __init__(self, filename):
-        self.packets = 0
-
-
 def get_arguments():
     """
     Returns the given Function Parameters off the script-call
@@ -73,22 +64,22 @@ def main():
     filepaths, test_value_min, test_value_max, details_on = get_arguments()
 
     for filepath in filepaths:
-        element = FileInformation(filepath)
         print(f"Input file is: {filepath}")
         data = pd.read_hdf(filepath, key="acceleration")
 
         last_counter = data["counter"][0]
         packet_loss = 0
+        packets = 0
         for counter in data["counter"]:
             if counter == last_counter:
                 continue  # Skip packages with same counter value
 
             lost_packets = (counter - last_counter) % 256 - 1
-            element.packets = element.packets + lost_packets + 1
-            packet_loss += lost_packets
-
             if lost_packets != 0 and details_on is True:
                 print(f"{lost_packets} Packets lost")
+
+            packet_loss += lost_packets
+            packets += lost_packets + 1
 
             last_counter = counter
 
@@ -102,7 +93,7 @@ def main():
                     out_of_range[axis] += 1
 
         print("PACKETLOSS:")
-        packet_loss = round((packet_loss / element.packets) * 100, 2)
+        packet_loss = round((packet_loss / packets) * 100, 2)
 
         print(f"{packet_loss}%")
         print("DATAPOINTS:")
