@@ -10,7 +10,7 @@ Analyze example file
   Packet Loss: 0.61%
   Data Points:
     X-Axis: 127772 Samples were over 1g or below -1g (45.31%)
-  Runtime: 30.0 seconds
+  Runtime: 29.996 seconds
 
 Test detailed output
 
@@ -28,7 +28,7 @@ Test detailed output
   Packet Loss: 0.61%
   Data Points:
     X-Axis: 127772 Samples were over 1g or below -1g (45.31%)
-  Runtime: 30.0 seconds
+  Runtime: 29.996 seconds
 
 Test data file containing data for multiple axes
 
@@ -39,4 +39,4 @@ Test data file containing data for multiple axes
     X-Axis: 94564 Samples were over 1g or below -1g (99.79%)
     Y-Axis: 94767 Samples were over 1g or below -1g (100.0%)
     Z-Axis: 94767 Samples were over 1g or below -1g (100.0%)
-  Runtime: 30.0 seconds
+  Runtime: 29.991 seconds

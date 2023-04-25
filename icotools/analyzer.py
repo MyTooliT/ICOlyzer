@@ -127,7 +127,7 @@ def main():
         if len(data["timestamp"]) >= 2:
             # Accessing last element via `-1` raises `KeyError`
             runtime = data["timestamp"][len(data["timestamp"]) - 1] / 1_000_000
-            print(f"Runtime: {runtime:.3} seconds")
+            print(f"Runtime: {runtime:.3f} seconds")
 
 
 if __name__ == "__main__":
