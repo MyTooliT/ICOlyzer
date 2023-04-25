@@ -19,9 +19,6 @@ class FileInformation:
         self.packet_loss = 0
         self.packets = 0
         self.datapoints = 0
-        self.out_of_range = 0
-        self.out_of_range2 = 0
-        self.out_of_range3 = 0
 
 
 def get_arguments():
@@ -112,10 +109,6 @@ def main():
             for datapoint in acceleration_values:
                 if datapoint > test_value_max or datapoint < test_value_min:
                     out_of_range[axis] += 1
-
-        element.out_of_range += out_of_range["x"]
-        element.out_of_range2 += out_of_range["y"]
-        element.out_of_range3 += out_of_range["z"]
 
         print("PACKETLOSS:")
         print(
