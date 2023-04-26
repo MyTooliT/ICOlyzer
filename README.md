@@ -77,6 +77,7 @@ icoplotter HDF5/log-x.hdf5
 
 - Measures packet-loss of the recorded signal
 - Measures how many datapoints are outside of a given minimum and maximum value
+- Prints warnings about long durations (more than 1 second) between consecutive timestamps
 
 ### Usage
 

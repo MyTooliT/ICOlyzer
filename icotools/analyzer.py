@@ -82,13 +82,25 @@ def main():
                 continue  # Skip packages with same counter value
 
             lost_packets = (counter - last_counter) % 256 - 1
+            duration_last_packet_ms = (timestamp - last_timestamp) / 100
+            loss_timestamp_s = last_timestamp / 1_000_000
+
+            if duration_last_packet_ms > 1000:
+                duration_last_packet_s = duration_last_packet_ms / 1000
+                print(
+                    (
+                        "No measurement data for "
+                        f"{duration_last_packet_s:.3f} seconds after "
+                        f"{loss_timestamp_s} seconds"
+                    ),
+                    file=stderr,
+                )
+
             if lost_packets != 0 and details_on is True:
-                loss_timestamp_s = last_timestamp / 1_000_000
-                loss_duration_ms = (timestamp - last_timestamp) / 100
                 print(
                     f"{lost_packets:3} Packets lost after "
                     f"{loss_timestamp_s:6.3f} seconds - No values for "
-                    f"{loss_duration_ms:3.0f} milliseconds"
+                    f"{duration_last_packet_ms:3.0f} milliseconds"
                 )
 
             packet_loss += lost_packets
