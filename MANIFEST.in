@@ -1,3 +1,0 @@
-global-include ift.dll
-global-include libift.dylib
-global-include libift.so

@@ -75,6 +75,9 @@ minversion = "6.0"
 [tool.setuptools.packages.find]
 include = ["icotools*"]
 
+[tool.setuptools.package-data]
+"ift.lib" = ["*.dll", "*.dylib","*.so"]
+
 [tool.yapfignore]
 # Ignore macOS metadata files
 ignore_patterns = [ "*._*.py" ]
