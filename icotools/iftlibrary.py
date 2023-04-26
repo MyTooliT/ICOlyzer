@@ -58,8 +58,10 @@ class IFTLibrary:
                 c_double,  # A5
                 POINTER(c_double),  # double output[]
             ]
-        except OSError:
-            exception = IFTLibraryNotAvailable("Unable to load IFT library")
+        except OSError as error:
+            exception = IFTLibraryNotAvailable(
+                f"Unable to load IFT library: {error}"
+            )
 
     @classmethod
     def ift_value(
