@@ -57,9 +57,9 @@ With closing the plotter the script will finish and the command line will be rea
 
 #### Parameters
 
-##### `-h`
+##### `-h`, `--help`
 
-This argument calls the help menu of the script instead of running the script.
+Prints the help menu of the command
 
 ##### Filepath
 
@@ -70,6 +70,10 @@ Example:
 ```sh
 icoplotter HDF5/log-x.hdf5
 ```
+
+##### `-p`, `--print`
+
+Store the plotter output as PDF file instead of displaying it on the screen. The output is stored in the same location as the the input file with the extension `.pdf`.
 
 <a name="readme:section:icoanalyzer"></a>
 

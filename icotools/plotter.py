@@ -14,6 +14,7 @@ from sys import stderr
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd  # Load the Pandas libraries with alias 'pd'
+from matplotlib.backends.backend_pdf import PdfPages
 
 from .iftlibrary import IFTLibrary, IFTLibraryException
 
@@ -34,16 +35,23 @@ def get_arguments():
         nargs="?",
         help="measurement data in HDF5 format",
     )
-    args = parser.parse_args()
+    parser.add_argument(
+        "-p",
+        "--print",
+        action="store_true",
+        help="store graphical output as PDF file",
+    )
 
-    return args.input
+    return parser.parse_args()
 
 
 def main():
     """
     Main function of the ICOplotter
     """
-    log_file = Path(get_arguments()).resolve()
+
+    args = get_arguments()
+    log_file = Path(args.input)
 
     error_message = ""
     if not log_file.exists():
@@ -122,7 +130,14 @@ def main():
         plt.psd(data[axis] - data[axis].mean(), 512, f_sample, label=axis)
     plt.legend()
 
-    plt.show()
+    if args.print:
+        output_filepath = log_file.with_suffix(".pdf")
+        pdf = PdfPages(output_filepath)
+        pdf.savefig()
+        pdf.close()
+        print(f"Stored plotter output in “{output_filepath}”")
+    else:
+        plt.show()
 
 
 if __name__ == "__main__":
