@@ -30,31 +30,36 @@ class IFTLibrary:
         "Darwin": {"arm64": "libift.dylib", "x86_64": "libift.dylib"},
         "Windows": {"AMD64": "ift.dll"},
     }
+    exception = None
+
     try:
         basename_library = system_machine_to_lib[system()][machine()]
-    except KeyError as error:
-        raise IFTLibraryNotAvailable(
+    except KeyError:
+        exception = IFTLibraryNotAvailable(
             f"IFT library not available for system “{system()} ({machine()})”"
-        ) from error
+        )
 
-    filepath_library = (Path(__file__).parent / basename_library).as_posix()
+    if exception is None:
+        filepath_library = (
+            Path(__file__).parent / basename_library
+        ).as_posix()
 
-    try:
-        library = CDLL(filepath_library)
-        ift_value_function = library.ift_value
-        ift_value_function.argtypes = [
-            POINTER(c_double),  # double samples[]
-            c_size_t,  # size_t sample_size
-            c_double,  # double window_length
-            c_double,  # double sampling_frequency
-            c_double,  # A2
-            c_double,  # A3
-            c_double,  # A4
-            c_double,  # A5
-            POINTER(c_double),  # double output[]
-        ]
-    except OSError as error:
-        raise IFTLibraryNotAvailable("Unable to load IFT library") from error
+        try:
+            library = CDLL(filepath_library)
+            ift_value_function = library.ift_value
+            ift_value_function.argtypes = [
+                POINTER(c_double),  # double samples[]
+                c_size_t,  # size_t sample_size
+                c_double,  # double window_length
+                c_double,  # double sampling_frequency
+                c_double,  # A2
+                c_double,  # A3
+                c_double,  # A4
+                c_double,  # A5
+                POINTER(c_double),  # double output[]
+            ]
+        except OSError:
+            exception = IFTLibraryNotAvailable("Unable to load IFT library")
 
     @classmethod
     def ift_value(
@@ -119,6 +124,9 @@ class IFTLibrary:
         IFTValueException: Sample size too small
 
         """
+
+        if cls.exception is not None:
+            raise cls.exception
 
         size_t_max = 2 ** (sizeof(c_size_t) * 8) - 1
         len_samples = len(samples)
