@@ -9,14 +9,13 @@ import sys
 
 from argparse import ArgumentDefaultsHelpFormatter
 from pathlib import Path
-from platform import machine, system
 from sys import stderr
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd  # Load the Pandas libraries with alias 'pd'
 
-from .iftlibrary import IFTLibrary
+from .iftlibrary import IFTLibrary, IFTLibraryException
 
 
 def get_arguments():
@@ -91,14 +90,15 @@ def main():
         f"@ {f_sample / 1000:.2f} kHz"
     )
 
-    if not IFTLibrary.available:
-        print(
-            "Warning: IFT library not available for current architecture",
-            file=stderr,
-        )
-        plots = 2
-    else:
+    ift_values = {}
+    try:
         plots = 3
+        for axis in axes:
+            samples = data[axis]
+            ift_values[axis] = IFTLibrary.ift_value(samples, f_sample)
+    except IFTLibraryException as error:
+        plots = 2
+        print(f"Unable to calculate IFT value: {error}", file=stderr)
 
     plt.subplots(plots, 1, figsize=(20, 10))
     plt.subplot(plots, 1, 1)
@@ -109,32 +109,14 @@ def main():
     plt.legend()
 
     plt.subplot(plots, 1, 2)
-    if n_points < 0.6 * f_sample:
-        print(
-            (
-                "Warning: At least 0.6 seconds of samples required to "
-                "calculate IFT value"
-            ),
-            file=stderr,
-        )
-    elif IFTLibrary.available:
+
+    if ift_values:
         for axis in axes:
-            samples = data[axis]
-            ift_values = IFTLibrary.ift_value(samples, f_sample)
-            plt.plot(timestamps, ift_values, label=axis)
+            plt.plot(timestamps, ift_values[axis], label=axis)
             plt.xlabel("Time")
             plt.ylabel("IFT Value")
         plt.legend()
         plt.subplot(plots, 1, 3)
-    else:
-        print(
-            (
-                "Warning: IFT value calculation is not available on your\n"
-                f"• OS: “{system()}” or\n"
-                f"• CPU architecture: “{machine()}”"
-            ),
-            file=stderr,
-        )
 
     for axis in axes:
         plt.psd(data[axis] - data[axis].mean(), 512, f_sample, label=axis)

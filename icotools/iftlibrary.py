@@ -2,26 +2,41 @@
 
 from ctypes import CDLL, c_double, c_size_t, POINTER, sizeof
 from pathlib import Path
-from platform import system
+from platform import machine, system
 from typing import Collection, List
 
 from numpy import array_split
 
+# -- Classes ------------------------------------------------------------------
 
-# -- Class --------------------------------------------------------------------
+
+class IFTLibraryException(Exception):
+    """Raised if there are any problems concerning the IFT library"""
+
+
+class IFTLibraryNotAvailable(IFTLibraryException):
+    """Raised if there are any problems loading the IFT library"""
+
+
+class IFTValueException(IFTLibraryException):
+    """Raised if there are any problems with the IFT value calculation"""
 
 
 class IFTLibrary:
     """Wrapper for IFT figure of merit (FOM) library"""
 
-    class IFTValueException(Exception):
-        """Raised if there are any problems with the IFT value calculation"""
+    system_machine_to_lib = {
+        "Linux": {"x86_64": "libift-x64.so"},
+        "Darwin": {"arm64": "libift.dylib", "x86_64": "libift.dylib"},
+        "Windows": {"AMD64": "ift.dll"},
+    }
+    try:
+        basename_library = system_machine_to_lib[system()][machine()]
+    except KeyError as error:
+        raise IFTLibraryNotAvailable(
+            f"IFT library not available for system “{system()} ({machine()})”"
+        ) from error
 
-    basename_library = (
-        "libift.so"
-        if system() == "Linux"
-        else "libift.dylib" if system() == "Darwin" else "ift.dll"
-    )
     filepath_library = (Path(__file__).parent / basename_library).as_posix()
 
     try:
@@ -38,9 +53,8 @@ class IFTLibrary:
             c_double,  # A5
             POINTER(c_double),  # double output[]
         ]
-        available = True
-    except OSError:
-        available = False
+    except OSError as error:
+        raise IFTLibraryNotAvailable("Unable to load IFT library") from error
 
     @classmethod
     def ift_value(
@@ -138,7 +152,7 @@ class IFTLibrary:
             if status != 0:
                 message = "Sample size too "
                 message += "large" if status == -1 else "small"
-                raise IFTLibrary.IFTValueException(message)
+                raise IFTValueException(message)
 
             output.extend(output_part)
 
