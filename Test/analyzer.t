@@ -1,6 +1,5 @@
 Setup
 
-  $ . "$TESTDIR"/setup.sh
   $ cd "$TESTDIR/.."
 
 Analyze example file

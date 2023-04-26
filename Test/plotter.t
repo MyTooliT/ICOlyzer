@@ -1,12 +1,11 @@
 Setup
 
-  $ . "$TESTDIR"/setup.sh
   $ cd "$TESTDIR/.."
 
 Print help output
 
   $ icoplotter -h
-  usage: plotter.py [-h] [input]
+  usage: icoplotter [-h] [input]
   
   Visualizes ICOc measurement data in HDF5 format
   
