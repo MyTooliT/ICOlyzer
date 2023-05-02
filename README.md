@@ -75,6 +75,10 @@ icoplotter HDF5/log-x.hdf5
 
 Store the plotter output as PDF file instead of displaying it on the screen. The output is stored in the same location as the the input file with the extension `.pdf`.
 
+##### `-s`, `--scatter`
+
+Use a scatter plot (instead of a line plot) to visualize the measurement data
+
 <a name="readme:section:icoanalyzer"></a>
 
 ## ICOanalyzer

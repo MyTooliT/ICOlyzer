@@ -12,6 +12,7 @@ from pathlib import Path
 from sys import stderr
 
 import matplotlib.pyplot as plt
+from matplotlib.pyplot import plot, scatter
 import numpy as np
 import pandas as pd  # Load the Pandas libraries with alias 'pd'
 from matplotlib.backends.backend_pdf import PdfPages
@@ -34,6 +35,12 @@ def get_arguments():
         default="log.hdf5",
         nargs="?",
         help="measurement data in HDF5 format",
+    )
+    parser.add_argument(
+        "-s",
+        "--scatter",
+        action="store_true",
+        help="use scatter plot instead of line plot for sensor data",
     )
     parser.add_argument(
         "-p",
@@ -110,8 +117,9 @@ def main():
 
     plt.subplots(plots, 1, figsize=(20, 10))
     plt.subplot(plots, 1, 1)
+    plotter_function = scatter if args.scatter else plot
     for axis in axes:
-        plt.plot(timestamps, data[axis], label=axis)
+        plotter_function(timestamps, data[axis], label=axis)
         plt.xlabel("Time")
         plt.ylabel("Raw Sensor Data")
     plt.legend()
@@ -120,7 +128,7 @@ def main():
 
     if ift_values:
         for axis in axes:
-            plt.plot(timestamps, ift_values[axis], label=axis)
+            plotter_function(timestamps, ift_values[axis], label=axis)
             plt.xlabel("Time")
             plt.ylabel("IFT Value")
         plt.legend()
