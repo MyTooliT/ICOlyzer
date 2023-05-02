@@ -12,7 +12,7 @@ Print help output
   positional arguments:
     input        measurement data in HDF5 format (default: log.hdf5)
   
-  options:
+  option.+ (re)
     -h, --help   show this help message and exit
     -p, --print  store graphical output as PDF file (default: False)
 
