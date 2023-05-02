@@ -12,10 +12,10 @@ from pathlib import Path
 from sys import stderr
 
 import matplotlib.pyplot as plt
-from matplotlib.pyplot import plot, scatter
 import numpy as np
-import pandas as pd  # Load the Pandas libraries with alias 'pd'
 from matplotlib.backends.backend_pdf import PdfPages
+from matplotlib.pyplot import plot, scatter
+from pandas import read_hdf
 
 from .iftlibrary import IFTLibrary, IFTLibraryException
 
@@ -71,7 +71,7 @@ def main():
         print(error_message, file=stderr)
         return
 
-    data = pd.read_hdf(log_file, key="acceleration")
+    data = read_hdf(log_file, key="acceleration")
     timestamps = data["timestamp"]
     n_points = len(timestamps)
 
