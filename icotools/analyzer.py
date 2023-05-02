@@ -66,7 +66,12 @@ def main():
     filepaths, test_value_min, test_value_max, details_on = get_arguments()
 
     for filepath in filepaths:
-        print(f"Input: {filepath}")
+        # Flush standard output to keep order with standard error output.
+        # This means that the output about the current file and the warnings
+        # about missing measurement data should be in the correct order. This
+        # is helpful if we analyze multiple files at once (e.g. using
+        # `find … -exec`)
+        print(f"Input: {filepath}", flush=True)
         if not Path(filepath).exists():
             print(f"Skipping non-existent file “{filepath}”", file=stderr)
             continue
