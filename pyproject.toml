@@ -76,7 +76,7 @@ minversion = "6.0"
 include = ["icotools*"]
 
 [tool.setuptools.package-data]
-"ift.lib" = ["*.dll", "*.dylib","*.so"]
+"icotools" = ["*.dll", "*.dylib","*.so"]
 
 [tool.yapfignore]
 # Ignore macOS metadata files
