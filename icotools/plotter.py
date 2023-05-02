@@ -8,6 +8,8 @@ import argparse
 import sys
 
 from argparse import ArgumentDefaultsHelpFormatter
+from datetime import datetime
+from dateutil.parser import isoparse
 from pathlib import Path
 from sys import stderr
 
@@ -15,7 +17,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.pyplot import plot, scatter
+from matplotlib.ticker import FuncFormatter
 from pandas import read_hdf
+from tables import open_file
 
 from .iftlibrary import IFTLibrary, IFTLibraryException
 
@@ -72,6 +76,11 @@ def main():
         return
 
     data = read_hdf(log_file, key="acceleration")
+    with open_file(log_file, mode="r") as file:
+        timestamp_start = isoparse(
+            file.get_node("/acceleration").attrs["Start_Time"]
+        ).timestamp()
+
     timestamps = data["timestamp"]
     n_points = len(timestamps)
 
@@ -106,6 +115,8 @@ def main():
     )
 
     ift_values = {}
+    # Convert timestamps (in μs since start) to absolute timestamps
+    timestamps = (data["timestamp"] / 1_000_000) + timestamp_start
     try:
         plots = 3
         for axis in axes:
@@ -115,8 +126,13 @@ def main():
         plots = 2
         print(f"Unable to calculate IFT value: {error}", file=stderr)
 
+    x_axis_format = FuncFormatter(
+        lambda x, position: datetime.fromtimestamp(x).strftime("%H:%M:%S.%f")
+    )
+
     plt.subplots(plots, 1, figsize=(20, 10))
-    plt.subplot(plots, 1, 1)
+    subplot = plt.subplot(plots, 1, 1)
+    subplot.xaxis.set_major_formatter(x_axis_format)
     plotter_function = scatter if args.scatter else plot
     for axis in axes:
         plotter_function(timestamps, data[axis], label=axis)
@@ -124,7 +140,7 @@ def main():
         plt.ylabel("Raw Sensor Data")
     plt.legend()
 
-    plt.subplot(plots, 1, 2)
+    subplot = plt.subplot(plots, 1, 2)
 
     if ift_values:
         for axis in axes:
@@ -132,6 +148,8 @@ def main():
             plt.xlabel("Time")
             plt.ylabel("IFT Value")
         plt.legend()
+        subplot.xaxis.set_major_formatter(x_axis_format)
+
         plt.subplot(plots, 1, 3)
 
     for axis in axes:

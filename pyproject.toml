@@ -44,6 +44,7 @@ dev = [
     "flake8",
     "mypy",
     "toml",
+    "types-python-dateutil",
 ]
 test = [
     "prysk>=0.13.1",
