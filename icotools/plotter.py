@@ -115,13 +115,13 @@ def print_info(data: DataFrame) -> None:
     )
 
 
-def plot_data(
-    data: DataFrame,
-    timestamp_start: float,
-    args: Namespace,
-    log_file: Path,
-) -> None:
+def plot_data(data: DataFrame, args: Namespace, log_file: Path) -> None:
     """Visualize measurement data"""
+
+    with open_file(log_file, mode="r") as file:
+        timestamp_start = isoparse(
+            file.get_node("/acceleration").attrs["Start_Time"]
+        ).timestamp()
 
     ift_values = {}
     axes = [axis for axis in ("x", "y", "z") if data.get(axis) is not None]
@@ -189,13 +189,9 @@ def main():
     log_file = Path(args.input)
 
     data = read_hdf(log_file, key="acceleration")
-    with open_file(log_file, mode="r") as file:
-        timestamp_start = isoparse(
-            file.get_node("/acceleration").attrs["Start_Time"]
-        ).timestamp()
 
     print_info(data)
-    plot_data(data, timestamp_start, args, log_file)
+    plot_data(data, args, log_file)
 
 
 if __name__ == "__main__":
