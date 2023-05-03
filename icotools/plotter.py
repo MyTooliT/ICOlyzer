@@ -101,21 +101,15 @@ def print_info(data: DataFrame) -> tuple[list[str], float]:
     return axes, f_sample
 
 
-def main():
-    """
-    Main function of the ICOplotter
-    """
-
-    args = get_arguments()
-    log_file = Path(args.input)
-
-    data = read_hdf(log_file, key="acceleration")
-    with open_file(log_file, mode="r") as file:
-        timestamp_start = isoparse(
-            file.get_node("/acceleration").attrs["Start_Time"]
-        ).timestamp()
-
-    axes, f_sample = print_info(data)
+def plot_data(
+    data: DataFrame,
+    timestamp_start: float,
+    axes: list[str],
+    f_sample: float,
+    args: Namespace,
+    log_file: Path,
+) -> None:
+    """Visualize measurement data"""
 
     ift_values = {}
     # Convert timestamps (in μs since start) to absolute timestamps
@@ -171,6 +165,24 @@ def main():
         print(f"Stored plotter output in “{output_filepath}”")
     else:
         plt.show()
+
+
+def main():
+    """
+    Main function of the ICOplotter
+    """
+
+    args = get_arguments()
+    log_file = Path(args.input)
+
+    data = read_hdf(log_file, key="acceleration")
+    with open_file(log_file, mode="r") as file:
+        timestamp_start = isoparse(
+            file.get_node("/acceleration").attrs["Start_Time"]
+        ).timestamp()
+
+    axes, f_sample = print_info(data)
+    plot_data(data, timestamp_start, axes, f_sample, args, log_file)
 
 
 if __name__ == "__main__":
