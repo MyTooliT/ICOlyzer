@@ -170,7 +170,7 @@ class Plotter:
         """Visualize measurement data"""
 
         self._init_plot()
-        self._plot_time(self.data, "Acceleration Data")
+        self._plot_time(self.data, "Acceleration Data (g)")
         if self.ift_values:
             self._plot_time(self.ift_values, "IFT Value")
         self._plot_psd()
