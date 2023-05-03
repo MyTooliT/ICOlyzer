@@ -62,17 +62,33 @@ def get_arguments() -> Namespace:
     return parser.parse_args()
 
 
-def print_info(data: DataFrame) -> tuple[list[str], float]:
-    """Print information about measurement data"""
+def sample_rate(data: DataFrame) -> float:
+    """Calculate sample rate of measurement data
+
+    Parameters
+    ----------
+
+    data: Measurement data
+
+    Returns
+    -------
+
+    Overall sample rate for all axes in Hz
+
+    """
 
     timestamps = data["timestamp"]
-    n_points = len(timestamps)
 
-    f_sample = (
-        n_points
-        / (timestamps.iloc[n_points - 1] - timestamps.iloc[0])
-        * 1000000
+    return (
+        len(timestamps)
+        / (timestamps.iloc[len(timestamps) - 1] - timestamps.iloc[0])
+        * 1_000_000
     )
+
+
+def print_info(data: DataFrame) -> list[str]:
+    """Print information about measurement data"""
+
     stats = data.describe()
 
     axes = [axis for axis in ("x", "y", "z") if data.get(axis) is not None]
@@ -95,17 +111,16 @@ def print_info(data: DataFrame) -> tuple[list[str], float]:
     snr = 20 * np.log10(std_dev / (np.power(2, 16) - 1))
     print(
         f"SNR of this file is : {min(snr):.2f} dB and {max(snr):.2f} dB "
-        f"@ {f_sample / 1000:.2f} kHz"
+        f"@ {sample_rate(data) / 1000:.2f} kHz"
     )
 
-    return axes, f_sample
+    return axes
 
 
 def plot_data(
     data: DataFrame,
     timestamp_start: float,
     axes: list[str],
-    f_sample: float,
     args: Namespace,
     log_file: Path,
 ) -> None:
@@ -114,6 +129,7 @@ def plot_data(
     ift_values = {}
     # Convert timestamps (in μs since start) to absolute timestamps
     timestamps = (data["timestamp"] / 1_000_000) + timestamp_start
+    f_sample = sample_rate(data)
     try:
         plots = 3
         for axis in axes:
@@ -167,11 +183,10 @@ def plot_data(
         plt.show()
 
 
-def main():
-    """
-    Main function of the ICOplotter
-    """
+# -- Main ---------------------------------------------------------------------
 
+
+def main():
     args = get_arguments()
     log_file = Path(args.input)
 
@@ -181,8 +196,8 @@ def main():
             file.get_node("/acceleration").attrs["Start_Time"]
         ).timestamp()
 
-    axes, f_sample = print_info(data)
-    plot_data(data, timestamp_start, axes, f_sample, args, log_file)
+    axes = print_info(data)
+    plot_data(data, timestamp_start, axes, args, log_file)
 
 
 if __name__ == "__main__":
