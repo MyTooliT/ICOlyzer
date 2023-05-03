@@ -67,17 +67,20 @@ class Plotter:
         self.args = args
         self.log_file = Path(args.input)
         self.data = read_hdf(self.log_file, key="acceleration")
-        self.timestamps = self.data["timestamp"]
-        self.sample_rate = (
-            len(self.timestamps)
-            / (self.timestamps.iloc[-1] - self.timestamps.iloc[0])
-            * 1_000_000
-        )
 
+        # Convert timestamps (in μs since start) to absolute timestamps
         with open_file(self.log_file, mode="r") as file:
             self.timestamp_start = isoparse(
                 file.get_node("/acceleration").attrs["Start_Time"]
             ).timestamp()
+        self.timestamps = (
+            self.data["timestamp"] / 1_000_000
+        ) + self.timestamp_start
+
+        self.sample_rate = len(self.timestamps) / (
+            self.timestamps.iloc[-1] - self.timestamps.iloc[0]
+        )
+
         self.axes = [axis for axis in "xyz" if axis in self.data.keys()]
 
     def print_info(self) -> None:
@@ -108,15 +111,8 @@ class Plotter:
     def plot(self) -> None:
         """Visualize measurement data"""
 
-        with open_file(self.log_file, mode="r") as file:
-            timestamp_start = isoparse(
-                file.get_node("/acceleration").attrs["Start_Time"]
-            ).timestamp()
-
         ift_values = {}
 
-        # Convert timestamps (in μs since start) to absolute timestamps
-        timestamps = (self.data["timestamp"] / 1_000_000) + timestamp_start
         f_sample = self.sample_rate / len(self.axes)
         try:
             plots = 3
@@ -136,13 +132,14 @@ class Plotter:
         figure, _ = plt.subplots(plots, 1, figsize=(20, 10))
         figure.canvas.manager.set_window_title("Acceleration Measurement")
         figure.suptitle(
-            datetime.fromtimestamp(timestamp_start).strftime("%c"), fontsize=20
+            datetime.fromtimestamp(self.timestamp_start).strftime("%c"),
+            fontsize=20,
         )
         subplot = plt.subplot(plots, 1, 1)
         subplot.xaxis.set_major_formatter(x_axis_format)
         plotter_function = scatter if self.args.scatter else plot
         for axis in self.axes:
-            plotter_function(timestamps, self.data[axis], label=axis)
+            plotter_function(self.timestamps, self.data[axis], label=axis)
             plt.xlabel("Time")
             plt.ylabel("Raw Sensor Data")
         plt.legend()
@@ -151,7 +148,7 @@ class Plotter:
 
         if ift_values:
             for axis in self.axes:
-                plotter_function(timestamps, ift_values[axis], label=axis)
+                plotter_function(self.timestamps, ift_values[axis], label=axis)
                 plt.xlabel("Time")
                 plt.ylabel("IFT Value")
             plt.legend()
