@@ -81,7 +81,7 @@ def sample_rate(data: DataFrame) -> float:
 
     return (
         len(timestamps)
-        / (timestamps.iloc[len(timestamps) - 1] - timestamps.iloc[0])
+        / (timestamps.iloc[-1] - timestamps.iloc[0])
         * 1_000_000
     )
 
