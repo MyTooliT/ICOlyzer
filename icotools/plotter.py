@@ -7,7 +7,7 @@ Created on Mon May 13 17:33:09 2019
 import argparse
 import sys
 
-from argparse import ArgumentDefaultsHelpFormatter
+from argparse import ArgumentDefaultsHelpFormatter, Namespace
 from datetime import datetime
 from dateutil.parser import isoparse
 from pathlib import Path
@@ -25,12 +25,16 @@ from icotools.cli import file_exists
 from .iftlibrary import IFTLibrary, IFTLibraryException
 
 
-def get_arguments():
-    """
-    Returns the given Function Parameters off the script-call
+def get_arguments() -> Namespace:
+    """Parse command line arguments
 
-    @return Returns the parameters
+    Returns
+    -------
+
+    An object that contains the given command line arguments
+
     """
+
     parser = argparse.ArgumentParser(
         description="Visualizes ICOc measurement data in HDF5 format",
         formatter_class=ArgumentDefaultsHelpFormatter,
