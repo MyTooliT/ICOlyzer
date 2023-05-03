@@ -86,7 +86,7 @@ def sample_rate(data: DataFrame) -> float:
     )
 
 
-def print_info(data: DataFrame) -> list[str]:
+def print_info(data: DataFrame) -> None:
     """Print information about measurement data"""
 
     stats = data.describe()
@@ -114,19 +114,17 @@ def print_info(data: DataFrame) -> list[str]:
         f"@ {sample_rate(data) / 1000:.2f} kHz"
     )
 
-    return axes
-
 
 def plot_data(
     data: DataFrame,
     timestamp_start: float,
-    axes: list[str],
     args: Namespace,
     log_file: Path,
 ) -> None:
     """Visualize measurement data"""
 
     ift_values = {}
+    axes = [axis for axis in ("x", "y", "z") if data.get(axis) is not None]
     # Convert timestamps (in μs since start) to absolute timestamps
     timestamps = (data["timestamp"] / 1_000_000) + timestamp_start
     f_sample = sample_rate(data)
@@ -196,8 +194,8 @@ def main():
             file.get_node("/acceleration").attrs["Start_Time"]
         ).timestamp()
 
-    axes = print_info(data)
-    plot_data(data, timestamp_start, axes, args, log_file)
+    print_info(data)
+    plot_data(data, timestamp_start, args, log_file)
 
 
 if __name__ == "__main__":
