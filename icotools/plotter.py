@@ -18,7 +18,7 @@ import numpy as np
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.pyplot import plot, scatter
 from matplotlib.ticker import FuncFormatter
-from pandas import DataFrame, read_hdf
+from pandas import read_hdf
 from tables import open_file
 
 from icotools.cli import file_exists
@@ -62,134 +62,129 @@ def get_arguments() -> Namespace:
     return parser.parse_args()
 
 
-def sample_rate(data: DataFrame) -> float:
-    """Calculate sample rate of measurement data
-
-    Parameters
-    ----------
-
-    data: Measurement data
-
-    Returns
-    -------
-
-    Overall sample rate for all axes in Hz
-
-    """
-
-    timestamps = data["timestamp"]
-
-    return (
-        len(timestamps)
-        / (timestamps.iloc[-1] - timestamps.iloc[0])
-        * 1_000_000
-    )
-
-
-def print_info(data: DataFrame) -> None:
-    """Print information about measurement data"""
-
-    stats = data.describe()
-    axes = [axis for axis in "xyz" if axis in data.keys()]
-
-    if len(axes) <= 0:
-        print("Error: No axis data available", file=sys.stderr)
-        sys.exit(1)
-
-    print(
-        " ".join(
-            [
-                f"Avg {axis.upper()}: {int(stats.loc['mean'][axis])}"
-                for axis in axes
-            ]
+class Plotter:
+    def __init__(self, args: Namespace):
+        self.args = args
+        self.log_file = Path(args.input)
+        self.data = read_hdf(self.log_file, key="acceleration")
+        self.timestamps = self.data["timestamp"]
+        self.sample_rate = (
+            len(self.timestamps)
+            / (self.timestamps.iloc[-1] - self.timestamps.iloc[0])
+            * 1_000_000
         )
-    )
 
-    std_dev = stats.loc["std", axes]
-    snr = 20 * np.log10(std_dev / (np.power(2, 16) - 1))
-    print(
-        f"SNR of this file is : {min(snr):.2f} dB and {max(snr):.2f} dB "
-        f"@ {sample_rate(data) / 1000:.2f} kHz"
-    )
+        with open_file(self.log_file, mode="r") as file:
+            self.timestamp_start = isoparse(
+                file.get_node("/acceleration").attrs["Start_Time"]
+            ).timestamp()
+        self.axes = [axis for axis in "xyz" if axis in self.data.keys()]
 
+    def print_info(self) -> None:
+        """Print information about measurement data"""
 
-def plot_data(data: DataFrame, args: Namespace, log_file: Path) -> None:
-    """Visualize measurement data"""
+        stats = self.data.describe()
 
-    with open_file(log_file, mode="r") as file:
-        timestamp_start = isoparse(
-            file.get_node("/acceleration").attrs["Start_Time"]
-        ).timestamp()
+        if len(self.axes) <= 0:
+            print("Error: No axis data available", file=sys.stderr)
+            sys.exit(1)
 
-    ift_values = {}
-    axes = [axis for axis in "xyz" if axis in data.keys()]
-    # Convert timestamps (in μs since start) to absolute timestamps
-    timestamps = (data["timestamp"] / 1_000_000) + timestamp_start
-    f_sample = sample_rate(data) / len(axes)
-    try:
-        plots = 3
-        for axis in axes:
-            samples = data[axis]
-            ift_values[axis] = IFTLibrary.ift_value(samples, f_sample)
-    except IFTLibraryException as error:
-        plots = 2
-        print(f"Unable to calculate IFT value: {error}", file=stderr)
+        print(
+            " ".join(
+                [
+                    f"Avg {axis.upper()}: {int(stats.loc['mean'][axis])}"
+                    for axis in self.axes
+                ]
+            )
+        )
 
-    x_axis_format = FuncFormatter(
-        lambda x, position: datetime.fromtimestamp(x).strftime("%H:%M:%S.%f")
-    )
+        std_dev = stats.loc["std", self.axes]
+        snr = 20 * np.log10(std_dev / (np.power(2, 16) - 1))
+        print(
+            f"SNR of this file is : {min(snr):.2f} dB and {max(snr):.2f} dB "
+            f"@ {self.sample_rate / 1000:.2f} kHz"
+        )
 
-    figure, _ = plt.subplots(plots, 1, figsize=(20, 10))
-    figure.canvas.manager.set_window_title("Acceleration Measurement")
-    figure.suptitle(
-        datetime.fromtimestamp(timestamp_start).strftime("%c"), fontsize=20
-    )
-    subplot = plt.subplot(plots, 1, 1)
-    subplot.xaxis.set_major_formatter(x_axis_format)
-    plotter_function = scatter if args.scatter else plot
-    for axis in axes:
-        plotter_function(timestamps, data[axis], label=axis)
-        plt.xlabel("Time")
-        plt.ylabel("Raw Sensor Data")
-    plt.legend()
+    def plot(self) -> None:
+        """Visualize measurement data"""
 
-    subplot = plt.subplot(plots, 1, 2)
+        with open_file(self.log_file, mode="r") as file:
+            timestamp_start = isoparse(
+                file.get_node("/acceleration").attrs["Start_Time"]
+            ).timestamp()
 
-    if ift_values:
-        for axis in axes:
-            plotter_function(timestamps, ift_values[axis], label=axis)
-            plt.xlabel("Time")
-            plt.ylabel("IFT Value")
-        plt.legend()
+        ift_values = {}
+
+        # Convert timestamps (in μs since start) to absolute timestamps
+        timestamps = (self.data["timestamp"] / 1_000_000) + timestamp_start
+        f_sample = self.sample_rate / len(self.axes)
+        try:
+            plots = 3
+            for axis in self.axes:
+                samples = self.data[axis]
+                ift_values[axis] = IFTLibrary.ift_value(samples, f_sample)
+        except IFTLibraryException as error:
+            plots = 2
+            print(f"Unable to calculate IFT value: {error}", file=stderr)
+
+        x_axis_format = FuncFormatter(
+            lambda x, position: datetime.fromtimestamp(x).strftime(
+                "%H:%M:%S.%f"
+            )
+        )
+
+        figure, _ = plt.subplots(plots, 1, figsize=(20, 10))
+        figure.canvas.manager.set_window_title("Acceleration Measurement")
+        figure.suptitle(
+            datetime.fromtimestamp(timestamp_start).strftime("%c"), fontsize=20
+        )
+        subplot = plt.subplot(plots, 1, 1)
         subplot.xaxis.set_major_formatter(x_axis_format)
+        plotter_function = scatter if self.args.scatter else plot
+        for axis in self.axes:
+            plotter_function(timestamps, self.data[axis], label=axis)
+            plt.xlabel("Time")
+            plt.ylabel("Raw Sensor Data")
+        plt.legend()
 
-        plt.subplot(plots, 1, 3)
+        subplot = plt.subplot(plots, 1, 2)
 
-    for axis in axes:
-        plt.psd(data[axis] - data[axis].mean(), 512, f_sample, label=axis)
-    plt.legend()
+        if ift_values:
+            for axis in self.axes:
+                plotter_function(timestamps, ift_values[axis], label=axis)
+                plt.xlabel("Time")
+                plt.ylabel("IFT Value")
+            plt.legend()
+            subplot.xaxis.set_major_formatter(x_axis_format)
 
-    if args.print:
-        output_filepath = log_file.with_suffix(".pdf")
-        pdf = PdfPages(output_filepath)
-        pdf.savefig()
-        pdf.close()
-        print(f"Stored plotter output in “{output_filepath}”")
-    else:
-        plt.show()
+            plt.subplot(plots, 1, 3)
+
+        for axis in self.axes:
+            plt.psd(
+                self.data[axis] - self.data[axis].mean(),
+                512,
+                f_sample,
+                label=axis,
+            )
+        plt.legend()
+
+        if self.args.print:
+            output_filepath = self.log_file.with_suffix(".pdf")
+            pdf = PdfPages(output_filepath)
+            pdf.savefig()
+            pdf.close()
+            print(f"Stored plotter output in “{output_filepath}”")
+        else:
+            plt.show()
 
 
 # -- Main ---------------------------------------------------------------------
 
 
 def main():
-    args = get_arguments()
-    log_file = Path(args.input)
-
-    data = read_hdf(log_file, key="acceleration")
-
-    print_info(data)
-    plot_data(data, args, log_file)
+    plotter = Plotter(get_arguments())
+    plotter.print_info()
+    plotter.plot()
 
 
 if __name__ == "__main__":
