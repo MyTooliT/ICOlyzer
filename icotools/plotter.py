@@ -95,6 +95,7 @@ class Plotter:
         except IFTLibraryException as error:
             self.plots = 2
             print(f"Unable to calculate IFT value: {error}", file=stderr)
+        self.current_plot = 1
 
     def print_info(self) -> None:
         """Print information about measurement data"""
@@ -131,40 +132,30 @@ class Plotter:
             fontsize=20,
         )
 
-    def plot(self) -> None:
-        """Visualize measurement data"""
+    def _plot_time(self, data, ylabel: str) -> None:
+        """Plot time based data"""
 
-        self._init_plot()
-
-        x_axis_format = FuncFormatter(
-            lambda x, position: datetime.fromtimestamp(x).strftime(
-                "%H:%M:%S.%f"
+        subplot = plt.subplot(self.plots, 1, self.current_plot)
+        subplot.xaxis.set_major_formatter(
+            FuncFormatter(
+                lambda x, position: datetime.fromtimestamp(x).strftime(
+                    "%H:%M:%S.%f"
+                )
             )
         )
-
-        subplot = plt.subplot(self.plots, 1, 1)
-        subplot.xaxis.set_major_formatter(x_axis_format)
         plotter_function = scatter if self.args.scatter else plot
         for axis in self.axes:
-            plotter_function(self.timestamps, self.data[axis], label=axis)
+            plotter_function(self.timestamps, data[axis], label=axis)
             plt.xlabel("Time")
-            plt.ylabel("Raw Sensor Data")
+            plt.ylabel(ylabel)
         plt.legend()
 
-        subplot = plt.subplot(self.plots, 1, 2)
+        self.current_plot += 1
 
-        if self.ift_values:
-            for axis in self.axes:
-                plotter_function(
-                    self.timestamps, self.ift_values[axis], label=axis
-                )
-                plt.xlabel("Time")
-                plt.ylabel("IFT Value")
-            plt.legend()
-            subplot.xaxis.set_major_formatter(x_axis_format)
+    def _plot_psd(self) -> None:
+        "Plot power spectral density data"
 
-            plt.subplot(self.plots, 1, 3)
-
+        subplot = plt.subplot(self.plots, 1, self.current_plot)
         for axis in self.axes:
             plt.psd(
                 self.data[axis] - self.data[axis].mean(),
@@ -173,6 +164,16 @@ class Plotter:
                 label=axis,
             )
         plt.legend()
+        self.current_plot += 1
+
+    def plot(self) -> None:
+        """Visualize measurement data"""
+
+        self._init_plot()
+        self._plot_time(self.data, "Acceleration Data")
+        if self.ift_values:
+            self._plot_time(self.ift_values, "IFT Value")
+        self._plot_psd()
 
         if self.args.print:
             pdf = PdfPages(self.output_filepath)
