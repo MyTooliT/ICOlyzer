@@ -18,7 +18,7 @@ import numpy as np
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.pyplot import plot, scatter
 from matplotlib.ticker import FuncFormatter
-from pandas import read_hdf
+from pandas import DataFrame, read_hdf
 from tables import open_file
 
 from icotools.cli import file_exists
@@ -62,19 +62,8 @@ def get_arguments() -> Namespace:
     return parser.parse_args()
 
 
-def main():
-    """
-    Main function of the ICOplotter
-    """
-
-    args = get_arguments()
-    log_file = Path(args.input)
-
-    data = read_hdf(log_file, key="acceleration")
-    with open_file(log_file, mode="r") as file:
-        timestamp_start = isoparse(
-            file.get_node("/acceleration").attrs["Start_Time"]
-        ).timestamp()
+def print_info(data: DataFrame) -> tuple[list[str], float]:
+    """Print information about measurement data"""
 
     timestamps = data["timestamp"]
     n_points = len(timestamps)
@@ -108,6 +97,25 @@ def main():
         f"SNR of this file is : {min(snr):.2f} dB and {max(snr):.2f} dB "
         f"@ {f_sample / 1000:.2f} kHz"
     )
+
+    return axes, f_sample
+
+
+def main():
+    """
+    Main function of the ICOplotter
+    """
+
+    args = get_arguments()
+    log_file = Path(args.input)
+
+    data = read_hdf(log_file, key="acceleration")
+    with open_file(log_file, mode="r") as file:
+        timestamp_start = isoparse(
+            file.get_node("/acceleration").attrs["Start_Time"]
+        ).timestamp()
+
+    axes, f_sample = print_info(data)
 
     ift_values = {}
     # Convert timestamps (in μs since start) to absolute timestamps
