@@ -125,7 +125,7 @@ def plot_data(data: DataFrame, args: Namespace, log_file: Path) -> None:
     axes = [axis for axis in "xyz" if axis in data.keys()]
     # Convert timestamps (in μs since start) to absolute timestamps
     timestamps = (data["timestamp"] / 1_000_000) + timestamp_start
-    f_sample = sample_rate(data)
+    f_sample = sample_rate(data) / len(axes)
     try:
         plots = 3
         for axis in axes:
