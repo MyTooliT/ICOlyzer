@@ -84,6 +84,18 @@ class Plotter:
 
         self.axes = [axis for axis in "xyz" if axis in self.data.keys()]
 
+        self.ift_values = {}
+        self.plots = 3
+        try:
+            for axis in self.axes:
+                samples = self.data[axis]
+                self.ift_values[axis] = IFTLibrary.ift_value(
+                    samples, self.sample_rate / len(self.axes)
+                )
+        except IFTLibraryException as error:
+            self.plots = 2
+            print(f"Unable to calculate IFT value: {error}", file=stderr)
+
     def print_info(self) -> None:
         """Print information about measurement data"""
 
@@ -112,31 +124,19 @@ class Plotter:
     def plot(self) -> None:
         """Visualize measurement data"""
 
-        ift_values = {}
-
-        f_sample = self.sample_rate / len(self.axes)
-        try:
-            plots = 3
-            for axis in self.axes:
-                samples = self.data[axis]
-                ift_values[axis] = IFTLibrary.ift_value(samples, f_sample)
-        except IFTLibraryException as error:
-            plots = 2
-            print(f"Unable to calculate IFT value: {error}", file=stderr)
-
         x_axis_format = FuncFormatter(
             lambda x, position: datetime.fromtimestamp(x).strftime(
                 "%H:%M:%S.%f"
             )
         )
 
-        figure, _ = plt.subplots(plots, 1, figsize=(20, 10))
+        figure, _ = plt.subplots(self.plots, 1, figsize=(20, 10))
         figure.canvas.manager.set_window_title("Acceleration Measurement")
         figure.suptitle(
             datetime.fromtimestamp(self.timestamp_start).strftime("%c"),
             fontsize=20,
         )
-        subplot = plt.subplot(plots, 1, 1)
+        subplot = plt.subplot(self.plots, 1, 1)
         subplot.xaxis.set_major_formatter(x_axis_format)
         plotter_function = scatter if self.args.scatter else plot
         for axis in self.axes:
@@ -145,23 +145,25 @@ class Plotter:
             plt.ylabel("Raw Sensor Data")
         plt.legend()
 
-        subplot = plt.subplot(plots, 1, 2)
+        subplot = plt.subplot(self.plots, 1, 2)
 
-        if ift_values:
+        if self.ift_values:
             for axis in self.axes:
-                plotter_function(self.timestamps, ift_values[axis], label=axis)
+                plotter_function(
+                    self.timestamps, self.ift_values[axis], label=axis
+                )
                 plt.xlabel("Time")
                 plt.ylabel("IFT Value")
             plt.legend()
             subplot.xaxis.set_major_formatter(x_axis_format)
 
-            plt.subplot(plots, 1, 3)
+            plt.subplot(self.plots, 1, 3)
 
         for axis in self.axes:
             plt.psd(
                 self.data[axis] - self.data[axis].mean(),
                 512,
-                f_sample,
+                self.sample_rate,
                 label=axis,
             )
         plt.legend()
