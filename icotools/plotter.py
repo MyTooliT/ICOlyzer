@@ -121,14 +121,8 @@ class Plotter:
             f"@ {self.sample_rate / 1000:.2f} kHz"
         )
 
-    def plot(self) -> None:
-        """Visualize measurement data"""
-
-        x_axis_format = FuncFormatter(
-            lambda x, position: datetime.fromtimestamp(x).strftime(
-                "%H:%M:%S.%f"
-            )
-        )
+    def _init_plot(self) -> None:
+        """Initialize graphical output"""
 
         figure, _ = plt.subplots(self.plots, 1, figsize=(20, 10))
         figure.canvas.manager.set_window_title("Acceleration Measurement")
@@ -136,6 +130,18 @@ class Plotter:
             datetime.fromtimestamp(self.timestamp_start).strftime("%c"),
             fontsize=20,
         )
+
+    def plot(self) -> None:
+        """Visualize measurement data"""
+
+        self._init_plot()
+
+        x_axis_format = FuncFormatter(
+            lambda x, position: datetime.fromtimestamp(x).strftime(
+                "%H:%M:%S.%f"
+            )
+        )
+
         subplot = plt.subplot(self.plots, 1, 1)
         subplot.xaxis.set_major_formatter(x_axis_format)
         plotter_function = scatter if self.args.scatter else plot
