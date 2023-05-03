@@ -64,12 +64,13 @@ def get_arguments() -> Namespace:
 
 class Plotter:
     def __init__(self, args: Namespace):
+        filepath = Path(args.input)
         self.args = args
-        self.log_file = Path(args.input)
-        self.data = read_hdf(self.log_file, key="acceleration")
+        self.output_filepath = filepath.with_suffix(".pdf")
+        self.data = read_hdf(filepath, key="acceleration")
 
         # Convert timestamps (in μs since start) to absolute timestamps
-        with open_file(self.log_file, mode="r") as file:
+        with open_file(filepath, mode="r") as file:
             self.timestamp_start = isoparse(
                 file.get_node("/acceleration").attrs["Start_Time"]
             ).timestamp()
@@ -166,11 +167,10 @@ class Plotter:
         plt.legend()
 
         if self.args.print:
-            output_filepath = self.log_file.with_suffix(".pdf")
-            pdf = PdfPages(output_filepath)
+            pdf = PdfPages(self.output_filepath)
             pdf.savefig()
             pdf.close()
-            print(f"Stored plotter output in “{output_filepath}”")
+            print(f"Stored plotter output in “{self.output_filepath}”")
         else:
             plt.show()
 
