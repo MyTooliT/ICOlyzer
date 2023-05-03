@@ -21,6 +21,7 @@ from matplotlib.ticker import FuncFormatter
 from pandas import read_hdf
 from tables import open_file
 
+from icotools.cli import file_exists
 from .iftlibrary import IFTLibrary, IFTLibraryException
 
 
@@ -37,6 +38,7 @@ def get_arguments():
     parser.add_argument(
         "input",
         default="log.hdf5",
+        type=file_exists,
         nargs="?",
         help="measurement data in HDF5 format",
     )
@@ -63,17 +65,6 @@ def main():
 
     args = get_arguments()
     log_file = Path(args.input)
-
-    error_message = ""
-    if not log_file.exists():
-        error_message = f"“{log_file}” does not exist"
-    elif log_file.is_dir():
-        error_message = f"“{log_file}” is a directory, not an HDF5 file"
-    elif not log_file.is_file():
-        error_message = f"“{log_file}” is not a file"
-    if error_message != "":
-        print(error_message, file=stderr)
-        return
 
     data = read_hdf(log_file, key="acceleration")
     with open_file(log_file, mode="r") as file:
