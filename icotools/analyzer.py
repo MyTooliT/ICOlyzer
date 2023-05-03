@@ -148,8 +148,7 @@ def main():
         print(f"Measurement Date: {start_time}")
 
         if len(data["timestamp"]) >= 2:
-            # Accessing last element via `-1` raises `KeyError`
-            runtime = data["timestamp"][len(data["timestamp"]) - 1] / 1_000_000
+            runtime = data["timestamp"].iloc[-1] / 1_000_000
             print(f"Runtime: {runtime:.3f} seconds")
 
 
