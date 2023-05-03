@@ -130,7 +130,8 @@ def main():
         lambda x, position: datetime.fromtimestamp(x).strftime("%H:%M:%S.%f")
     )
 
-    plt.subplots(plots, 1, figsize=(20, 10))
+    figure, _ = plt.subplots(plots, 1, figsize=(20, 10))
+    figure.canvas.manager.set_window_title("Acceleration Measurement")
     subplot = plt.subplot(plots, 1, 1)
     subplot.xaxis.set_major_formatter(x_axis_format)
     plotter_function = scatter if args.scatter else plot
