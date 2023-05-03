@@ -90,11 +90,9 @@ def print_info(data: DataFrame) -> None:
     """Print information about measurement data"""
 
     stats = data.describe()
-
     axes = [axis for axis in "xyz" if axis in data.keys()]
-    nr_of_axis = len(axes)
 
-    if nr_of_axis <= 0:
+    if len(axes) <= 0:
         print("Error: No axis data available", file=sys.stderr)
         sys.exit(1)
 
