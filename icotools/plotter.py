@@ -91,7 +91,7 @@ def print_info(data: DataFrame) -> None:
 
     stats = data.describe()
 
-    axes = [axis for axis in ("x", "y", "z") if data.get(axis) is not None]
+    axes = [axis for axis in "xyz" if axis in data.keys()]
     nr_of_axis = len(axes)
 
     if nr_of_axis <= 0:
@@ -124,7 +124,7 @@ def plot_data(data: DataFrame, args: Namespace, log_file: Path) -> None:
         ).timestamp()
 
     ift_values = {}
-    axes = [axis for axis in ("x", "y", "z") if data.get(axis) is not None]
+    axes = [axis for axis in "xyz" if axis in data.keys()]
     # Convert timestamps (in μs since start) to absolute timestamps
     timestamps = (data["timestamp"] / 1_000_000) + timestamp_start
     f_sample = sample_rate(data)
