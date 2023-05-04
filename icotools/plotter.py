@@ -84,7 +84,7 @@ class Plotter:
         self.axes = [axis for axis in "xyz" if axis in self.data.keys()]
 
         self.ift_values = {}
-        self.plots = 3
+        plots = 3
         try:
             for axis in self.axes:
                 samples = self.data[axis]
@@ -92,9 +92,16 @@ class Plotter:
                     samples, self.sample_rate / len(self.axes)
                 )
         except IFTLibraryException as error:
-            self.plots = 2
+            plots = 2
             print(f"Unable to calculate IFT value: {error}", file=stderr)
         self.current_plot = 0
+
+        figure, self.figure_axes = plt.subplots(plots, 1, figsize=(20, 10))
+        figure.canvas.manager.set_window_title("Acceleration Measurement")
+        figure.suptitle(
+            datetime.fromtimestamp(self.timestamp_start).strftime("%c"),
+            fontsize=20,
+        )
 
     def print_info(self) -> None:
         """Print information about measurement data"""
@@ -119,18 +126,6 @@ class Plotter:
         print(
             f"SNR of this file is : {min(snr):.2f} dB and {max(snr):.2f} dB "
             f"@ {self.sample_rate / 1000:.2f} kHz"
-        )
-
-    def _init_plot(self) -> None:
-        """Initialize graphical output"""
-
-        figure, self.figure_axes = plt.subplots(
-            self.plots, 1, figsize=(20, 10)
-        )
-        figure.canvas.manager.set_window_title("Acceleration Measurement")
-        figure.suptitle(
-            datetime.fromtimestamp(self.timestamp_start).strftime("%c"),
-            fontsize=20,
         )
 
     def _plot_time(self, data, ylabel: str) -> None:
@@ -172,7 +167,6 @@ class Plotter:
     def plot(self) -> None:
         """Visualize measurement data"""
 
-        self._init_plot()
         self._plot_time(self.data, "Acceleration Data (g)")
         if self.ift_values:
             self._plot_time(self.ift_values, "IFT Value")
