@@ -162,27 +162,36 @@ class Plotter:
             self.subplot.scatter if self.args.scatter else self.subplot.plot
         )
 
-        points_lost_data = []
-        timestamps_lost_data = []
+        points_lost_data = {axis: [] for axis in self.axes}
+        timestamps_lost_data = {axis: [] for axis in self.axes}
         for axis in self.axes:
             last_timestamp = self.timestamps[0]
             last_value = data[axis][0]
-            for timestamp, value in zip(self.timestamps, data[axis]):
-                if timestamp - last_timestamp > 1:
-                    timestamps_lost_data.append(last_timestamp)
-                    timestamps_lost_data.append(timestamp)
-                    points_lost_data.append(last_value)
-                    points_lost_data.append(value)
+            last_counter = self.data["counter"][0]
+            for counter, timestamp, value in zip(
+                self.data["counter"], self.timestamps, data[axis]
+            ):
+                if counter == last_counter:
+                    continue
 
+                lost_packets = (counter - last_counter) % 256 - 1
+
+                if lost_packets > 0:
+                    timestamps_lost_data[axis].append(last_timestamp)
+                    timestamps_lost_data[axis].append(timestamp)
+                    points_lost_data[axis].append(last_value)
+                    points_lost_data[axis].append(value)
+
+                last_counter = counter
                 last_timestamp = timestamp
                 last_value = value
 
         for axis in self.axes:
             plotter_function(self.timestamps, data[axis], label=axis)
-            if points_lost_data:
+            if points_lost_data[axis]:
                 self.subplot.plot(
-                    timestamps_lost_data,
-                    points_lost_data,
+                    timestamps_lost_data[axis],
+                    points_lost_data[axis],
                     label=f"Lost Data {axis}",
                     color="red",
                 )
