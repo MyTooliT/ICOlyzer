@@ -105,7 +105,7 @@ def main():
                 print(
                     f"{lost_packets:3} Packets lost after "
                     f"{loss_timestamp_s:6.3f} seconds - No values for "
-                    f"{duration_last_packet_ms:3.0f} milliseconds"
+                    f"{duration_last_packet_ms:3.1f} milliseconds"
                 )
 
             packet_loss += lost_packets
