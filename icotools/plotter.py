@@ -13,8 +13,8 @@ from dateutil.parser import isoparse
 from pathlib import Path
 from sys import stderr
 
-import matplotlib.pyplot as plt
-import numpy as np
+from matplotlib.pyplot import show, subplots
+from numpy import log10, power
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.ticker import FuncFormatter
 from pandas import read_hdf
@@ -95,7 +95,7 @@ class Plotter:
             plots = 2
             print(f"Unable to calculate IFT value: {error}", file=stderr)
 
-        figure, self.figure_axes = plt.subplots(plots, 1, figsize=(20, 10))
+        figure, self.figure_axes = subplots(plots, 1, figsize=(20, 10))
         figure.canvas.manager.set_window_title("Acceleration Measurement")
         figure.suptitle(
             datetime.fromtimestamp(self.timestamp_start).strftime("%c"),
@@ -125,7 +125,7 @@ class Plotter:
         )
 
         std_dev = stats.loc["std", self.axes]
-        snr = 20 * np.log10(std_dev / (np.power(2, 16) - 1))
+        snr = 20 * log10(std_dev / (power(2, 16) - 1))
         print(
             f"SNR of this file is : {min(snr):.2f} dB and {max(snr):.2f} dB "
             f"@ {self.sample_rate / 1000:.2f} kHz"
@@ -187,7 +187,7 @@ class Plotter:
             pdf.close()
             print(f"Stored plotter output in “{self.output_filepath}”")
         else:
-            plt.show()
+            show()
 
 
 # -- Main ---------------------------------------------------------------------
