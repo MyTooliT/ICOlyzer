@@ -124,14 +124,14 @@ class Plotter:
     def _init_plot(self) -> None:
         """Initialize graphical output"""
 
-        figure, axes = plt.subplots(self.plots, 1, figsize=(20, 10))
+        figure, self.figure_axes = plt.subplots(
+            self.plots, 1, figsize=(20, 10)
+        )
         figure.canvas.manager.set_window_title("Acceleration Measurement")
         figure.suptitle(
             datetime.fromtimestamp(self.timestamp_start).strftime("%c"),
             fontsize=20,
         )
-
-        self.figure_axes = axes
 
     def _plot_time(self, data, ylabel: str) -> None:
         """Plot time based data"""
