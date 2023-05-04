@@ -13,9 +13,10 @@ from dateutil.parser import isoparse
 from pathlib import Path
 from sys import stderr
 
-from matplotlib.pyplot import show, subplots
 from numpy import log10, power
+from matplotlib.collections import LineCollection
 from matplotlib.backends.backend_pdf import PdfPages
+from matplotlib.pyplot import show, subplots
 from matplotlib.ticker import FuncFormatter
 from pandas import read_hdf
 from tables import open_file
@@ -162,8 +163,9 @@ class Plotter:
             self.subplot.scatter if self.args.scatter else self.subplot.plot
         )
 
-        points_lost_data = {axis: [] for axis in self.axes}
-        timestamps_lost_data = {axis: [] for axis in self.axes}
+        lost_data_lines: dict[
+            str, list[tuple[tuple[int, int], tuple[int, int]]]
+        ] = {axis: [] for axis in self.axes}
         for axis in self.axes:
             last_timestamp = self.timestamps[0]
             last_value = data[axis][0]
@@ -171,16 +173,13 @@ class Plotter:
             for counter, timestamp, value in zip(
                 self.data["counter"], self.timestamps, data[axis]
             ):
-                if counter == last_counter:
-                    continue
+                if counter != last_counter:
+                    lost_packets = (counter - last_counter) % 256 - 1
 
-                lost_packets = (counter - last_counter) % 256 - 1
-
-                if lost_packets > 0:
-                    timestamps_lost_data[axis].append(last_timestamp)
-                    timestamps_lost_data[axis].append(timestamp)
-                    points_lost_data[axis].append(last_value)
-                    points_lost_data[axis].append(value)
+                    if lost_packets > 0:
+                        lost_data_lines[axis].append(
+                            ((last_timestamp, last_value), (timestamp, value))
+                        )
 
                 last_counter = counter
                 last_timestamp = timestamp
@@ -188,15 +187,15 @@ class Plotter:
 
         for axis in self.axes:
             plotter_function(self.timestamps, data[axis], label=axis)
-            if points_lost_data[axis]:
-                self.subplot.plot(
-                    timestamps_lost_data[axis],
-                    points_lost_data[axis],
-                    label=f"Lost Data {axis}",
-                    color="red",
-                )
             self.subplot.set_xlabel("Time")
             self.subplot.set_ylabel(ylabel)
+
+        for axis, lines in lost_data_lines.items():
+            if len(lines) <= 0:
+                continue
+
+            self.subplot.add_collection(LineCollection(lines, color="red"))
+
         self.subplot.legend()
 
         self._next_plot()

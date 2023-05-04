@@ -34,6 +34,7 @@ pip uninstall -y icotools
 - Opens a plotter window visualizing the recorded signal
 - Plots the power spectral density graph for the recorded signal
 - Prints the IFT value of the signal
+- Adds red lines for time periods containing missing data values
 
 ### Usage
 
