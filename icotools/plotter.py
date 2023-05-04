@@ -62,7 +62,17 @@ def get_arguments() -> Namespace:
 
 
 class Plotter:
-    def __init__(self, args: Namespace):
+    def __init__(self, args: Namespace) -> None:
+        """Initialize plotter object using given arguments
+
+        Parameters
+        ----------
+
+        args:
+            Parsed command line arguments
+
+        """
+
         filepath = Path(args.input)
         self.args = args
         self.output_filepath = filepath.with_suffix(".pdf")
