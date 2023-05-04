@@ -161,8 +161,31 @@ class Plotter:
         plotter_function = (
             self.subplot.scatter if self.args.scatter else self.subplot.plot
         )
+
+        points_lost_data = []
+        timestamps_lost_data = []
+        for axis in self.axes:
+            last_timestamp = self.timestamps[0]
+            last_value = data[axis][0]
+            for timestamp, value in zip(self.timestamps, data[axis]):
+                if timestamp - last_timestamp > 1:
+                    timestamps_lost_data.append(last_timestamp)
+                    timestamps_lost_data.append(timestamp)
+                    points_lost_data.append(last_value)
+                    points_lost_data.append(value)
+
+                last_timestamp = timestamp
+                last_value = value
+
         for axis in self.axes:
             plotter_function(self.timestamps, data[axis], label=axis)
+            if points_lost_data:
+                self.subplot.plot(
+                    timestamps_lost_data,
+                    points_lost_data,
+                    label=f"Lost Data {axis}",
+                    color="red",
+                )
             self.subplot.set_xlabel("Time")
             self.subplot.set_ylabel(ylabel)
         self.subplot.legend()
