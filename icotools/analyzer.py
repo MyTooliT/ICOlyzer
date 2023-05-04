@@ -87,7 +87,7 @@ def main():
                 continue  # Skip packages with same counter value
 
             lost_packets = (counter - last_counter) % 256 - 1
-            duration_last_packet_ms = (timestamp - last_timestamp) / 100
+            duration_last_packet_ms = (timestamp - last_timestamp) / 1000
             loss_timestamp_s = last_timestamp / 1_000_000
 
             if duration_last_packet_ms > 1000:

@@ -16,15 +16,15 @@ Test detailed output
 
   $ icoanalyzer -d examples/log-x.hdf5
   Input: examples/log-x.hdf5
-   64 Packets lost after  2.979 seconds - No values for   3 milliseconds
-   64 Packets lost after  3.274 seconds - No values for   3 milliseconds
-   64 Packets lost after  7.089 seconds - No values for   3 milliseconds
-   64 Packets lost after 11.192 seconds - No values for   3 milliseconds
-   64 Packets lost after 16.931 seconds - No values for   3 milliseconds
-   64 Packets lost after 22.149 seconds - No values for   3 milliseconds
-   64 Packets lost after 22.782 seconds - No values for   2 milliseconds
-   64 Packets lost after 25.781 seconds - No values for   3 milliseconds
-   64 Packets lost after 29.623 seconds - No values for   2 milliseconds
+   64 Packets lost after  2.979 seconds - No values for   0 milliseconds
+   64 Packets lost after  3.274 seconds - No values for   0 milliseconds
+   64 Packets lost after  7.089 seconds - No values for   0 milliseconds
+   64 Packets lost after 11.192 seconds - No values for   0 milliseconds
+   64 Packets lost after 16.931 seconds - No values for   0 milliseconds
+   64 Packets lost after 22.149 seconds - No values for   0 milliseconds
+   64 Packets lost after 22.782 seconds - No values for   0 milliseconds
+   64 Packets lost after 25.781 seconds - No values for   0 milliseconds
+   64 Packets lost after 29.623 seconds - No values for   0 milliseconds
   Packet Loss: 0.61%
   Data Points:
     X-Axis: 127772 Samples were over 1g or below -1g (45.31%)
