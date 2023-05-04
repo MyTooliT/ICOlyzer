@@ -94,7 +94,6 @@ class Plotter:
         except IFTLibraryException as error:
             plots = 2
             print(f"Unable to calculate IFT value: {error}", file=stderr)
-        self.current_plot = 0
 
         figure, self.figure_axes = plt.subplots(plots, 1, figsize=(20, 10))
         figure.canvas.manager.set_window_title("Acceleration Measurement")
@@ -102,6 +101,10 @@ class Plotter:
             datetime.fromtimestamp(self.timestamp_start).strftime("%c"),
             fontsize=20,
         )
+
+        # Used to skip to next subplot
+        self.current_plot = 0
+        self.subplot = self.figure_axes[self.current_plot]
 
     def print_info(self) -> None:
         """Print information about measurement data"""
@@ -128,11 +131,17 @@ class Plotter:
             f"@ {self.sample_rate / 1000:.2f} kHz"
         )
 
+    def _next_plot(self):
+        """Activate next subplot"""
+
+        if self.current_plot + 1 < len(self.figure_axes):
+            self.current_plot += 1
+            self.subplot = self.figure_axes[self.current_plot]
+
     def _plot_time(self, data, ylabel: str) -> None:
         """Plot time based data"""
 
-        subplot = self.figure_axes[self.current_plot]
-        subplot.xaxis.set_major_formatter(
+        self.subplot.xaxis.set_major_formatter(
             FuncFormatter(
                 lambda x, position: datetime.fromtimestamp(x).strftime(
                     "%H:%M:%S.%f"
@@ -140,29 +149,29 @@ class Plotter:
             )
         )
         plotter_function = (
-            subplot.scatter if self.args.scatter else subplot.plot
+            self.subplot.scatter if self.args.scatter else self.subplot.plot
         )
         for axis in self.axes:
             plotter_function(self.timestamps, data[axis], label=axis)
-            subplot.set_xlabel("Time")
-            subplot.set_ylabel(ylabel)
-        subplot.legend()
+            self.subplot.set_xlabel("Time")
+            self.subplot.set_ylabel(ylabel)
+        self.subplot.legend()
 
-        self.current_plot += 1
+        self._next_plot()
 
     def _plot_psd(self) -> None:
         "Plot power spectral density data"
 
-        subplot = self.figure_axes[self.current_plot]
         for axis in self.axes:
-            subplot.psd(
+            self.subplot.psd(
                 self.data[axis] - self.data[axis].mean(),
                 512,
                 self.sample_rate,
                 label=axis,
             )
-        subplot.legend()
-        self.current_plot += 1
+        self.subplot.legend()
+
+        self._next_plot()
 
     def plot(self) -> None:
         """Visualize measurement data"""
