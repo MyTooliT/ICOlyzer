@@ -51,7 +51,8 @@ the script will load this file and open the graph of the recording:
 The calculated SNR will be written to the standard output.
 
 ```
-SNR of this file is : -106.50 dB and -106.50 dB @ 9.40 kHz
+SNR:
+  X: -106.50 dB @ 9.40 kHz
 ```
 
 With closing the plotter the script will finish and the command line will be ready for a new command. For running the script with another input-file use one of the parameters described below.
@@ -111,7 +112,7 @@ the script will run and analyze `log.hdf5`. The script will then list the packet
 Input: log.hdf5
 Packet Loss: 0.61%
 Data Points:
-  X-Axis: 127772 Samples were over 1g or below -1g (45.31%)
+  X-Axis: 282021 Samples - 127772 Samples were over 1g or below -1g (45.31%)
 Measurement Date: 2021-12-20T11:00:21.489537
 Runtime: 29.996 seconds
 ```
@@ -138,8 +139,8 @@ you can change the file the script analyzes:
 Input: examples/log-xz.hdf5
 Packet Loss: 24.67%
 Data Points:
-  X-Axis: 106992 Samples were over 1g or below -1g (100.0%)
-  Z-Axis: 106992 Samples were over 1g or below -1g (100.0%)
+  X-Axis: 106992 Samples - 106992 Samples were over 1g or below -1g (100.0%)
+  Z-Axis: 106992 Samples - 106992 Samples were over 1g or below -1g (100.0%)
 Measurement Date: 2022-01-03T07:52:29.573573
 Runtime: 29.993 seconds
 ```
@@ -162,18 +163,18 @@ you can activate a more detailed information about the packet loss:
 
 ```
 Input: log.hdf5
- 64 Packets lost after  2.979 seconds - No values for   3 milliseconds
- 64 Packets lost after  3.274 seconds - No values for   3 milliseconds
- 64 Packets lost after  7.089 seconds - No values for   3 milliseconds
- 64 Packets lost after 11.192 seconds - No values for   3 milliseconds
- 64 Packets lost after 16.931 seconds - No values for   3 milliseconds
- 64 Packets lost after 22.149 seconds - No values for   3 milliseconds
- 64 Packets lost after 22.782 seconds - No values for   2 milliseconds
- 64 Packets lost after 25.781 seconds - No values for   3 milliseconds
- 64 Packets lost after 29.623 seconds - No values for   2 milliseconds
+ 64 Packets lost after  2.979 seconds - No values for 0.3 milliseconds
+ 64 Packets lost after  3.274 seconds - No values for 0.3 milliseconds
+ 64 Packets lost after  7.089 seconds - No values for 0.3 milliseconds
+ 64 Packets lost after 11.192 seconds - No values for 0.3 milliseconds
+ 64 Packets lost after 16.931 seconds - No values for 0.3 milliseconds
+ 64 Packets lost after 22.149 seconds - No values for 0.3 milliseconds
+ 64 Packets lost after 22.782 seconds - No values for 0.2 milliseconds
+ 64 Packets lost after 25.781 seconds - No values for 0.3 milliseconds
+ 64 Packets lost after 29.623 seconds - No values for 0.2 milliseconds
 Packet Loss: 0.61%
 Data Points:
-  X-Axis: 127772 Samples were over 1g or below -1g (45.31%)
+  X-Axis: 282021 Samples - 127772 Samples were over 1g or below -1g (45.31%)
 Measurement Date: 2021-12-20T11:00:21.489537
 Runtime: 29.996 seconds
 ```
@@ -186,17 +187,21 @@ With "-m VALUE" you can change the minimal value for datapoints to be checked. A
 
 ##### `-v`, `--max`
 
-With "-v VALUE" you can change the maximum value for datapoints to be checked. All values above this parameter will be counted as out of the borders.
+With "-v VALUE":
+
+```sh
+icoanalyzer -m -0.42 -v 2.55
+```
+
+you can change the maximum value for datapoints to be checked. All values above this parameter will be counted as out of the borders.
 
 ```
-> icoanalyzer -m -0.42 -v 2.55
-MINIMUM CHANGED
-MAXIMUM CHANGED
-Input file is: log.hdf5
-PACKETLOSS:
-0.61%
-DATAPOINTS:
-X-AXIS: 269420 Samples were over 2.55g or below -0.42g (95.53%)
+Input: log-x.hdf5
+Packet Loss: 0.61%
+Data Points:
+  X-Axis: 282021 Samples - 269420 Samples were over 2.55g or below -0.42g (95.53%)
+Measurement Date: 2021-12-20T11:00:21.489537
+Runtime: 29.996 seconds
 ```
 
 <a name="readme:section:icoconverter"></a>
