@@ -137,9 +137,9 @@ def main():
             )
             indent = " " * 2
             print(
-                f"{indent}{axis.upper()}-Axis: {out_of_range[axis]} "
-                f"Samples were over {test_value_max}g or below "
-                f"{test_value_min}g ({percent_overflow}%)"
+                f"{indent}{axis.upper()}-Axis: {len(data.get(axis))} Samples "
+                f"- {out_of_range[axis]} Samples were over {test_value_max}g "
+                f"or below {test_value_min}g ({percent_overflow}%)"
             )
 
         with open_file(filepath, mode="r") as file:

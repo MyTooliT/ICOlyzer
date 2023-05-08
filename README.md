@@ -93,6 +93,7 @@ Use a scatter plot (instead of a line plot) to visualize the measurement data
 ## ICOanalyzer
 
 - Measures packet-loss of the recorded signal
+- Print number of sample points/channel
 - Measures how many datapoints are outside of a given minimum and maximum value
 - Prints warnings about long durations (more than 1 second) between consecutive timestamps
 
