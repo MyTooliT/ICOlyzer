@@ -23,7 +23,8 @@ Store standard plotter output as PDF
 
   $ icoplotter examples/log-x.hdf5 --print
   Avg X: 0
-  SNR of this file is : -106.50 dB and -106.50 dB @ 9.40 kHz
+  SNR:
+    X: -106.50 dB @ 9.40 kHz
   Stored plotter output in .+ (re)
   $ mv examples/log-x.pdf examples/log-x-without-highlight.pdf
 
@@ -31,7 +32,8 @@ Highlight time periods containing lost data
 
   $ icoplotter --loss examples/log-x.hdf5 --print
   Avg X: 0
-  SNR of this file is : -106.50 dB and -106.50 dB @ 9.40 kHz
+  SNR:
+    X: -106.50 dB @ 9.40 kHz
   Stored plotter output in .+ (re)
 
 Files with and without highlight must be different for given data
@@ -43,7 +45,11 @@ Store file using scatter plot
 
   $ icoplotter -ps examples/log-xy.hdf5
   Avg X: -2 Avg Y: -99
-  SNR of this file is : -103.56 dB and -94.84 dB @ 3.54 kHz
+  SNR:
+    X: -103.56 dB @ 3.54 kHz
+    Y: -94.84 dB @ 3.54 kHz
+    Minimum: -103.56 dB
+    Maximum: -94.84 dB
   Stored plotter output in .+ (re)
 
   $ ls examples/*.pdf

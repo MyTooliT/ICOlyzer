@@ -143,10 +143,16 @@ class Plotter:
 
         std_dev = stats.loc["std", self.axes]
         snr = 20 * log10(std_dev / (power(2, 16) - 1))
-        print(
-            f"SNR of this file is : {min(snr):.2f} dB and {max(snr):.2f} dB "
-            f"@ {self.sample_rate / 1000:.2f} kHz"
-        )
+        print("SNR:")
+        indent = " " * 2
+        for axis in self.axes:
+            print(
+                f"{indent}{axis.upper()}: {snr[axis]:.2f} dB @ "
+                f"{self.sample_rate / 1000:.2f} kHz"
+            )
+        if len(snr) >= 2:
+            print(f"{indent}Minimum: {min(snr):.2f} dB")
+            print(f"{indent}Maximum: {max(snr):.2f} dB")
 
     def _next_plot(self):
         """Activate next subplot"""
