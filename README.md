@@ -34,7 +34,7 @@ pip uninstall -y icotools
 - Opens a plotter window visualizing the recorded signal
 - Plots the power spectral density graph for the recorded signal
 - Prints the IFT value of the signal
-- Adds red lines for time periods containing missing data values
+- Adds optional red lines for time periods containing missing data values
 
 ### Usage
 
@@ -44,9 +44,9 @@ The ICOplotter script looks for a `log.hdf5` file in the current working directo
 icoplotter
 ```
 
-the script will load this file and open the graph of the recording
+the script will load this file and open the graph of the recording:
 
-<img src="assets/Plotter.webp" alt="Plotter" style="zoom:40%;" />
+<img src="assets/Plotter.webp" alt="Plotter window" style="zoom:40%;" />
 
 The calculated SNR will be written to the standard output.
 
@@ -56,11 +56,7 @@ SNR of this file is : -106.50 dB and -106.50 dB @ 9.40 kHz
 
 With closing the plotter the script will finish and the command line will be ready for a new command. For running the script with another input-file use one of the parameters described below.
 
-#### Parameters
-
-##### `-h`, `--help`
-
-Prints the help menu of the command
+#### Positional Parameters
 
 ##### Filepath
 
@@ -71,6 +67,18 @@ Example:
 ```sh
 icoplotter HDF5/log-x.hdf5
 ```
+
+#### Optional Parameters
+
+##### `-h`, `--help`
+
+Prints the help menu of the command
+
+##### `-l`, `--loss`
+
+Highlight periods containing lost data using red lines:
+
+<img src="assets/Plotter-Data-Loss.webp" alt="Data plot containing red lines that highlight periods with data loss" style="zoom:40%;" />
 
 ##### `-p`, `--print`
 

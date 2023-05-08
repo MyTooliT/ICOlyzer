@@ -47,6 +47,12 @@ def get_arguments() -> Namespace:
         help="measurement data in HDF5 format",
     )
     parser.add_argument(
+        "-l",
+        "--loss",
+        action="store_true",
+        help="visualize time periods containing lost data",
+    )
+    parser.add_argument(
         "-s",
         "--scatter",
         action="store_true",
@@ -163,38 +169,42 @@ class Plotter:
             self.subplot.scatter if self.args.scatter else self.subplot.plot
         )
 
-        lost_data_lines: dict[
-            str, list[tuple[tuple[int, int], tuple[int, int]]]
-        ] = {axis: [] for axis in self.axes}
-        for axis in self.axes:
-            last_timestamp = self.timestamps[0]
-            last_value = data[axis][0]
-            last_counter = self.data["counter"][0]
-            for counter, timestamp, value in zip(
-                self.data["counter"], self.timestamps, data[axis]
-            ):
-                if counter != last_counter:
-                    lost_packets = (counter - last_counter) % 256 - 1
-
-                    if lost_packets > 0:
-                        lost_data_lines[axis].append(
-                            ((last_timestamp, last_value), (timestamp, value))
-                        )
-
-                last_counter = counter
-                last_timestamp = timestamp
-                last_value = value
-
         for axis in self.axes:
             plotter_function(self.timestamps, data[axis], label=axis)
             self.subplot.set_xlabel("Time")
             self.subplot.set_ylabel(ylabel)
 
-        for axis, lines in lost_data_lines.items():
-            if len(lines) <= 0:
-                continue
+        if self.args.loss:
+            lost_data_lines: dict[
+                str, list[tuple[tuple[int, int], tuple[int, int]]]
+            ] = {axis: [] for axis in self.axes}
+            for axis in self.axes:
+                last_timestamp = self.timestamps[0]
+                last_value = data[axis][0]
+                last_counter = self.data["counter"][0]
+                for counter, timestamp, value in zip(
+                    self.data["counter"], self.timestamps, data[axis]
+                ):
+                    if counter != last_counter:
+                        lost_packets = (counter - last_counter) % 256 - 1
 
-            self.subplot.add_collection(LineCollection(lines, color="red"))
+                        if lost_packets > 0:
+                            lost_data_lines[axis].append(
+                                (
+                                    (last_timestamp, last_value),
+                                    (timestamp, value),
+                                )
+                            )
+
+                    last_counter = counter
+                    last_timestamp = timestamp
+                    last_value = value
+
+            for axis, lines in lost_data_lines.items():
+                if len(lines) <= 0:
+                    continue
+
+                self.subplot.add_collection(LineCollection(lines, color="red"))
 
         self.subplot.legend()
 
