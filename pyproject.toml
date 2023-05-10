@@ -34,7 +34,7 @@ keywords = [
     "sth",
     "tool-holder",
 ]
-name = "icotools"
+name = "icolyzer"
 readme = "README.md"
 requires-python = ">=3.9"
 version = "1.4.0"
@@ -52,12 +52,12 @@ test = [
 ]
 
 [project.scripts]
-icoanalyzer = "icotools.analyzer:main"
-icoconverter = "icotools.converter:main"
-icoplotter = "icotools.plotter:main"
+icoanalyzer = "icolyzer.analyzer:main"
+icoconverter = "icolyzer.converter:main"
+icoplotter = "icolyzer.plotter:main"
 
 [project.urls]
-Source = "https://github.com/mytoolit/ICOtools/"
+Source = "https://github.com/mytoolit/ICOlyzer/"
 
 [tool.black]
 line-length = 79
@@ -74,10 +74,10 @@ addopts = "--doctest-modules -x --ignore-glob='*._*.py'"
 minversion = "6.0"
 
 [tool.setuptools.packages.find]
-include = ["icotools*"]
+include = ["icolyzer*"]
 
 [tool.setuptools.package-data]
-"icotools" = ["*.dll", "*.dylib","*.so"]
+"icolyzer" = ["*.dll", "*.dylib","*.so"]
 
 [tool.yapfignore]
 # Ignore macOS metadata files

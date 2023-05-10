@@ -41,7 +41,7 @@ class IFTLibrary:
 
     if exception is None:
         with as_file(
-            files("icotools").joinpath(filename_library)
+            files("icolyzer").joinpath(filename_library)
         ) as filepath_library:
             try:
                 library = CDLL(str(filepath_library))

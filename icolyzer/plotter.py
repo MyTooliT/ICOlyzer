@@ -21,7 +21,7 @@ from matplotlib.ticker import FuncFormatter
 from pandas import read_hdf
 from tables import open_file
 
-from icotools.cli import file_exists
+from icolyzer.cli import file_exists
 from .iftlibrary import IFTLibrary, IFTLibraryException
 
 

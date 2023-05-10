@@ -1,4 +1,4 @@
-# ICOtools
+# ICOlyzer
 
 Auxiliary set of tools to analyze data from the [ICOtronic system](https://github.com/MyTooliT/ICOc):
 
@@ -17,13 +17,13 @@ Auxiliary set of tools to analyze data from the [ICOtronic system](https://githu
 Please execute the following command:
 
 ```sh
-pip install --upgrade git+https://github.com/mytoolit/ICOtools
+pip install --upgrade git+https://github.com/mytoolit/ICOlyzer
 ```
 
 ### Remove
 
 ```sh
-pip uninstall -y icotools
+pip uninstall -y icolyzer
 ```
 
 <a name="readme:section:icoplotter"></a>

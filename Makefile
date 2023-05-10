@@ -17,7 +17,7 @@ all: check test
 
 check:
 	flake8 .
-	mypy icotools
+	mypy icolyzer
 
 test: pytest-$(OPERATING_SYSTEM)
 
