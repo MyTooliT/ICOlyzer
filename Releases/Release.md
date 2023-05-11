@@ -5,7 +5,7 @@ To release a new version of ICOlyzer, please use the following steps:
 1. Check that the [**CI jobs** for the `main` branch finish successfully](https://github.com/MyTooliT/ICOlyzer/actions)
 2. Create a new release [here](https://github.com/MyTooliT/ICOlyzer/releases/new)
 
-   1. Open the [release notes](Releases) for the latest version
+   1. Open the [release notes](.) for the latest version (e.g. [`1.5.0.md`](1.5.0.md))
    2. Replace links with a permanent version:
 
       For example instead of
