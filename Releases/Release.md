@@ -22,7 +22,7 @@ To release a new version of ICOlyzer, please use the following steps:
    7. Remove the very first header
    8. Check that all links work correctly
 
-3. Change the value of `version` in `pyproject.toml` and commit your changes
+3. Change the value of `version` in [`pyproject.toml`](../pyproject.toml) and commit your changes
 4. Push the latest commits
 5. Build and upload the package to PyPI:
 
