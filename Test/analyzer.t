@@ -42,3 +42,11 @@ Test data file containing data for multiple axes
     Z-Axis: 94767 Samples - 94767 Samples were over 1g or below -1g (100.0%)
   Measurement Date: 2021-12-27T09:28:12.636001
   Runtime: 29.991 seconds
+
+Test data file containing broken data (non-monotonic timestamps)
+
+  $ icoanalyzer -d examples/broken.hdf5 >/dev/null
+  Latest data at 0.000000 seconds is older than data before at 4.858067 seconds
+  Latest data at 0.000000 seconds is older than data before at 4.855696 seconds
+  Latest data at 0.000000 seconds is older than data before at 0.858623 seconds
+  Latest data at 0.000000 seconds is older than data before at 0.820173 seconds

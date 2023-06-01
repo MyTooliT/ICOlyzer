@@ -10,6 +10,7 @@ from pathlib import Path
 from sys import stderr
 
 import pandas as pd
+from rich import print
 from tables import open_file
 
 
@@ -58,6 +59,22 @@ def get_arguments():
     return args.inputs, args.min, args.max, args.details
 
 
+def print_error(text: str) -> None:
+    """Print warning/error messages
+
+    The text will be printed in bold red to the standard error output
+
+    Arguments
+    ---------
+
+    text:
+        The text that should be printed
+
+    """
+
+    print("[bold red]" + text + "[/bold red]", file=stderr)
+
+
 def main():
     """
     Main function of the ICOanalyzer.
@@ -84,7 +101,7 @@ def main():
         packets = 0
         for counter, timestamp in zip(data["counter"], data["timestamp"]):
             if counter == last_counter:
-                continue  # Skip packages with same counter value
+                continue  # Skip rows with same counter/timestamp value
 
             lost_packets = (counter - last_counter) % 256 - 1
             duration_last_packet_ms = (timestamp - last_timestamp) / 1000
@@ -92,24 +109,33 @@ def main():
 
             if duration_last_packet_ms > 1000:
                 duration_last_packet_s = duration_last_packet_ms / 1000
-                print(
-                    (
-                        "No measurement data for "
-                        f"{duration_last_packet_s:.3f} seconds after "
-                        f"{loss_timestamp_s} seconds"
-                    ),
-                    file=stderr,
+                print_error(
+                    "No measurement data for "
+                    f"{duration_last_packet_s:.3f} seconds after "
+                    f"{loss_timestamp_s} seconds"
                 )
 
             if lost_packets != 0 and details_on is True:
-                print(
+                message = (
                     f"{lost_packets:3} Packets lost after "
-                    f"{loss_timestamp_s:6.3f} seconds - No values for "
-                    f"{duration_last_packet_ms:3.1f} milliseconds"
+                    f"{loss_timestamp_s:6.3f} seconds"
                 )
+                if duration_last_packet_ms > 0:
+                    message += (
+                        " - No values for "
+                        f"{duration_last_packet_ms:3.1f} milliseconds"
+                    )
+                print(message)
 
             packet_loss += lost_packets
             packets += lost_packets + 1
+
+            if timestamp < last_timestamp:
+                print_error(
+                    f"Latest data at {timestamp/1_000_000:.6f} seconds is "
+                    "older than data before at "
+                    f"{last_timestamp/1_000_000:.6f} seconds"
+                )
 
             last_timestamp = timestamp
             last_counter = counter
