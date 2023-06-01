@@ -26,5 +26,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@master
 
-      - name: Check source and run tests
-        uses: ./.github/actions/check-and-test
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@master
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install .[dev,test]
+
+      - name: Check code
+        run: make check
+
+      - name: Test code
+        run: make test
