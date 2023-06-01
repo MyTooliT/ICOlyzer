@@ -4,53 +4,23 @@ on:
   - push
 
 jobs:
-
-  linux:
-
-    name: 🐧 Linux
-    runs-on: ubuntu-latest
+  os-python-matrix:
     strategy:
       matrix:
+        os:
+          - name: macos
+            icon: 🍏
+          - name: ubuntu
+            icon: 🐧
+          - name: windows
+            icon: 🪟
         python-version:
           - '3.9'
           - '3.10'
           - '3.11'
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@master
-
-      - name: Check source and run tests
-        uses: ./.github/actions/check-and-test
-
-  macos:
-
-    name: 🍏 macOS
-    runs-on: macos-latest
-    strategy:
-      matrix:
-        python-version:
-          - '3.9'
-          - '3.10'
-          - '3.11'
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@master
-
-      - name: Check source and run tests
-        uses: ./.github/actions/check-and-test
-
-  windows:
-
-    name: 🪟 Windows
-    runs-on: windows-latest
-    strategy:
-      matrix:
-        python-version:
-          - '3.9'
-          - '3.10'
-          - '3.11'
+    runs-on: ${{ matrix.os.name }}-latest
+    name: ${{ matrix.os.icon }} Python ${{ matrix.python-version }}
 
     steps:
       - name: Checkout repository
