@@ -1,14 +1,8 @@
 # -- Variables -----------------------------------------------------------------
 
 ifeq ($(OS), Windows_NT)
-	OPERATING_SYSTEM := windows
-else
-	OS_NAME := $(shell uname -s)
-	ifeq ($(OS_NAME), Linux)
-		OPERATING_SYSTEM := linux
-	else
-		OPERATING_SYSTEM := mac
-	endif
+	# Disable Prysk Pytest plugin
+	export PYTEST_DISABLE_PLUGIN_AUTOLOAD := ""
 endif
 
 # -- Rules ---------------------------------------------------------------------
@@ -19,10 +13,5 @@ check:
 	flake8 .
 	mypy icolyzer
 
-test: pytest-$(OPERATING_SYSTEM)
-
-pytest-linux: pytest-mac
-pytest-mac:
+test:
 	pytest .
-pytest-windows:
-	pytest -p no:prysk .
