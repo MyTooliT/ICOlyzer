@@ -24,6 +24,7 @@ dependencies = [
   "pandas>=1.3.5",
   "tables>=3.7.0",
   "openpyxl",
+  "rich>=13.4.1",
 ]
 description = """Auxiliary set of tools to work with measurement data produced \
                  by the ICOtronic system"""
