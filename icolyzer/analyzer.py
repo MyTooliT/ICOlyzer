@@ -87,7 +87,7 @@ def main():
     Main function of the ICOanalyzer.
     """
 
-    filepaths, test_value_min, test_value_max, details_on, s_o = get_arguments()
+    filepaths, test_value_min, test_value_max, details_on, so = get_arguments()
 
     for filepath in filepaths:
         # Flush standard output to keep order with standard error output.
@@ -148,22 +148,22 @@ def main():
             last_counter = counter
 
         out_of_range = {"x": 0, "y": 0, "z": 0}
-        if s_o is True:
+        if so is True:
             offset = {"x": 0, "y": 0, "z": 0}
             sigma = {"x": 0, "y": 0, "z": 0}
         for axis in "xyz":
             acceleration_values = data.get(axis)
             if acceleration_values is None:
                 continue
-            if s_o is True:
+            if so is True:
                 data_sum = sum(acceleration_values)
                 offset[axis] = data_sum / len(acceleration_values)
             for datapoint in acceleration_values:
                 if datapoint > test_value_max or datapoint < test_value_min:
                     out_of_range[axis] += 1
-                if s_o is True:
+                if so is True:
                     sigma[axis] += (datapoint-offset[axis])**2
-            if s_o is True:
+            if so is True:
                 sigma[axis] = sigma[axis] / len(acceleration_values)
 
         packet_loss = round((packet_loss / packets) * 100, 2)
@@ -184,11 +184,11 @@ def main():
                 f"- {out_of_range[axis]} Samples were over {test_value_max}g "
                 f"or below {test_value_min}g ({percent_overflow}%)"
             )
-            if s_o is True:
+            if so is True:
                 print("The average value of the " + axis
-                + " axis was: " + str((round(offset[axis], 2))) + "g")
-                print("The standard deviation(σ²) of the " + axis 
-                + " axis was: " + str((round(sigma[axis], 7))))
+                      + " axis was: " + str((round(offset[axis], 2))) + "g")
+                print("The standard deviation(σ²) of the " + axis
+                      + " axis was: " + str((round(sigma[axis], 7))))
 
         with open_file(filepath, mode="r") as file:
             start_time = file.get_node("/acceleration").attrs["Start_Time"]
