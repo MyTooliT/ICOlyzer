@@ -184,7 +184,7 @@ def main():
                 f"or below {test_value_min}g ({percent_overflow}%)"
             )
             if sigma_on == True:
-                print("The Offset of the " + axis + " axis was: " + str((round(offset[axis], 2))) +"g")
+                print("The average value of the " + axis + " axis was: " + str((round(offset[axis], 2))) +"g")
                 print("The standard deviation(σ²) of the " + axis + " axis was: " + str((round(sigma[axis], 7))))
             
 
