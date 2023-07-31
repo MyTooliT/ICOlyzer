@@ -7,6 +7,8 @@ endif
 
 # -- Rules ---------------------------------------------------------------------
 
+.PHONY: all check test
+
 all: check test
 
 check:
