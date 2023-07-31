@@ -50,3 +50,33 @@ Test data file containing broken data (non-monotonic timestamps)
   Latest data at 0.000000 seconds is older than data before at 4.855696 seconds
   Latest data at 0.000000 seconds is older than data before at 0.858623 seconds
   Latest data at 0.000000 seconds is older than data before at 0.820173 seconds
+
+Test average value and sigma output (single axis)
+
+  $ icoanalyzer -s examples/log-x.hdf5
+  Input: examples/log-x.hdf5
+  Packet Loss: 0.61%
+  Data Points:
+    X-Axis: 282021 Samples - 127772 Samples were over 1g or below -1g (45.31%)
+  The average value of the x axis was: -0.96g
+  The standard deviation(σ²) of the x axis was: 0.0962528
+  Measurement Date: 2021-12-20T11:00:21.489537
+  Runtime: 29.996 seconds
+
+Test average value and sigma output (multiple axis)
+
+  $ icoanalyzer -s examples/log-xyz.hdf5
+  Input: examples/log-xyz.hdf5
+  Packet Loss: 0.0%
+  Data Points:
+    X-Axis: 94767 Samples - 94564 Samples were over 1g or below -1g (99.79%)
+  The average value of the x axis was: -2.12g
+  The standard deviation(σ²) of the x axis was: 0.4838315
+    Y-Axis: 94767 Samples - 94767 Samples were over 1g or below -1g (100.0%)
+  The average value of the y axis was: -99.96g
+  The standard deviation(σ²) of the y axis was: 3.2213167
+    Z-Axis: 94767 Samples - 94767 Samples were over 1g or below -1g (100.0%)
+  The average value of the z axis was: -99.25g
+  The standard deviation(σ²) of the z axis was: 0.2494332
+  Measurement Date: 2021-12-27T09:28:12.636001
+  Runtime: 29.991 seconds
