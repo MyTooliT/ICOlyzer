@@ -48,7 +48,7 @@ dev = [
     "toml",
 ]
 test = [
-    "prysk>=0.13.1",
+    "prysk[pytest-plugin]>=0.13.1",
     "pytest",
 ]
 
