@@ -4,7 +4,6 @@ Created on Fri Mar 27 08:16:22 2020
 @author: Clemens
 """
 
-
 import argparse
 from pathlib import Path
 from sys import stderr
@@ -162,7 +161,7 @@ def main():
                 if datapoint > test_value_max or datapoint < test_value_min:
                     out_of_range[axis] += 1
                 if so is True:
-                    sigma[axis] += (datapoint-offset[axis])**2
+                    sigma[axis] += (datapoint - offset[axis]) ** 2
             if so is True:
                 sigma[axis] = sigma[axis] / len(acceleration_values)
 
@@ -185,10 +184,19 @@ def main():
                 f"or below {test_value_min}g ({percent_overflow}%)"
             )
             if so is True:
-                print("The average value of the " + axis
-                      + " axis was: " + str((round(offset[axis], 2))) + "g")
-                print("The standard deviation(σ²) of the " + axis
-                      + " axis was: " + str((round(sigma[axis], 7))))
+                print(
+                    "The average value of the "
+                    + axis
+                    + " axis was: "
+                    + str((round(offset[axis], 2)))
+                    + "g"
+                )
+                print(
+                    "The standard deviation(σ²) of the "
+                    + axis
+                    + " axis was: "
+                    + str((round(sigma[axis], 7)))
+                )
 
         with open_file(filepath, mode="r") as file:
             start_time = file.get_node("/acceleration").attrs["Start_Time"]

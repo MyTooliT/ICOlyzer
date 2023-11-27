@@ -3,6 +3,7 @@ Created on Wed Mar 30 08:54:27 2022
 
 @author: Clemens
 """
+
 import argparse
 import glob
 from pathlib import Path
@@ -61,10 +62,8 @@ def main():
             print(f"Skipping non existing file “{filepath}”", file=stderr)
         else:
             print(
-                (
-                    f"Skipping “{filepath}” since it is "
-                    "neither a directory nor a file"
-                ),
+                f"Skipping “{filepath}” since it is "
+                "neither a directory nor a file",
                 file=stderr,
             )
 
