@@ -113,6 +113,7 @@ class Plotter:
             print(f"Unable to calculate IFT value: {error}", file=stderr)
 
         figure, self.figure_axes = subplots(plots, 1, figsize=(20, 10))
+        assert figure.canvas.manager is not None
         figure.canvas.manager.set_window_title("Acceleration Measurement")
         figure.suptitle(
             datetime.fromtimestamp(self.timestamp_start).strftime("%c"),
