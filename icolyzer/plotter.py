@@ -12,7 +12,6 @@ from datetime import datetime
 from pathlib import Path
 from sys import stderr
 
-from dateutil.parser import isoparse
 from numpy import log10, power
 from matplotlib.collections import LineCollection
 from matplotlib.backends.backend_pdf import PdfPages
@@ -93,7 +92,7 @@ class Plotter:
 
         # Convert timestamps (in μs since start) to absolute timestamps
         with open_file(filepath, mode="r") as file:
-            timestamp_start = isoparse(
+            timestamp_start = datetime.fromisoformat(
                 file.get_node("/acceleration").attrs["Start_Time"]
             ).timestamp()
         self.timestamps = (
