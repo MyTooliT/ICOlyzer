@@ -9,7 +9,7 @@ from pathlib import Path
 from sys import stderr
 
 import pandas as pd
-from rich import print
+from rich import print as rprint
 from tables import open_file
 
 
@@ -78,7 +78,10 @@ def print_error(text: str) -> None:
 
     """
 
-    print("[bold red]" + text + "[/bold red]", file=stderr)
+    rprint("[bold red]" + text + "[/bold red]", file=stderr)
+
+
+# pylint: disable=too-many-locals, too-many-branches, too-many-statements
 
 
 def main():
@@ -94,9 +97,9 @@ def main():
         # about missing measurement data should be in the correct order. This
         # is helpful if we analyze multiple files at once (e.g. using
         # `find … -exec`)
-        print(f"Input: {filepath}", flush=True)
+        rprint(f"Input: {filepath}", flush=True)
         if not Path(filepath).exists():
-            print(f"Skipping non-existent file “{filepath}”", file=stderr)
+            rprint(f"Skipping non-existent file “{filepath}”", file=stderr)
             continue
 
         data = pd.read_hdf(filepath, key="acceleration")
@@ -131,7 +134,7 @@ def main():
                         " - No values for "
                         f"{duration_last_packet_ms:3.1f} milliseconds"
                     )
-                print(message)
+                rprint(message)
 
             packet_loss += lost_packets
             packets += lost_packets + 1
@@ -166,9 +169,9 @@ def main():
                 sigma[axis] = sigma[axis] / len(acceleration_values)
 
         packet_loss = round((packet_loss / packets) * 100, 2)
-        print(f"Packet Loss: {packet_loss}%")
+        rprint(f"Packet Loss: {packet_loss}%")
 
-        print("Data Points:")
+        rprint("Data Points:")
         for axis in "xyz":
             acceleration_values = data.get(axis)
             if acceleration_values is None:
@@ -178,20 +181,20 @@ def main():
                 (out_of_range[axis] / len(acceleration_values)) * 100, 2
             )
             indent = " " * 2
-            print(
+            rprint(
                 f"{indent}{axis.upper()}-Axis: {len(data.get(axis))} Samples "
                 f"- {out_of_range[axis]} Samples were over {test_value_max}g "
                 f"or below {test_value_min}g ({percent_overflow}%)"
             )
             if so is True:
-                print(
+                rprint(
                     "The average value of the "
                     + axis
                     + " axis was: "
                     + str((round(offset[axis], 2)))
                     + "g"
                 )
-                print(
+                rprint(
                     "The standard deviation(σ²) of the "
                     + axis
                     + " axis was: "
@@ -201,11 +204,14 @@ def main():
         with open_file(filepath, mode="r") as file:
             start_time = file.get_node("/acceleration").attrs["Start_Time"]
 
-        print(f"Measurement Date: {start_time}")
+        rprint(f"Measurement Date: {start_time}")
 
         if len(data["timestamp"]) >= 2:
             runtime = data["timestamp"].iloc[-1] / 1_000_000
-            print(f"Runtime: {runtime:.3f} seconds")
+            rprint(f"Runtime: {runtime:.3f} seconds")
+
+
+# pylint: enable=too-many-locals, too-many-branches, too-many-statements
 
 
 if __name__ == "__main__":

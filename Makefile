@@ -5,6 +5,8 @@ ifeq ($(OS), Windows_NT)
 	export PYTEST_DISABLE_PLUGIN_AUTOLOAD := ""
 endif
 
+PACKAGE := icolyzer
+
 # -- Rules ---------------------------------------------------------------------
 
 .PHONY: all check test
@@ -13,7 +15,8 @@ all: check test
 
 check:
 	flake8 .
-	mypy icolyzer
+	mypy $(PACKAGE)
+	pylint $(PACKAGE)
 
 test:
 	pytest .

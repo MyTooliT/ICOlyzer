@@ -9,10 +9,10 @@ import sys
 
 from argparse import ArgumentDefaultsHelpFormatter, Namespace
 from datetime import datetime
-from dateutil.parser import isoparse
 from pathlib import Path
 from sys import stderr
 
+from dateutil.parser import isoparse
 from numpy import log10, power
 from matplotlib.collections import LineCollection
 from matplotlib.backends.backend_pdf import PdfPages
@@ -69,7 +69,12 @@ def get_arguments() -> Namespace:
     return parser.parse_args()
 
 
+# pylint: disable=too-many-instance-attributes
+
+
 class Plotter:
+    """Visualize HDF5 ICOtronic measurement data"""
+
     def __init__(self, args: Namespace) -> None:
         """Initialize plotter object using given arguments
 
@@ -88,12 +93,12 @@ class Plotter:
 
         # Convert timestamps (in μs since start) to absolute timestamps
         with open_file(filepath, mode="r") as file:
-            self.timestamp_start = isoparse(
+            timestamp_start = isoparse(
                 file.get_node("/acceleration").attrs["Start_Time"]
             ).timestamp()
         self.timestamps = (
             self.data["timestamp"] / 1_000_000
-        ) + self.timestamp_start
+        ) + timestamp_start
 
         self.sample_rate = len(self.timestamps) / (
             self.timestamps.iloc[-1] - self.timestamps.iloc[0]
@@ -117,7 +122,7 @@ class Plotter:
         assert figure.canvas.manager is not None
         figure.canvas.manager.set_window_title("Acceleration Measurement")
         figure.suptitle(
-            datetime.fromtimestamp(self.timestamp_start).strftime("%c"),
+            datetime.fromtimestamp(timestamp_start).strftime("%c"),
             fontsize=20,
         )
 
@@ -247,10 +252,15 @@ class Plotter:
             show()
 
 
+# pylint: enable=too-many-instance-attributes
+
+
 # -- Main ---------------------------------------------------------------------
 
 
 def main():
+    """Print information about and visualize ICOtronic HDF measurement data"""
+
     try:
         plotter = Plotter(get_arguments())
         plotter.print_info()

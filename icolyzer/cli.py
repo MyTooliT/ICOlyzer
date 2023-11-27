@@ -1,3 +1,5 @@
+"""Utility code for working with command line data"""
+
 # -- Imports ------------------------------------------------------------------
 
 from argparse import ArgumentTypeError

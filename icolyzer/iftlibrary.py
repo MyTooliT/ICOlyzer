@@ -1,3 +1,5 @@
+"""Library for calculating IFT value. All rights reserved."""
+
 # -- Imports ------------------------------------------------------------------
 
 from ctypes import CDLL, c_double, c_size_t, POINTER, sizeof
@@ -20,6 +22,9 @@ class IFTLibraryNotAvailable(IFTLibraryException):
 
 class IFTValueException(IFTLibraryException):
     """Raised if there are any problems with the IFT value calculation"""
+
+
+# pylint: disable=too-few-public-methods
 
 
 class IFTLibrary:
@@ -166,3 +171,6 @@ class IFTLibrary:
             output.extend(output_part)
 
         return list(output)
+
+
+# pylint: enable=too-few-public-methods
