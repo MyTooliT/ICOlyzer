@@ -251,9 +251,12 @@ class Plotter:
 
 
 def main():
-    plotter = Plotter(get_arguments())
-    plotter.print_info()
-    plotter.plot()
+    try:
+        plotter = Plotter(get_arguments())
+        plotter.print_info()
+        plotter.plot()
+    except KeyboardInterrupt:
+        pass
 
 
 if __name__ == "__main__":
