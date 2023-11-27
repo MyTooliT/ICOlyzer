@@ -47,9 +47,10 @@ def get_arguments() -> Namespace:
         help="measurement data in HDF5 format",
     )
     parser.add_argument(
-        "-l",
-        "--loss",
+        "-n",
+        "--no-loss",
         action="store_true",
+        default=False,
         help="visualize time periods containing lost data",
     )
     parser.add_argument(
@@ -179,7 +180,7 @@ class Plotter:
             self.subplot.set_xlabel("Time")
             self.subplot.set_ylabel(ylabel)
 
-        if self.args.loss:
+        if not self.args.no_loss:
             lost_data_lines: dict[
                 str, list[tuple[tuple[int, int], tuple[int, int]]]
             ] = {axis: [] for axis in self.axes}
