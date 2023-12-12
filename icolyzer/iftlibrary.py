@@ -31,7 +31,7 @@ class IFTLibrary:
     """Wrapper for IFT figure of merit (FOM) library"""
 
     system_machine_to_lib = {
-        "Linux": {"x86_64": "libift-x64.so"},
+        "Linux": {"aarch64": "libift-arm64.so", "x86_64": "libift-x64.so"},
         "Darwin": {"arm64": "libift.dylib", "x86_64": "libift.dylib"},
         "Windows": {"AMD64": "ift.dll"},
     }
