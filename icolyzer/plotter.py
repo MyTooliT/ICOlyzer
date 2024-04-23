@@ -139,10 +139,12 @@ class Plotter:
             sys.exit(1)
 
         print(
-            " ".join([
-                f"Avg {axis.upper()}: {int(stats.loc['mean'][axis])}"
-                for axis in self.axes
-            ])
+            " ".join(
+                [
+                    f"Avg {axis.upper()}: {int(stats.loc['mean'][axis])}"
+                    for axis in self.axes
+                ]
+            )
         )
 
         std_dev = stats.loc["std", self.axes]
