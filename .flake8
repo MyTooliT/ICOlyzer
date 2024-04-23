@@ -4,3 +4,4 @@ exclude =
   .git,
   __pycache__,
   ._*
+per-file-ignores = __init__.py:F401
