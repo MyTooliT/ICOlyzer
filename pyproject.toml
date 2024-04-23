@@ -78,7 +78,7 @@ minversion = "6.0"
 include = ["icolyzer*"]
 
 [tool.setuptools.package-data]
-"icolyzer" = ["*.dll", "*.dylib","*.so"]
+"icolyzer.iftlibrary.lib" = ["*.dll", "*.dylib","*.so"]
 
 [tool.yapfignore]
 # Ignore macOS metadata files

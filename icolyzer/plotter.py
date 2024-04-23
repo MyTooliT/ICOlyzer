@@ -21,7 +21,7 @@ from pandas import read_hdf
 from tables import open_file
 
 from icolyzer.cli import file_exists
-from .iftlibrary import IFTLibrary, IFTLibraryException
+from icolyzer.iftlibrary import IFTLibrary, IFTLibraryException
 
 
 def get_arguments() -> Namespace:

@@ -1,9 +1,9 @@
-"""Library for calculating IFT value. All rights reserved."""
+"""Support code for calculating the IFT value"""
 
 # -- Imports ------------------------------------------------------------------
 
 from ctypes import CDLL, c_double, c_size_t, POINTER, sizeof
-from importlib.resources import as_file, files
+from pathlib import Path
 from platform import machine, system
 from typing import Collection, List
 
@@ -31,47 +31,50 @@ class IFTLibrary:
     """Wrapper for IFT figure of merit (FOM) library"""
 
     system_machine_to_lib = {
-        "Linux": {"aarch64": "libift-arm64.so", "x86_64": "libift-x64.so"},
+        "Linux": {
+            "aarch64": "libift-arm64.so",
+            "armv7l": "libift-armv7l.so",
+            "x86_64": "libift-x64.so",
+        },
         "Darwin": {"arm64": "libift.dylib", "x86_64": "libift.dylib"},
         "Windows": {"AMD64": "ift.dll"},
     }
     exception = None
 
     try:
-        filename_library = system_machine_to_lib[system()][machine()]
+        basename_library = system_machine_to_lib[system()][machine()]
     except KeyError:
         exception = IFTLibraryNotAvailable(
             f"IFT library not available for system “{system()} ({machine()})”"
         )
 
     if exception is None:
-        with as_file(
-            files("icolyzer").joinpath(filename_library)
-        ) as filepath_library:
-            try:
-                library = CDLL(str(filepath_library))
-                ift_value_function = library.ift_value
-                ift_value_function.argtypes = [
-                    POINTER(c_double),  # double samples[]
-                    c_size_t,  # size_t sample_size
-                    c_double,  # double window_length
-                    c_double,  # double sampling_frequency
-                    c_double,  # A2
-                    c_double,  # A3
-                    c_double,  # A4
-                    c_double,  # A5
-                    POINTER(c_double),  # double output[]
-                ]
-            except OSError as error:
-                exception = IFTLibraryNotAvailable(
-                    f"Unable to load IFT library: {error}"
-                )
+        filepath_library = (
+            Path(__file__).parent / "lib" / basename_library
+        ).as_posix()
+
+        try:
+            library = CDLL(filepath_library)
+            ift_value_function = library.ift_value
+            ift_value_function.argtypes = [
+                POINTER(c_double),  # double samples[]
+                c_size_t,  # size_t sample_size
+                c_double,  # double window_length
+                c_double,  # double sampling_frequency
+                c_double,  # A2
+                c_double,  # A3
+                c_double,  # A4
+                c_double,  # A5
+                POINTER(c_double),  # double output[]
+            ]
+        except OSError:
+            exception = IFTLibraryNotAvailable("Unable to load IFT library")
 
     @classmethod
     def ift_value(
         cls,
         samples: Collection[float],
-        sampling_frequency: float,
+        sampling_frequency: float = 9524,
         window_length: float = 0.05,
     ) -> List[float]:
         """Calculate the IFT value for the given input
