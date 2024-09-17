@@ -112,7 +112,7 @@ def main():
             if counter == last_counter:
                 continue  # Skip rows with same counter/timestamp value
 
-            lost_packets = (counter - last_counter) % 256 - 1
+            lost_packets = (int(counter) - int(last_counter)) % 256 - 1
             duration_last_packet_ms = (timestamp - last_timestamp) / 1000
             loss_timestamp_s = last_timestamp / 1_000_000
 
