@@ -25,6 +25,7 @@ Test detailed output
    64 Packets lost after 22.782 seconds - No values for 0.2 milliseconds
    64 Packets lost after 25.781 seconds - No values for 0.3 milliseconds
    64 Packets lost after 29.623 seconds - No values for 0.2 milliseconds
+  Average Packets Lost: 64.0 Packets
   Packet Loss: 0.61%
   Data Points:
     X-Axis: 282021 Samples - 127772 Samples were over 1g or below -1g (45.31%)
@@ -35,6 +36,7 @@ Test data file containing data for multiple axes
 
   $ icoanalyzer -d examples/log-xyz.hdf5
   Input: examples/log-xyz.hdf5
+  Average Packets Lost: 0 Packets
   Packet Loss: 0.0%
   Data Points:
     X-Axis: 94767 Samples - 94564 Samples were over 1g or below -1g (99.79%)
