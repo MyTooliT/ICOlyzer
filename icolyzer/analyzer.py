@@ -171,7 +171,8 @@ def main():
                 sigma[axis] = sigma[axis] / len(acceleration_values)
 
         if details_on is True:
-            losses = round((packet_loss / losses), 2)
+            if losses != 0:
+                losses = round((packet_loss / losses), 2)
             print(f"Average Packets Lost: {losses} Packets")
         packet_loss = round((packet_loss / packets) * 100, 2)
         rprint(f"Packet Loss: {packet_loss}%")
