@@ -108,6 +108,7 @@ def main():
         last_timestamp = data["timestamp"][0]
         packet_loss = 0
         packets = 0
+        losses = 0
         for counter, timestamp in zip(data["counter"], data["timestamp"]):
             if counter == last_counter:
                 continue  # Skip rows with same counter/timestamp value
@@ -125,6 +126,7 @@ def main():
                 )
 
             if lost_packets != 0 and details_on is True:
+                losses += 1
                 message = (
                     f"{lost_packets:3} Packets lost after "
                     f"{loss_timestamp_s:6.3f} seconds"
@@ -168,6 +170,9 @@ def main():
             if so is True:
                 sigma[axis] = sigma[axis] / len(acceleration_values)
 
+        if details_on is True:
+            losses = round((packet_loss / losses), 2)
+            print(f"Average Packets Lost: {losses} Packets")
         packet_loss = round((packet_loss / packets) * 100, 2)
         rprint(f"Packet Loss: {packet_loss}%")
 
